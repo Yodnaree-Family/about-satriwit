@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เตรียมสอบเข้า ม.1 โรงเรียนสตรีวิทยา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #fdf2f8;
+            background-image: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 100%);
+        }
+        /* Main Tabs */
+        .main-tab-btn {
+            @apply px-5 sm:px-8 py-3 text-base sm:text-lg text-gray-700 bg-white rounded-full shadow-lg hover:shadow-xl font-semibold transition-all duration-300 ease-in-out transform hover:-translate-y-1;
+        }
+        .main-tab-btn.active {
+            @apply scale-105 shadow-xl text-white font-bold;
+            background-color: #FBB6CE;
+ 
+        }
+        /* DELETED a few lines */
+
+        /* Nested Tabs Container */
+        .nested-tabs-container {
+            @apply bg-white/50 backdrop-blur-sm p-3 rounded-full shadow-inner flex flex-wrap justify-center gap-2 sm:gap-4 mb-6;
+        }
+        .nested-tab-btn {
+            @apply px-4 py-2 text-sm font-semibold text-gray-600 bg-white/80 rounded-full shadow-md hover:bg-gray-200 transition-all duration-200 transform hover:scale-105;
+        }
+        .nested-tab-btn.active {
+            @apply shadow-lg text-white font-bold;
+            background-color: #A0D8EF;
+        }
+        /* DELETED a few lines */
+
+         /* Sub-Nested Tabs */
+        .sub-nested-tab-btn {
+            @apply px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-200 transition-colors duration-200 transform hover:scale-105;
+        }
+        .sub-nested-tab-btn.active {
+            @apply ring-2 ring-offset-2 text-white font-bold shadow-md;
+            background-color: #D8B4FE;
+            ring-color: #67d6f5;
+        }
+        /* DELETED a few lines */
+
+        /* Content Containers */
+        .main-content-container {
+             @apply bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 text-base;
+        }
+        .nested-content-container {
+            @apply bg-white/60 backdrop-blur-lg rounded-2xl p-6 shadow-lg;
+        }
+        /* Tab Content Transitions */
+        .tab-content { @apply transition-opacity duration-500 ease-in-out; }
+        .hidden-content { display: none; opacity: 0; }
+        .content-enter { display: block; opacity: 1; }
+        
+        /* Helper Classes */
+        .list-item { @apply flex items-start space-x-3; }
+        .list-icon { @apply text-pink-500 mt-1.5 flex-shrink-0 w-5 h-5; }
+        .info-card { @apply bg-white/70 p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300; }
+        .card-header-icon { @apply text-3xl mb-3 text-center; }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex items-center justify-center min-h-screen">
+
+    <div class="container mx-auto max-w-5xl">
+        <header class="text-center mb-8">
+             <div class="inline-block bg-white p-4 rounded-full shadow-lg mb-4">
+                <i class="fas fa-school text-4xl text-pink-600"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-700 to-purple-600">การเตรียมตัวสอบเข้าม.1 โรงเรียนสตรีวิทยา</h1>
+            <p class="text-gray-600 mt-3 text-lg">ปึการศึกษา 2569</p>
+            <div class="mt-4 inline-block bg-rose-100 text-rose-800 rounded-full px-4 py-2 text-sm shadow-inner">
+                จัดทำโดย.. ลุ้นสอวอไปด้วยกันนะ ❤️
+                <a href="https://shorturl.asia/BlJVn" target="_blank" class="ml-2 font-semibold text-blue-600 hover:underline"><i class="fab fa-line"></i> Line OPC</a>
+            </div>
+        </header>
+
+        <!-- Main Tab Buttons -->
+        <nav class="flex flex-wrap justify-center gap-3 sm:gap-6 my-8" id="main-tabs">
+            <button class="main-tab-btn tab-special active" data-tab="special-programs-main">ห้องเรียนพิเศษ</button>
+            <button class="main-tab-btn tab-normal" data-tab="normal-program-main">ห้องเรียนปกติ</button>
+            <button class="main-tab-btn tab-prep" data-tab="preparation-main">การเตรียมตัว</button>
+        </nav>
+
+        <main class="main-content-container">
+            <!-- Main Content Area -->
+            <div id="main-content">
+                <!-- Special Programs Main Tab Content -->
+                <div id="special-programs-main" class="main-tab-content content-enter">
+                    <div class="nested-tabs-container" id="special-nested-tabs">
+                        <button class="nested-tab-btn tab-sp-exam active" data-tab="special-exam">ข้อมูลการสอบ</button>
+                        <button class="nested-tab-btn tab-sp-quals" data-tab="special-quals">คุณสมบัติเฉพาะ</button>
+                        <button class="nested-tab-btn tab-sp-docs" data-tab="special-docs">เอกสารสมัคร</button>
+                    </div>
+                    <div id="special-nested-content" class="nested-content-container">
+                        <!-- Special Exam Info -->
+                        <div id="special-exam" class="nested-tab-content content-enter">
+                            <h2 class="text-2xl font-semibold mb-4 text-pink-700 text-center">ข้อมูลการสอบ (ห้องเรียนพิเศษ)</h2>
+                            <div class="flex justify-center gap-2 sm:gap-4 mb-6 border-b pb-4" id="exam-sub-nested-tabs">
+                                <button class="sub-nested-tab-btn tab-ep active" data-tab="exam-ep">EP</button>
+                                <button class="sub-nested-tab-btn tab-smte" data-tab="exam-smte">SMTE</button>
+                                <button class="sub-nested-tab-btn tab-gifted" data-tab="exam-gifted">Gifted Math</button>
+                            </div>
+                            <div id="exam-sub-nested-content">
+                                <!-- EP Exam -->
+                                <div id="exam-ep" class="sub-nested-tab-content content-enter">
+                                    <div class="info-card max-w-md mx-auto">
+                                        <h3 class="font-bold text-pink-800 text-xl mb-4 text-center">English Program (EP)</h3>
+					<h3 class="font-normal text-blue-600 text-lg mb-3">📝แจกข้อสอบตามรายวิชา เก็บข้อสอบเมื่อหมดเวลา</h3>
+                                        <div class="space-y-3">
+                                            <div class="text-center mb-4"><span class="font-bold text-3xl text-pink-600">200</span> <span class="text-gray-600">คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-language text-pink-500 mr-2"></i>ภาษาอังกฤษ (90 นาที)</span> <span class="font-semibold">80 คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-calculator text-pink-500 mr-2"></i>คณิตศาสตร์ (60 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-flask text-pink-500 mr-2"></i>วิทยาศาสตร์ (60 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <div class="mt-4 p-3 bg-yellow-200 text-yellow-800 rounded-lg text-center font-bold shadow-inner"><i class="fas fa-star mr-2"></i>สอบสัมภาษณ์ 20 คะแนน</div>
+                                            <p class="text-lg font-semibold text-blue-800 pt-4 text-center">ข้อสอบปรนัยและอัตนัย (โจทย์ภาษาไทย และภาษาอังกฤษ)</p>
+                                            <p class="text-sm text-center text-red-500 -mt-2">(ออกข้อสอบโดยโรงเรียนสตรีวิทยา)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- SMTE Exam -->
+                                <div id="exam-smte" class="sub-nested-tab-content hidden-content">
+                                     <div class="info-card max-w-md mx-auto">
+                                        <h3 class="font-bold text-purple-800 text-xl mb-4 text-center">SMTE</h3>
+					<h3 class="font-normal text-blue-600 text-lg mb-3">📝แจกข้อสอบตามรายวิชา เก็บข้อสอบเมื่อหมดเวลา</h3>
+                                        <div class="space-y-3">
+                                            <div class="text-center mb-4"><span class="font-bold text-3xl text-purple-600">100</span> <span class="text-gray-600">คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-calculator text-purple-500 mr-2"></i>คณิตศาสตร์ (120 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-vial text-purple-500 mr-2"></i>วิทยาศาสตร์ (120 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <p class="text-lg font-semibold text-blue-800 pt-4 text-center">ข้อสอบปรนัยและอัตนัย</p>
+                                            <p class="text-sm text-center text-red-500 -mt-2">(ข้อสอบกลาง สพฐ.)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Gifted Math Exam -->
+                                <div id="exam-gifted" class="sub-nested-tab-content hidden-content">
+                                     <div class="info-card max-w-md mx-auto">
+                                        <h3 class="font-bold text-green-800 text-xl mb-4 text-center">Gifted Math</h3>
+					<h3 class="font-normal text-blue-600 text-lg mb-3">📝แจกข้อสอบตามรายวิชา เก็บข้อสอบเมื่อหมดเวลา</h3>
+                                         <div class="space-y-3">
+                                            <div class="text-center mb-4"><span class="font-bold text-3xl text-green-600">110</span> <span class="text-gray-600">คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-calculator text-green-500 mr-2"></i>คณิตศาสตร์ (90 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-flask text-green-500 mr-2"></i>วิทยาศาสตร์ (90 นาที)</span> <span class="font-semibold">50 คะแนน</span></div>
+                                            <div class="text-gray-700 bg-white p-3 rounded-lg flex justify-between items-center"><span><i class="fas fa-language text-green-500 mr-2"></i>ภาษาอังกฤษ (30 นาที)</span> <span class="font-semibold">10 คะแนน</span></div>
+                                            <p class="text-lg font-semibold text-blue-800 pt-4 text-center">ข้อสอบปรนัยและอัตนัย</p>
+                                            <p class="text-sm text-center text-red-500 -mt-2">(ออกข้อสอบโดยโรงเรียนสตรีวิทยา)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Special Quals -->
+                        <div id="special-quals" class="nested-tab-content hidden-content">
+                            <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">✅ คุณสมบัติเฉพาะ</h2>
+                             <div class="grid lg:grid-cols-3 gap-6">
+                                <div class="info-card text-center bg-rose-50/50">
+                                    <p class="card-header-icon text-rose-500"><i class="fas fa-globe-americas"></i></p>
+                                    <h3 class="font-bold text-pink-800 text-lg mb-3">English Program (EP)</h3>
+                                    <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยภาษาอังกฤษ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
+                                </div>
+                                <div class="info-card text-center bg-purple-50/50">
+                                     <p class="card-header-icon text-purple-500"><i class="fas fa-atom"></i></p>
+                                     <h3 class="font-bold text-purple-800 text-lg mb-3">SMTE</h3>
+                                     <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยคณิตศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยวิทยาศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
+                                </div>
+                                <div class="info-card text-center bg-green-50/50">
+                                    <p class="card-header-icon text-green-500"><i class="fas fa-brain"></i></p>
+                                    <h3 class="font-bold text-green-800 text-lg mb-3">Gifted Math</h3>
+                                    <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยคณิตศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยวิทยาศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
+                                </div>
+                             </div>
+                        </div>
+                        <!-- Special Docs -->
+                        <div id="special-docs" class="nested-tab-content hidden-content">
+                             <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนพิเศษ)</h2>
+                             <div class="info-card max-w-2xl mx-auto">
+                                <ol class="space-y-4 text-gray-700 divide-y divide-pink-100">
+                                    <li class="list-item pt-3 first:pt-0"><i class="fas fa-camera list-icon"></i><span> รูปถ่าย 1.5 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-pink-600 ml-2">จำนวน 4 รูป</span></span></li>
+                                    <li class="list-item pt-3"><i class="fas fa-id-card list-icon"></i><span> สำเนาทะเบียนบ้าน (นักเรียน)</span></li>
+                                    <li class="list-item pt-3"><i class="fas fa-users list-icon"></i><span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span></li>
+                                    <li class="list-item pt-3"><i class="fas fa-graduation-cap list-icon"></i><span> สำเนารับรองกำลังศึกษาชั้น ป.6 (ปพ.7)</span></li>
+                                    <li class="list-item pt-3"><i class="fas fa-file-invoice list-icon"></i><span> สำเนาระเบียนแสดงผลการเรียน ปพ.1 หรือ ปพ.6 (ป.4 และ ป.5)</span></li>
+                                    <li class="list-item pt-3"><i class="fas fa-file-alt list-icon"></i><span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span></li>
+                                </ol>
+                                <p class="text-sm text-red-600 pl-8 pt-4 border-t border-pink-100 mt-4">*นำฉบับจริงมาแสดง และนักเรียนลงนามรับรองสำเนาทุกฉบับ</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Normal Program Main Tab Content -->
+                <div id="normal-program-main" class="main-tab-content hidden-content">
+                    <div class="nested-tabs-container" id="normal-nested-tabs">
+                        <button class="nested-tab-btn tab-no-exam active" data-tab="normal-exam">ข้อมูลการสอบ</button>
+                        <button class="nested-tab-btn tab-no-docs" data-tab="normal-docs">เอกสารสมัคร</button>
+                    </div>
+                    <div id="normal-nested-content" class="nested-content-container">
+                        <!-- Normal Exam -->
+                        <div id="normal-exam" class="nested-tab-content content-enter">
+                           <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">ข้อมูลการสอบ (ห้องเรียนปกติ)</h2>
+                            <div>
+                               <div>
+                                    <h3 class="font-bold text-gray-800 text-lg mb-3">วิชาที่สอบ (รวม 100 คะแนน วิชาละ 35 นาที)</h3>
+                                    <h3 class="font-normal text-blue-600 text-lg mb-3">📝 การแจกข้อสอบ:ข้อสอบแบ่งเป็น 2 ชุด</h3>
+				       <h3 class="font-normal text-blue-600 text-lg mb-3">⏱️ การเก็บ: เมื่อหมดเวลา เก็บข้อสอบชุดนั้นทันที</h3>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+                                        <div class="p-4 bg-rose-50 rounded-lg"><i class="fas fa-calculator text-rose-500 mb-1"></i><p>คณิตศาสตร์</p><p class="font-bold">20</p></div>
+                                        <div class="p-4 bg-blue-50 rounded-lg"><i class="fas fa-book text-blue-500 mb-1"></i><p>ภาษาไทย</p><p class="font-bold">20 คะแนน</p></div>
+                                        <div class="p-4 bg-green-50 rounded-lg"><i class="fas fa-language text-green-500 mb-1"></i><p>ภาษาอังกฤษ</p><p class="font-bold">20 คะแนน</p></div>
+                                        <div class="p-4 bg-yellow-50 rounded-lg"><i class="fas fa-flask text-yellow-500 mb-1"></i><p>วิทยาศาสตร์</p><p class="font-bold">20 คะแนน</p></div>
+                                        <div class="p-4 bg-purple-50 rounded-lg"><i class="fas fa-landmark text-purple-500 mb-1"></i><p>สังคมศึกษา</p><p class="font-bold">20 คะแนน</p></div>
+                                    </div>
+                                    <p class="text-lg font-semibold text-blue-800 mt-4 text-center">ข้อสอบปรนัย 4 ตัวเลือก</p>
+                                    <p class="text-sm text-center text-red-500 -mt-1">(ออกข้อสอบโดยโรงเรียนสตรีวิทยา)</p>
+                                </div>
+                                <div class="info-card mt-6">
+                                    <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2 mb-2"><i class="fas fa-user-check text-green-500"></i>คุณสมบัติ</h3>
+                                    <p class="text-gray-600 mb-4">ไม่ได้ระบุเกรดเฉลี่ยขั้นต่ำ (พิจารณาคะแนนสอบเป็นหลัก)</p>
+                                    <div class="p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg text-sm">
+                                        <h4 class="font-bold">หมายเหตุ (เขตพื้นที่บริการ)</h4>
+                                        <p>ต้องมีชื่ออยู่ในทะเบียนบ้านในเขตพื้นที่บริการของโรงเรียนอย่างน้อย 2 ปี (นับถึง 16 พ.ค.)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Normal Docs -->
+                        <div id="normal-docs" class="nested-tab-content hidden-content">
+                            <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนปกติ)</h2>
+                            <div class="info-card max-w-2xl mx-auto">
+                                <ol class="space-y-4 text-gray-700">
+                                    <li class="list-item"><i class="fas fa-camera list-icon"></i><span> รูปถ่าย 1 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-pink-600 ml-2">จำนวน 4 รูป</span></span></li>
+                                    <li class="list-item"><i class="fas fa-id-card list-icon"></i><span> สำเนาทะเบียนบ้าน (นักเรียน)</span></li>
+                                    <li class="list-item"><i class="fas fa-users list-icon"></i><span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span></li>
+                                    <li class="list-item"><i class="fas fa-award list-icon"></i><span> สำเนารับรองการศึกษา ป.6 (ปพ.1 หรือ ปพ.7)</span></li>
+                                    <li class="list-item"><i class="fas fa-chart-bar list-icon"></i><span> สำเนาระเบียนแสดงผลการเรียน (ปพ.1 หรือ ปพ.6)</span></li>
+                                    <li class="list-item"><i class="fas fa-file-alt list-icon"></i><span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span></li>
+                                </ol>
+                                <div class="mt-6 pt-4 border-t border-pink-100">
+                                    <h4 class="font-bold text-blue-700">เพิ่มเติม (นักเรียนในเขตพื้นที่บริการ)</h4>
+                                    <ul class="list-disc list-inside mt-2 text-sm text-blue-900">
+                                        <li>สำเนาทะเบียนบ้านหน้า 18</li>
+                                        <li>หนังสือรับรองการอยู่อาศัยจริง</li>
+                                        <li>สำเนาบัตรประชาชนของเจ้าบ้าน</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Preparation Main Tab Content -->
+                <div id="preparation-main" class="main-tab-content hidden-content">
+                    <div class="nested-content-container">
+                        <h2 class="text-2xl font-semibold mb-6 text-pink-700">🚀 เทคนิคเตรียมตัวสอบเข้าสตรีวิทยา</h2>
+                        <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+                            <div class="info-card flex items-start space-x-4"><div class="text-3xl text-blue-500 pt-1"><i class="fas fa-bullseye"></i></div><div><h3 class="font-bold">1. รู้ลึก รู้จริงเรื่องแนวข้อสอบ</h3><p>ศึกษารายละเอียดวิชาที่สอบ หาข้อสอบเก่ามาฝึกทำเพื่อจับแนวทางและสไตล์ของข้อสอบ</p></div></div>
+                            <div class="info-card flex items-start space-x-4"><div class="text-3xl text-green-500 pt-1"><i class="fas fa-calendar-alt"></i></div><div><h3 class="font-bold">2. วางแผนการอ่านหนังสือ</h3><p>จัดตารางเวลาให้ชัดเจน แบ่งเนื้อหาที่ต้องทบทวนในแต่ละวัน ไม่ควรอัดอ่านตอนใกล้สอบ</p></div></div>
+                            <div class="info-card flex items-start space-x-4"><div class="text-3xl text-yellow-500 pt-1"><i class="fas fa-stopwatch"></i></div><div><h3 class="font-bold">3. ฝึกทำโจทย์และจับเวลา</h3><p>ความเร็วเป็นสิ่งสำคัญ ฝึกทำข้อสอบโดยจับเวลาเหมือนสอบจริง จะช่วยให้บริหารเวลาในห้องสอบได้ดีขึ้น</p></div></div>
+                            <div class="info-card flex items-start space-x-4"><div class="text-3xl text-red-500 pt-1"><i class="fas fa-heartbeat"></i></div><div><h3 class="font-bold">4. ดูแลสุขภาพกายและใจ</h3><p>พักผ่อนให้เพียงพอ ทานอาหารที่มีประโยชน์ และหาเวลาผ่อนคลาย เพื่อให้สมองปลอดโปร่ง</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-8 text-gray-600">
+            <p class="font-normal text-base">จัดทำโดย.. ลุ้นสอวอไปด้วยกันนะ</p>
+            <p class="font-normal text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-block font-semibold text-blue-600 hover:underline text-lg">
+                <i class="fab fa-line"></i> Line OPC
+            </a>
+            <p class="text-gray-500 text-sm">ข้อมูลอ้างอิงตามประกาศรับสมัครปีการศึกษา 2568 (โปรดตรวจสอบประกาศจากโรงเรียนอีกครั้ง)</p>
+            <a href="https://www.satriwit.ac.th/" target="_blank" class="text-pink-600 hover:underline text-sm">เว็บไซต์โรงเรียนสตรีวิทยา</a>
+        </footer>
+    </div>
+
+    <script>
+        function setupTabs(tabContainerId) {
+            const tabContainer = document.getElementById(tabContainerId);
+            if (!tabContainer) return;
+            
+            const tabs = Array.from(tabContainer.querySelectorAll('[data-tab]'));
+            const contentContainerId = tabContainer.id.replace('-tabs', '-content');
+            const contentContainer = document.getElementById(contentContainerId);
+            if(!contentContainer) return;
+            const contents = Array.from(contentContainer.children);
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = tab.getAttribute('data-tab');
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    contents.forEach(content => {
+                        content.classList.add('hidden-content');
+                        content.classList.remove('content-enter');
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden-content');
+                            setTimeout(() => {
+                                content.classList.add('content-enter');
+                            }, 10);
+                        }
+                    });
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupTabs('main-tabs');
+            setupTabs('special-nested-tabs');
+            setupTabs('normal-nested-tabs');
+            setupTabs('exam-sub-nested-tabs');
+        });
+    </script>
+
+</body>
+</html>
+
