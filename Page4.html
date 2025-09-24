@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -94,18 +94,17 @@
             special: {
               title: "ข้อมูลการรับสมัครประเภทห้องเรียนพิเศษ ม.1",
               programs: {
-                'Gifted - Math': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [72, 72, 72, 72, 102, 102], applicants: [384, 308, 337, 358, 391, 444], rate: [5.33, 4.28, 3.30, 3.51, 3.83, 4.25] },
-                'SMTE': { years: [2568, 2567, 2566, 2565], accepted: [30, 30, 30, 30], applicants: [171, 101, 337, 358], rate: [5.70, 3.37, 3.30, 3.51] },
+                'Gifted - Math': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [72, 72, 72, 72, 102, 102], applicants: [384, 308, 337, 358, 391, 444], rate: [5.33, 4.28, 4.68, 4.97, 3.83, 4.35] },
+                'SMTE': { years: [2568, 2567, 2566, 2565], accepted: [30, 30, 30, 30], applicants: [171, 101, 102, 120], rate: [5.70, 3.37, 3.40, 4.00] },
                 'EP': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [60, 60, 60, 60, 60, 60], applicants: [273, 182, 155, 250, 217, 254], rate: [4.55, 3.03, 2.58, 4.17, 3.62, 4.23] }
               }
             },
-              note: "สำหรับแผนการเรียน Gifted Math และ SMTE ปี 2565 และปี 2566 ยอดรับสมัครสอบรวมกัน"
             regular: {
               title: "ข้อมูลการรับสมัครประเภทห้องเรียนปกติ ม.1",
               programs: {
-                'ในเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [30, 30, 46, 66, 63], applicants: [61, 54, 59, 87, 131], rate: [2.03, 1.80, 0.78, 1.32, 1.96] },                
-                'นอกเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [265, 265, 236, 250, 269], applicants: [913, 721, 537, 759, 648], rate: [3.45, 2.72, 2.15, 2.88, 2.41] },
-                'เงื่อนไขพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [45, 45, 45, 39, 40], applicants: [null, 45, 45, 39, 40], rate: [null, 1.00, 1.00, 1.00, 1.00] },
+                'ในเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [30, 30, 46, 66, 63], applicants: [61, 54, 59, 87, 131], rate: [2.03, 1.80, 1.28, 1.32, 2.08] },                
+                'นอกเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [265, 265, 236, 250, 269], applicants: [913, 721, 537, 759, 648], rate: [3.45, 2.72, 2.28, 3.04, 2.41] },
+                'เงื่อนไขพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [45, 45, 45, 39, 40], applicants: [45, 45, 45, 39, 40], rate: [1.00, 1.00, 1.00, 1.00, 1.00] },
                 'ความสามารถพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [20, 16, 18, 9, 10], applicants: [93, 47, 34, 24, 22], rate: [4.65, 2.94, 1.89, 2.67, 2.20] }
               }
             }
@@ -167,25 +166,26 @@
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">${data.title}</h2>
                     <div class="overflow-x-auto max-h-[500px]">
                         <table class="w-full text-sm text-center text-gray-600">
-                            <thead class="text-xs text-red-800 uppercase">
-                                <tr>
-                                    <th scope="col" class="py-3 px-6 rounded-tl-lg sticky left-0 bg-red-100 z-20">หลักสูตร/ประเภท</th>
-                                    ${allYears.map((year, i) => `<th scope="col" colspan="3" class="py-3 px-6 border-l border-red-200 ${i % 2 === 0 ? 'bg-red-100' : 'bg-red-200'}">${year}</th>`).join('')}
+                            <thead class="text-xs text-white uppercase">
+                                <tr class="bg-red-800">
+                                    <th scope="col" class="py-3 px-6 rounded-tl-lg sticky left-0 bg-red-800 z-20">หลักสูตร/ประเภท</th>
+                                    ${allYears.map(year => `<th scope="col" colspan="3" class="py-3 px-6 border-l border-red-600">${year}</th>`).join('')}
                                 </tr>
-                                <tr>
-                                    <th scope="col" class="py-3 px-2 sticky left-0 bg-red-100 z-20"></th>
-                                    ${allYears.map((_, i) => `
-                                        <th class="py-2 px-2 font-medium border-l border-red-200 ${i % 2 === 0 ? 'bg-red-100' : 'bg-red-200'}">รับ</th>
-                                        <th class="py-2 px-2 font-medium ${i % 2 === 0 ? 'bg-red-100' : 'bg-red-200'}">สมัคร</th>
-                                        <th class="py-2 px-2 font-medium ${i % 2 === 0 ? 'bg-red-100' : 'bg-red-200'}">อัตรา</th>
+                                <tr class="bg-red-700">
+                                    <th scope="col" class="py-3 px-2 sticky left-0 bg-red-700 z-20"></th>
+                                    ${allYears.map(() => `
+                                        <th class="py-2 px-2 font-medium border-l border-red-500">รับ</th>
+                                        <th class="py-2 px-2 font-medium">สมัคร</th>
+                                        <th class="py-2 px-2 font-medium">อัตรา</th>
                                     `).join('')}
                                 </tr>
                             </thead>
                             <tbody>`;
             programs.forEach((programName, progIdx) => {
                 const progColor = colorPalette[progIdx % colorPalette.length];
-                tableHtml += `<tr class="bg-white border-b hover:bg-gray-50">
-                                <th scope="row" class="py-4 px-6 font-medium text-gray-900 text-left sticky left-0 bg-white z-10 border-l-custom" style="border-left-color: ${progColor};">${programName}</th>`;
+                const rowClass = progIdx % 2 === 0 ? 'bg-white' : 'bg-red-50';
+                tableHtml += `<tr class="${rowClass} border-b border-red-100 hover:bg-red-100 transition-colors duration-200">
+                                <th scope="row" class="py-4 px-6 font-medium text-gray-900 text-left sticky left-0 ${rowClass} z-10 border-l-custom" style="border-left-color: ${progColor};">${programName}</th>`;
                 const programData = data.programs[programName];
                 allYears.forEach(year => {
                     const yearIndex = programData.years.indexOf(year);
@@ -200,7 +200,18 @@
                 });
                 tableHtml += `</tr>`;
             });
-            tableHtml += `</tbody></table></div></section>`;
+            tableHtml += `</tbody></table></div>`;
+
+            // Add note for M.1 Special programs
+            if (currentLevel === 'm1' && currentType === 'special') {
+                tableHtml += `
+                    <div class="mt-4 text-sm text-gray-800 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-r-lg">
+                        <p><strong>หมายเหตุ:</strong> สำหรับแผนการเรียน Gifted Math และ SMTE ปี 2565 และปี 2566 ยอดรับสมัครสอบรวมกัน</p>
+                    </div>
+                `;
+            }
+
+            tableHtml += `</section>`;
 
             // --- 2. APPLICANT VS ACCEPTED CHART ---
             let barChartHtml = `
@@ -347,5 +358,9 @@
         });
 
     </script>
+</body>
+</html>
+
+
 </body>
 </html>
