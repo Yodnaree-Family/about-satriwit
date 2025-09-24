@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แผนลับห้องเรียน ม.1 สตรีวิทยา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+        .subject-tag {
+            background-color: #FEE2E2; /* red-100 */
+            color: #B91C1C; /* red-700 */
+            font-weight: 500;
+        }
+        .table-cell {
+            padding: 0; /* Remove padding from cell to allow li to fill it */
+            border-top: 1px solid #e5e7eb;
+            border-left: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        .table-cell ul li {
+            padding: 0.75rem 1rem;
+            min-height: 85px; /* Set a minimum height for all list items */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+            line-height: 1.4;
+            border-bottom: 1px solid #f3f4f6; /* Add a subtle separator */
+        }
+        .table-cell ul li:last-child {
+            border-bottom: none;
+        }
+        .table-cell ul li:nth-child(even) {
+            background-color: #FFF1F2; /* rose-50 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navigation -->
+    <div class="bg-white p-3 text-center shadow-md sticky top-0 z-10">
+        <a href="index.html" class="text-blue-600 hover:underline mx-2">ครอบครัวยอดนารี</a>
+        <a href="Page5.html" class="text-blue-600 hover:underline mx-2">ข้อมูลการรับนักเรียน</a>
+        <a href="Page2.html" class="text-blue-600 hover:underline mx-2">การเตรียมตัวสอบเข้า</a>
+        <a href="Page3.html" class="text-blue-600 hover:underline mx-2">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
+        <a href="Page4.html" class="text-blue-600 hover:underline mx-2">สถิติอัตราการแข่งขัน</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-bold text-red-700">แผนลับห้องเรียน! ม.1 โรงเรียนสตรีวิทยา</h1>
+            <p class="text-lg md:text-xl text-gray-600 mt-2">แต่ละหลักสูตรต่างกันยังไง?</p>
+        </header>
+
+        <!-- Infographic Table -->
+        <div class="w-full overflow-x-auto bg-white rounded-xl shadow-lg">
+            <div class="grid grid-cols-[1.5fr_2fr_2fr_2fr_2fr] min-w-[1200px] border-r border-b border-gray-200">
+
+                <!-- HEADER ROW -->
+                <div class="bg-white p-4"></div> <!-- Top Left Corner -->
+                <div class="bg-red-600 p-4 text-white text-center border-l border-gray-200">
+                    <h2 class="text-2xl font-bold">EP</h2>
+                    <p class="font-light">English Program</p>
+                </div>
+                <div class="bg-red-700 p-4 text-white text-center border-l border-gray-200">
+                    <h2 class="text-2xl font-bold">SMTE</h2>
+                    <p class="font-light">Science Math Technology</p>
+                </div>
+                <div class="bg-red-800 p-4 text-white text-center border-l border-gray-200">
+                    <h2 class="text-2xl font-bold">GM</h2>
+                    <p class="font-light">General Program</p>
+                </div>
+                <div class="bg-red-900 p-4 text-white text-center border-l border-gray-200">
+                    <h2 class="text-2xl font-bold">หลักสูตรปกติ</h2>
+                    <p class="font-light">Regular Program</p>
+                </div>
+
+                <!-- SUBJECTS ROW 1: พื้นฐาน -->
+                <div class="bg-red-50 text-red-800 font-bold p-4 flex items-center justify-center text-center border-t border-gray-200">
+  <h3>รายวิชาพื้นฐาน</h3></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li class="bg-white text-center p-2 min-h-[60px]">Basic Math<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                    <li class="bg-rose-50 text-center p-2 min-h-[60px]">Basic Science<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                    <li class="bg-white text-center p-2 min-h-[60px]">English (EP)<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li class="bg-white text-center p-2 min-h-[60px]">คณิตศาสตร์พื้นฐาน</li>
+                    <li class="bg-rose-50 text-center p-2 min-h-[60px]">วิทยาศาสตร์พื้นฐาน</li>
+                    <li class="bg-white text-center p-2 min-h-[60px]">English (Gifted)<br><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li class="bg-white text-center p-2 min-h-[60px]">คณิตศาสตร์เข้มข้น</li>
+                    <li class="bg-rose-50 text-center p-2 min-h-[60px]">วิทยาศาสตร์พื้นฐาน</li>
+                    <li class="bg-white text-center p-2 min-h-[60px]">English (Gifted)<br><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li class="bg-white text-center p-2 min-h-[60px]">คณิตศาสตร์พื้นฐาน</li>
+                    <li class="bg-rose-50 text-center p-2 min-h-[60px]">วิทยาศาสตร์พื้นฐาน</li>
+                    <li class="bg-white text-center p-2 min-h-[60px]">English <br><small class="block text-blue-600 font-normal">ครูไทย</small></li>
+                </ul></div>
+
+                <!-- SUBJECTS ROW 2: เพิ่มเติม -->
+                <div class="bg-rose-200 text-rose-800 font-bold p-4 flex items-center justify-center text-center border-t border-gray-200"><h3>รายวิชาเพิ่มเติม</h3></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li>Additional Math<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span></li>
+                    <li>Pronunciation and communication<br><small class="text-blue-600 font-normal">Native Teacher</small></li>
+                    <li>Chemical Use in daily life<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span></li>
+                    <li>English for Smart Kid<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span><small class="text-blue-600 font-normal">Native Teacher</small></li>
+                    <li>Earth, Space and Environment<br><span class="subject-tag rounded-full px-3 py-1 text-sm">ENG</span></li>
+                    <li>เครื่องดื่มตามสมัยนิยม</li>
+                    <li>ศิลปะและความคิดสร้างสรรค์</li>
+                    <li>ลัดเลาะเกาะรัตนโกสินทร์</li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li>คณิตศาสตร์เพิ่มเติม</li>
+                    <li>ภาษาอังกฤษเพื่อการสื่อสารสำหรับอัจฉริยะ<br><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                    <li>ปฏิบัติการทางวิทยาศาสตร์<br>และสิ่งแวดล้อม</li>
+                    <li>โปรแกรมสำเร็จรูป</li>
+                    <li>ดาราศาสตร์เบื้องต้น</li>
+                    <li>วิทยาศาสตร์สุขภาพ</li>
+                    <li>วิทยาศาสตร์กับความงาม</li>
+                    <li>กิจกรรม STEM</li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li>คณิตศาสตร์เสริม</li>
+                    <li>ภาษาอังกฤษเพื่อการสื่อสารสำหรับอัจฉริยะ<br><small class="block text-blue-600 font-normal">Native Teacher</small></li>
+                    <li>ชีววิทยาทั่วไป</li>
+                    <li>โปรแกรมสำเร็จรูป</li>
+                    <li>ดาราศาสตร์เบื้องต้น</li>
+                    <li>เคมีทั่วไป</li>
+                </ul></div>
+                <div class="table-cell"><ul class="text-gray-700">
+                    <li>คณิตศาสตร์เพิ่มเติม</li>
+                    <li>ภาษาอังกฤษทักษะ ฟัง พูด<br><span class="subject-tag rounded-full px-3 py-1 text-sm">Teacher</span></li>
+                    <li>การพัฒนาทักษะภาษาไทย</li>
+                    <li>ทักษะกระบวนการทางวิทยาศาสตร์</li>
+                    <li>เรียนรู้ตัวเรา</li>
+                    <li>เครื่องดื่มตามสมัยนิยม</li>
+                    <li>ศิลปะและความคิดสร้างสรรค์</li>
+                    <li>ลัดเลาะเกาะรัตนโกสินทร์</li>
+                </ul></div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12 text-gray-600">
+            <p class="font-semibold text-red-700 text-lg">จัดทำโดย...ลุ้นสอวอไปด้วยกันนะ</p>
+            <p class="text-sm">โปรดศึกษาข้อมูลรายละเอียดโครงสร้างหลักสูตรอย่างละเอียดอีกครั้ง!!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-4 pb-8 text-gray-600 bg-gray-200 pt-8">
+        <p class="font-normal text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+        <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-flex items-center gap-2 font-semibold text-green-600 hover:underline text-lg">
+            <i class="fab fa-line text-2xl"></i> Line OPC
+        </a>
+    </footer>
+</body>
+</html>
+
