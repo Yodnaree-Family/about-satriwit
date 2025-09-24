@@ -46,7 +46,8 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    <a href="index.html" class="text-blue-600 hover:underline mx-2">ข้อมูลการรับนักเรียน</a>
+    <div class="bg-white p-2 text-center shadow-md">
+        <a href="index.html" class="text-blue-600 hover:underline mx-2">ข้อมูลการรับนักเรียน</a>
         <a href="Page2.html" class="text-blue-600 hover:underline mx-2">การเตรียมตัวสอบเข้า</a>
         <a href="Page3.html" class="text-blue-600 hover:underline mx-2">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
     </div>
@@ -93,18 +94,19 @@
             special: {
               title: "ข้อมูลการรับสมัครประเภทห้องเรียนพิเศษ ม.1",
               programs: {
-                'Gifted - Math': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [72, 72, 102, 72, 102, 102], applicants: [384, 308,337, 358, 391, 444], rate: [5.33, 4.28, 3.30, 3.51, 3.83, 4.25] },
+                'Gifted - Math': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [72, 72, 72, 72, 102, 102], applicants: [384, 308, 337, 358, 391, 444], rate: [5.33, 4.28, 3.30, 3.51, 3.83, 4.25] },
                 'SMTE': { years: [2568, 2567, 2566, 2565], accepted: [30, 30, 30, 30], applicants: [171, 101, 337, 358], rate: [5.70, 3.37, 3.30, 3.51] },
                 'EP': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [60, 60, 60, 60, 60, 60], applicants: [273, 182, 155, 250, 217, 254], rate: [4.55, 3.03, 2.58, 4.17, 3.62, 4.23] }
               }
             },
+              note: "สำหรับแผนการเรียน Gifted Math และ SMTE ปี 2565 และปี 2566 ยอดรับสมัครสอบรวมกัน"
             regular: {
               title: "ข้อมูลการรับสมัครประเภทห้องเรียนปกติ ม.1",
               programs: {
                 'ในเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [30, 30, 46, 66, 63], applicants: [61, 54, 59, 87, 131], rate: [2.03, 1.80, 0.78, 1.32, 1.96] },                
-                'นอกเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [265, 265 (269), 236 (250), 250 (264), 269 (279)], applicants: [913, 721, 537, 759, 648], rate: [3.45, 2.72, 2.15, 2.88, 2.41] },
-                'เงื่อนไขพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [null, 45, 45, 39, 40], applicants: [45, 45, 39, 40], rate: [null, 1.00, 1.00, 0.87, 1.00] },
-                'ความสามารถพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [20, 16, 18, 9, 10], applicants: [93, 47, 34, 24, 22], rate: [4.65, 2.35, 1.70, 1.20, 1.10] }
+                'นอกเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [265, 265, 236, 250, 269], applicants: [913, 721, 537, 759, 648], rate: [3.45, 2.72, 2.15, 2.88, 2.41] },
+                'เงื่อนไขพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [45, 45, 45, 39, 40], applicants: [null, 45, 45, 39, 40], rate: [null, 1.00, 1.00, 1.00, 1.00] },
+                'ความสามารถพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [20, 16, 18, 9, 10], applicants: [93, 47, 34, 24, 22], rate: [4.65, 2.94, 1.89, 2.67, 2.20] }
               }
             }
           },
@@ -333,6 +335,13 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Set the first main tab as active on initial load
+            const firstMainTab = document.querySelector('.main-tab');
+            if(firstMainTab) {
+                firstMainTab.classList.add('main-tab-active');
+                firstMainTab.classList.remove('border-transparent');
+            }
+            
             setupSubTabs();
             updateView();
         });
@@ -340,266 +349,3 @@
     </script>
 </body>
 </html>
-
-
-
-    <script>
-        // --- DATASET ---
-        const admissionData = {
-          m1: {
-            special: {
-              title: "ข้อมูลการรับสมัครประเภทห้องเรียนพิเศษ ม.1",
-              programs: {
-                'Gifted - Math': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [72, 72, null, 30, 102, 102], applicants: [384, 308, null, 358, 391, 444], rate: [5.33, 4.28, null, 11.93, 3.83, 4.25] },
-                'SMTE': { years: [2568, 2567, 2566, 2565], accepted: [30, 30, 30, 72], applicants: [171, 101, 102, 358], rate: [5.70, 3.37, 3.30, 4.97] },
-                'EP': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [60, 60, 60, 60, 60, 60], applicants: [273, 182, 155, 250, 217, 254], rate: [4.55, 3.03, 2.58, 4.17, 3.62, 4.23] }
-              }
-            },
-            regular: {
-              title: "ข้อมูลการรับสมัครประเภทห้องเรียนปกติ ม.1",
-              programs: {
-                'ในเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [null, 30, 46, 66, 63], applicants: [61, 54, 59, 87, 131], rate: [null, 1.80, 0.78, 1.32, 1.96] },
-                'นอกเขตพื้นที่บริการ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [null, 269, 250, 264, 278], applicants: [913, 721, 537, 759, 648], rate: [null, 2.72, 2.15, 2.88, 2.41] },
-                'เงื่อนไขพิเศษ': { years: [2567, 2566, 2565, 2564], accepted: [45, 45, 39, 40], applicants: [45, 45, 39, 40], rate: [1.00, 1.00, 0.87, 1.00] },
-                'ความสามารถพิเศษ': { years: [2568, 2567, 2566, 2565, 2564], accepted: [null, 16, 18, 9, 10], applicants: [93, 47, 34, 24, 22], rate: [null, 2.35, 1.70, 1.20, 1.10] }
-              }
-            }
-          },
-          m4: {
-            special: {
-              title: "ข้อมูลการรับสมัครประเภทห้องเรียนพิเศษ ม.4",
-              programs: {
-                'SMTE': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [30, 30, 30, 30, 30, 30], applicants: [247, 141, 133, 153, 121, 127], rate: [8.23, 4.70, 4.43, 5.10, 4.03, 4.23] },
-                'EP': { years: [2568, 2567, 2566, 2565, 2564, 2563], accepted: [15, 15, 15, 15, 10, 10], applicants: [68, 48, 45, 55, 35, 48], rate: [4.53, 3.20, 3.00, 3.67, 3.50, 4.80] }
-              }
-            },
-            regular: {
-              title: "ข้อมูลการรับสมัครประเภทห้องเรียนปกติ ม.4",
-              programs: {
-                'แผนการเรียนวิทย์-คณิต': { years: [2568, 2567, 2566], accepted: [null, 15, 20], applicants: [280, 285, 197], rate: [null, 19.00, 9.85] },
-                'แผนการเรียนคณิต-คำนวณ': { years: [2568, 2567], accepted: [null, 10], applicants: [88, 82], rate: [null, 8.20] },
-                'แผนการเรียนภาษา-สหวิทยาการ': { years: [2568, 2567, 2566], accepted: [null, 10, 10], applicants: [30, 62, 40], rate: [null, 6.20, 4.00] }
-              }
-            }
-          }
-        };
-
-        const mainTabs = document.querySelectorAll('.main-tab');
-        const subTabsContainer = document.getElementById('sub-tabs-container');
-        const contentArea = document.getElementById('content-area');
-
-        let currentLevel = 'm1';
-        let currentType = 'special';
-        let applyAcceptChartInstance, rateChartInstance;
-
-        function setupSubTabs() {
-            subTabsContainer.innerHTML = `
-                <div class="inline-flex rounded-lg shadow-sm" role="group">
-                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700" data-type="special">
-                        ห้องเรียนพิเศษ
-                    </button>
-                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700" data-type="regular">
-                        ห้องเรียนปกติ
-                    </button>
-                </div>
-            `;
-            document.querySelectorAll('.sub-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    currentType = tab.dataset.type;
-                    updateView();
-                });
-            });
-        }
-
-        function renderContent() {
-            const data = admissionData[currentLevel][currentType];
-            const allYears = [...new Set(Object.values(data.programs).flatMap(p => p.years))].sort((a, b) => b - a);
-            const programs = Object.keys(data.programs);
-
-            // --- 1. TABLE ---
-            let tableHtml = `
-                <section id="data-table" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">${data.title}</h2>
-                    <div class="overflow-x-auto max-h-[500px]">
-                        <table class="w-full text-sm text-center text-gray-600">
-                            <thead class="text-xs text-red-700 uppercase bg-red-100">
-                                <tr>
-                                    <th scope="col" class="py-3 px-6 rounded-tl-lg sticky left-0 bg-red-100 z-20">หลักสูตร/ประเภท</th>
-                                    ${allYears.map(year => `<th scope="col" colspan="3" class="py-3 px-6 border-l border-red-200">${year}</th>`).join('')}
-                                </tr>
-                                <tr>
-                                    <th scope="col" class="py-3 px-2 sticky left-0 bg-red-100 z-20"></th>
-                                    ${allYears.map(() => `
-                                        <th class="py-2 px-2 font-medium border-l border-red-200">รับ</th>
-                                        <th class="py-2 px-2 font-medium">สมัคร</th>
-                                        <th class="py-2 px-2 font-medium">อัตรา</th>
-                                    `).join('')}
-                                </tr>
-                            </thead>
-                            <tbody>`;
-            programs.forEach(programName => {
-                tableHtml += `<tr class="bg-white border-b hover:bg-gray-50">
-                                <th scope="row" class="py-4 px-6 font-medium text-gray-900 text-left sticky left-0 bg-white z-10">${programName}</th>`;
-                const programData = data.programs[programName];
-                allYears.forEach(year => {
-                    const yearIndex = programData.years.indexOf(year);
-                    if (yearIndex !== -1) {
-                        tableHtml += `
-                            <td class="py-4 px-2 border-l border-gray-200">${programData.accepted[yearIndex] ?? '-'}</td>
-                            <td class="py-4 px-2">${programData.applicants[yearIndex] ?? '-'}</td>
-                            <td class="py-4 px-2 font-semibold">${programData.rate[yearIndex] ? (programData.rate[yearIndex]).toFixed(2) : '-'}</td>`;
-                    } else {
-                        tableHtml += `<td class="py-4 px-2 border-l border-gray-200">-</td><td class="py-4 px-2">-</td><td class="py-4 px-2">-</td>`;
-                    }
-                });
-                tableHtml += `</tr>`;
-            });
-            tableHtml += `</tbody></table></div></section>`;
-
-            // --- 2. APPLICANT VS ACCEPTED CHART ---
-            let barChartHtml = `
-                <section id="applicant-chart" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-gray-800">เปรียบเทียบจำนวนผู้สมัครและจำนวนรับ</h2>
-                            <p class="text-sm text-gray-500">เลือกปีการศึกษาเพื่อดูกราฟเปรียบเทียบ</p>
-                        </div>
-                        <select id="year-selector" class="mt-2 sm:mt-0 form-select rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50">
-                            ${allYears.map(year => `<option value="${year}">${year}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="applyAcceptChart"></canvas>
-                    </div>
-                </section>`;
-            
-            // --- 3. COMPETITION RATE CHART ---
-            let lineChartHtml = `
-                <section id="rate-chart" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-1">แนวโน้มอัตราการแข่งขัน</h2>
-                    <p class="text-sm text-gray-500 mb-4">คลิกเลือกหลักสูตรเพื่อดูกราฟแนวโน้มอัตราการแข่งขันในแต่ละปี</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        ${programs.map((p, i) => `
-                            <button class="program-tab py-2 px-4 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-200 hover:bg-gray-100" data-program="${p}">
-                                ${p}
-                            </button>
-                        `).join('')}
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="rateChart"></canvas>
-                    </div>
-                </section>`;
-
-            contentArea.innerHTML = tableHtml + barChartHtml + lineChartHtml;
-            
-            // --- Attach event listeners and render initial charts ---
-            document.getElementById('year-selector').addEventListener('change', (e) => updateBarChart(e.target.value));
-            document.querySelectorAll('.program-tab').forEach(tab => tab.addEventListener('click', (e) => updateLineChart(e.target.dataset.program)));
-
-            updateBarChart(allYears[0]);
-            updateLineChart(programs[0]); 
-        }
-
-        function updateBarChart(year) {
-            const yearNum = parseInt(year);
-            const data = admissionData[currentLevel][currentType];
-            const labels = Object.keys(data.programs);
-            
-            const applicantData = labels.map(p => {
-                const yearIndex = data.programs[p].years.indexOf(yearNum);
-                return yearIndex !== -1 ? data.programs[p].applicants[yearIndex] : 0;
-            });
-            const acceptedData = labels.map(p => {
-                const yearIndex = data.programs[p].years.indexOf(yearNum);
-                return yearIndex !== -1 ? data.programs[p].accepted[yearIndex] : 0;
-            });
-
-            if (applyAcceptChartInstance) applyAcceptChartInstance.destroy();
-            const ctx = document.getElementById('applyAcceptChart').getContext('2d');
-            applyAcceptChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'จำนวนผู้สมัคร', data: applicantData, backgroundColor: '#fca5a5', borderColor: '#ef4444', borderWidth: 1 },
-                        { label: 'จำนวนที่รับ', data: acceptedData, backgroundColor: '#93c5fd', borderColor: '#3b82f6', borderWidth: 1 }
-                    ]
-                },
-                options: { maintainAspectRatio: false, responsive: true, scales: { y: { beginAtZero: true } }, plugins: { title: { display: true, text: `ข้อมูลปีการศึกษา ${year}` } } }
-            });
-        }
-        
-        function updateLineChart(programName) {
-            // Update active tab UI
-            document.querySelectorAll('.program-tab').forEach(tab => {
-                if(tab.dataset.program === programName) {
-                    tab.classList.add('program-tab-active');
-                } else {
-                    tab.classList.remove('program-tab-active');
-                }
-            });
-
-            const data = admissionData[currentLevel][currentType].programs[programName];
-            const sortedData = data.years
-                .map((year, index) => ({ year, rate: data.rate[index] }))
-                .filter(item => item.rate !== null)
-                .sort((a, b) => a.year - b.year);
-
-            const labels = sortedData.map(item => item.year);
-            const rateData = sortedData.map(item => item.rate);
-
-            if (rateChartInstance) rateChartInstance.destroy();
-            const ctx = document.getElementById('rateChart').getContext('2d');
-            rateChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: `อัตราการแข่งขัน: ${programName}`,
-                        data: rateData,
-                        borderColor: '#ef4444',
-                        backgroundColor: '#fee2e2',
-                        tension: 0.2,
-                        fill: true,
-                        pointBackgroundColor: '#ef4444',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: { maintainAspectRatio: false, responsive: true, scales: { y: { beginAtZero: true, title: { display: true, text: 'อัตราการแข่งขัน (X : 1)' } } } }
-            });
-        }
-
-        function updateView() {
-            // Update Main Tab UI
-            mainTabs.forEach(tab => {
-                tab.classList.toggle('main-tab-active', tab.dataset.level === currentLevel);
-                tab.classList.toggle('border-transparent', tab.dataset.level !== currentLevel);
-            });
-
-            // Update Sub Tab UI
-            document.querySelectorAll('.sub-tab').forEach(tab => {
-                tab.classList.toggle('sub-tab-active', tab.dataset.type === currentType);
-            });
-
-            renderContent();
-        }
-
-        // Initial Load
-        mainTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                currentLevel = tab.dataset.level;
-                currentType = 'special'; // Reset to special when changing main level
-                updateView();
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupSubTabs();
-            updateView();
-        });
-
-    </script>
-</body>
-</html>
-
