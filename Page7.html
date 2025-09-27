@@ -1,358 +1,327 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ตารางเรียน ม.1</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f0f7ff;
-            --card-bg: #ffffff;
-            --header-bg: #4a90e2;
-            --header-text: #ffffff;
-            --day-bg: #e9f2ff;
-            --border-color: #d1e3ff;
-            --text-color: #334155;
-            --accent-color: #ff6b6b;
-            --lunch-bg: #fff0f0;
-            --shadow-color: rgba(74, 144, 226, 0.15);
-            --gemini-purple: #8952ff;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตารางเรียน ม.1 (แก้ไข)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJd/rB9gQn/uC4s4K/zI4I+7f2l2kM+2vXgW5eFv3tEwS6gC9f1qB/v5A8Gg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --header-bg: #4a90e2;
+            --header-text: #ffffff;
+            --day-bg: #e9f2ff;
+            --border-color: #d1e3ff;
+            --text-color: #334155;
+            --accent-color: #ff6b6b;
+            --lunch-bg: #fff0f0;
+            --shadow-color: rgba(74, 144, 226, 0.15);
+            --gemini-purple: #8952ff;
 
-            --subject-1: #cceeff;
-            --subject-2: #cce7ff;
-            --subject-3: #d4ffcc;
-            --subject-4: #fff4cc;
-        }
+            --subject-1: #cceeff;
+            --subject-2: #cce7ff;
+            --subject-3: #d4ffcc;
+            --subject-4: #fff4cc;
+            --activity-color: #ffe0e0; /* สีสำหรับกิจกรรม/ประชุม */
+        }
 
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-        .schedule-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            margin-bottom: 2rem;
-            overflow-x: auto; /* For responsive table */
-            border: 1px solid var(--border-color);
-        }
+        .schedule-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            margin-bottom: 2rem;
+            overflow-x: auto; /* For responsive table */
+            border: 1px solid var(--border-color);
+        }
 
-        .card-header {
-            background-color: var(--header-bg);
-            color: var(--header-text);
-            padding: 1rem 1.5rem;
-            text-align: center;
-        }
-        
-        .card-header.gemini-header {
-             background: linear-gradient(45deg, #4a90e2, var(--gemini-purple));
-        }
+        .card-header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 1rem 1.5rem;
+            text-align: center;
+        }
+        
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+        }
+        
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
 
-        .card-header h1 {
-            margin: 0;
-            font-size: 1.75rem;
-        }
-        
-        .card-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
+        .card-header p {
+            margin: 0.25rem 0 0;
+            opacity: 0.9;
+        }
 
-        .card-header p {
-            margin: 0.25rem 0 0;
-            opacity: 0.9;
-        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            white-space: nowrap;
+        }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            white-space: nowrap; /* Prevent line breaks in cells */
-        }
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
 
-        th, td {
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
+        thead th {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            font-weight: 600;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f8faff;
+        }
 
-        thead th {
-            background-color: var(--header-bg);
-            color: var(--header-text);
-            font-weight: 600;
-            vertical-align: middle;
-        }
-        
-        tbody tr:nth-child(even) {
-            background-color: #f8faff;
-        }
+        .day-col {
+            background-color: var(--day-bg);
+            font-weight: 600;
+            width: 100px;
+        }
 
-        .day-col {
-            background-color: var(--day-bg);
-            font-weight: 600;
-            width: 100px;
-        }
+        .lunch-header {
+            background-color: var(--lunch-bg);
+            font-weight: 600;
+            color: var(--accent-color);
+        }
 
-        .lunch-header {
-            background-color: var(--lunch-bg);
-            font-weight: 600;
-            color: var(--accent-color);
-        }
+        .activity-cell {
+            background-color: var(--activity-color);
+            font-weight: 600;
+            color: #b00020;
+            white-space: normal; /* อนุญาตให้ข้อความมีการขึ้นบรรทัดใหม่ */
+            line-height: 1.2;
+        }
 
-        .empty-cell {
-            min-height: 60px;
-            min-width: 80px;
-        }
+        .empty-cell {
+            min-height: 60px;
+            min-width: 80px;
+        }
+        
+        /* ส่วนท้าย (Footer) */
+        .schedule-footer {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            color: var(--text-color);
+        }
+        .schedule-footer p {
+            margin: 0.5rem 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .schedule-footer a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #00b900; /* Line Green */
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+        .schedule-footer a:hover {
+            text-decoration: underline;
+        }
 
-        /* Saturday Schedule Specific Styles */
-        .time-col {
-            background-color: var(--day-bg);
-            font-weight: 600;
-            width: 120px;
-        }
-        .subject {
-            padding: 1rem 0.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .subject-chem { background-color: var(--subject-1); }
-        .subject-bio { background-color: var(--subject-2); }
-        .subject-physics { background-color: var(--subject-3); }
-        .subject-math { background-color: var(--subject-4); }
+        /* Saturday Schedule Specific Styles */
+        .time-col {
+            background-color: var(--day-bg);
+            font-weight: 600;
+            width: 120px;
+        }
+        .subject {
+            padding: 1rem 0.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .subject-chem { background-color: var(--subject-1); }
+        .subject-bio { background-color: var(--subject-2); }
+        .subject-physics { background-color: var(--subject-3); }
+        .subject-math { background-color: var(--subject-4); }
 
-        /* Gemini Feature Styles */
-        .gemini-feature-wrapper {
-             overflow-x: hidden; /* Prevent scrolling for gemini card */
-        }
-        .gemini-feature {
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        #suggestion-btn {
-            background: linear-gradient(45deg, var(--gemini-purple), #4a90e2);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-family: 'Kanit', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        #suggestion-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-        
-        #suggestion-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        #suggestion-result {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background-color: #f8faff;
-            border-radius: 12px;
-            text-align: left;
-            min-height: 100px;
-            border: 1px solid var(--border-color);
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 4px solid var(--gemini-purple);
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 0.5rem; }
-            th, td { padding: 0.5rem; font-size: 0.75rem; }
-            .card-header h1 { font-size: 1.25rem; }
-            .card-header h2 { font-size: 1.1rem; }
-        }
-    </style>
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            body { padding: 0.5rem; }
+            th, td { padding: 0.5rem; font-size: 0.75rem; }
+            .card-header h1 { font-size: 1.25rem; }
+            .card-header h2 { font-size: 1.1rem; }
+            .day-col, .time-col { width: 80px; }
+            .activity-cell { white-space: normal; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Regular M.1 Schedule - Updated Layout -->
-        <div class="schedule-card">
-            <div class="card-header">
-                <h1>ตารางเรียน</h1>
-                <p>ระดับชั้นมัธยมศึกษาปีที่ 1</p>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="day-col">วัน</th>
-                        <th>Homeroom<br>(08.00-08.30)</th>
-                        <th>คาบ 1<br>(08.30-09.20)</th>
-                        <th>คาบ 2<br>(09.20-10.10)</th>
-                        <th>คาบ 3<br>(10.10-11.00)</th>
-                        <th>class="lunch-header">พักกลางวัน<br>(11.00-11.50)</th>
-                        <th>คาบ 5<br>(11.50-12.40)</th>
-                        <th>คาบ 6<br>(12.40-13.30)</th>
-                        <th>คาบ 7<br>(13.30-14.20)</th>
-                        <th>คาบ 8<br>(14.20-15.10)</th>
-                        <th>คาบ 9<br>(15.10-16.00)</th>
-                        <th>คาบ 10<br>(16.00-16.50)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="day-col">จันทร์</td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell lunch-header"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                    </tr>
-                    <tr>
-                        <td class="day-col">อังคาร</td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell lunch-header"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                    </tr>
-                    <tr>
-                        <td class="day-col">พุธ</td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell lunch-header"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                    </tr>
-                    <tr>
-                        <td class="day-col">พฤหัสบดี</td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell lunch-header"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                    </tr>
-                    <tr>
-                        <td class="day-col">ศุกร์</td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell lunch-header"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                        <td class="empty-cell"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="container">
+                <div class="schedule-card">
+            <div class="card-header">
+                <h1>ตารางเรียน</h1>
+                <p>ระดับชั้นมัธยมศึกษาปีที่ 1</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="day-col">วัน</th>
+                        <th>Homeroom<br>(08.00-08.30)</th>
+                        <th>คาบ 1<br>(08.30-09.20)</th>
+                        <th>คาบ 2<br>(09.20-10.10)</th>
+                        <th>คาบ 3<br>(10.10-11.00)</th>
+                        <th class="lunch-header">พักกลางวัน<br>(11.00-11.50)</th>
+                        <th>คาบ 5<br>(11.50-12.40)</th>
+                        <th>คาบ 6<br>(12.40-13.30)</th>
+                        <th>คาบ 7<br>(13.30-14.20)</th>
+                        <th>คาบ 8<br>(14.20-15.10)</th>
+                        <th>คาบ 9<br>(15.10-16.00)</th>
+                        <th>คาบ 10<br>(16.00-16.50)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td class="day-col">จันทร์</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell lunch-header"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="activity-cell">ประชุมระดับ</td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                                        <tr>
+                        <td class="day-col">อังคาร</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell lunch-header"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                                        <tr>
+                        <td class="day-col">พุธ</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell lunch-header"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                                        <tr>
+                        <td class="day-col">พฤหัสบดี</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell lunch-header"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="activity-cell" colspan="2">บริหารจิต (ห้องคู่)</td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                                        <tr>
+                        <td class="day-col">ศุกร์</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell lunch-header"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="activity-cell" colspan="2">บริหารจิต (ห้องคี่)</td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Saturday SMTE/GM Schedule -->
-        <div class="schedule-card">
-            <div class="card-header">
-                <h2>ตารางเรียนเสริมวันเสาร์</h2>
-                <p>ห้องเรียนพิเศษ SMTE และ GM</p>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="time-col">เวลา</th>
-                        <th>กลุ่ม 1</th>
-                        <th>กลุ่ม 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">08.00 - 10.00</td>
-                        <td><div class="subject subject-chem">เคมี</div></td>
-                        <td><div class="subject subject-bio">ชีววิทยา</div></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">10.10 - 12.10</td>
-                        <td><div class="subject subject-physics">ฟิสิกส์</div></td>
-                        <td><div class="subject subject-chem">เคมี</div></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">13.00 - 15.00</td>
-                        <td><div class="subject subject-bio">ชีววิทยา</div></td>
-                        <td><div class="subject subject-math">คณิตศาสตร์</div></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">15.10 - 17.10</td>
-                        <td><div class="subject subject-math">คณิตศาสตร์</div></td>
-                        <td><div class="subject subject-physics">ฟิสิกส์</div></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <div class="schedule-card">
+            <div class="card-header">
+                <h2>ตารางเรียนเสริมวันเสาร์</h2>
+                <p>ห้องเรียนพิเศษ SMTE และ GM</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="time-col">เวลา</th>
+                        <th>กลุ่ม 1</th>
+                        <th>กลุ่ม 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-col">08.00 - 10.00</td>
+                        <td><div class="subject subject-chem">เคมี</div></td>
+                        <td><div class="subject subject-bio">ชีววิทยา</div></td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">10.10 - 12.10</td>
+                        <td><div class="subject subject-physics">ฟิสิกส์</div></td>
+                        <td><div class="subject subject-chem">เคมี</div></td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">13.00 - 15.00</td>
+                        <td><div class="subject subject-bio">ชีววิทยา</div></td>
+                        <td><div class="subject subject-math">คณิตศาสตร์</div></td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">15.10 - 17.10</td>
+                        <td><div class="subject subject-math">คณิตศาสตร์</div></td>
+                        <td><div class="subject subject-physics">ฟิสิกส์</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Footer -->
-    <footer class="text-center mt-4 pb-8 text-gray-600 bg-gray-200 pt-8">
-        <p class="font-normal text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
-        <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-flex items-center gap-2 font-semibold text-green-600 hover:underline text-lg">
-            <i class="fab fa-line text-2xl"></i> Line OPC
-        </a>
-    </footer>
-</body>
+    </div>         <footer class="schedule-footer">
+        <p>ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+        <a href="https://shorturl.asia/BlJVn" target="_blank">
+            <i class="fab fa-line fa-2x"></i> Line OPC
+        </a>
+    </footer>
+    
+    </body>
 </html>
-
