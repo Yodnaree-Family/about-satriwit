@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
     <style>
+        body::before {
+    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
+    white-space: nowrap;
+    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
+    z-index: 0;
+}
         body {
             font-family: 'Sarabun', sans-serif;
         }
@@ -43,19 +56,7 @@
         .border-l-custom {
             border-left-width: 4px;
         }
-        body::before {
-    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 5rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
-    white-space: nowrap;
-    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
-    z-index: 0;
-}
+        
     </style>
     
 </head>
