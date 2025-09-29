@@ -44,6 +44,19 @@
             border-left-width: 4px;
         }
     </style>
+    body::before {
+    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
+    white-space: nowrap;
+    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
+    z-index: 0;
+}
 </head>
 <body class="bg-gray-100">
     <div class="bg-white p-2 text-center shadow-md">
