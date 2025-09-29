@@ -10,6 +10,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        body::before {
+    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
+    white-space: nowrap;
+    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
+    z-index: 0;
+}
         body {
             font-family: 'Kanit', sans-serif;
         }
@@ -42,19 +55,7 @@
             background-color: #FFF1F2; /* rose-50 */
         }
     </style>
-    body::before {
-    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 5rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
-    white-space: nowrap;
-    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
-    z-index: 0;
-}
+    
 </head>
 <body class="bg-gray-100">
 
