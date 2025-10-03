@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard สถิติคะแนนสอบเข้า ม.1 ปี 2568 ประเภทห้องเรียนพิเศษ</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for creating graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            position: relative;
+        }
+        .chart-container {
+            position: relative;
+            height: 65vh;
+            width: 100%;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: rgba(0, 0, 0, 0.05);
+            font-weight: bold;
+            pointer-events: none; /* Make it non-interactive */
+            z-index: 1000;
+            transform: rotate(-15deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl text-black/10 pointer-events-none">
+  ครอบครัวยอดนารี❤️สตรีวิทยา	</div>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 id="mainHeader" class="text-3xl md:text-4xl font-bold text-red-800">ผลคะแนนสอบเข้า ม.1 ห้องเรียนพิเศษ</h1>
+            <p id="mainSubHeader" class="text-gray-500 mt-2">หลักสูตร English Program (EP) ปี 2568</p>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-8 border border-red-100">
+            <label for="programSelector" class="block text-lg font-semibold mb-2 text-gray-700">เลือกหลักสูตรที่ต้องการดูข้อมูล:</label>
+            <select id="programSelector" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
+                <option value="ep">English Program (EP)</option>
+                <option value="smte">SMTE</option>
+                <option value="gm">Gifted Math (GM)</option>
+            </select>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            
+            <!-- Raw Data Table -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-red-100">
+                <h2 id="tableTitle" class="text-2xl font-bold mb-4 text-red-700">ข้อมูลดิบ (EP)</h2>
+                 <div class="overflow-auto max-h-[65vh]">
+                    <table class="w-full text-left">
+                        <thead class="bg-red-50 sticky top-0">
+                            <tr>
+                                <th class="p-3 font-semibold text-red-900">อันดับ</th>
+                                <th id="scoreHeader" class="p-3 font-semibold text-red-900">คะแนนรวม</th>
+                                <th class="p-3 font-semibold text-red-900">อันดับ Pretest</th>
+                                <th class="p-3 font-semibold text-red-900">คะแนน Pretest</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTable">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                 <div id="tableInfo" class="mt-4 text-sm text-center text-gray-600 space-y-1">
+                    <!-- Info text will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Chart Display -->
+            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-lg border border-red-100">
+                <h2 id="chartTitle" class="text-2xl font-bold mb-4 text-red-700">กราฟแสดงคะแนน (EP)</h2>
+                <div class="chart-container">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+                <div id="chartInfo" class="mt-4 text-sm text-center text-gray-600 space-y-1">
+                     <!-- Info text will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-10 text-blue-600 text-sm">
+            <p>ข้อมูลดังกล่าวจัดทำขึ้นจากการสำรวจผู้ปกครอง ขอขอบคุณทุกท่านที่สละเวลาให้ข้อมูล ทั้งนี้ข้อมูลนี้ไม่ใช่ข้อมูลอย่างเป็นทางการของโรงเรียน</p>
+        <footer class="text-center mt-10 text-gray-500 text-sm">
+            <p class="font-semibold mt-2">จัดทำโดย.. ลุ้นสอวอไปด้วยกันนะ</p>
+	        <p class="font-semibold mt-2">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-4 inline-flex items-center gap-2 text-green-600 hover:text-green-800 transition">
+                <i class="fab fa-line text-2xl"></i>
+                <span>Line OpenChat</span>
+            </a>
+        </footer>
+
+    </div>
+
+    <script>
+        const scoreData = {
+            ep: {
+                label: "English Program (EP)",
+                fullScore: 200,
+                pretestFullScore: 110,
+                passingRank: 60,
+                reserveRank: 69,
+                color: 'rgba(22, 163, 74, 0.8)', // Green
+                reserveColor: 'rgba(251, 146, 158, 0.8)', // Pink
+                pretestColor: 'rgba(59, 130, 246, 0.6)',
+                data: [
+                    { rank: 1, score: 168.5, pretestRank: 9, pretestScore: 93 }, { rank: 2, score: 163.83, pretestRank: 222, pretestScore: 59 },
+                    { rank: 3, score: 163, pretestRank: 378, pretestScore: 52 }, { rank: 5, score: 154.83, pretestRank: 260, pretestScore: 57 },
+                    { rank: 6, score: 154.83, pretestRank: 105, pretestScore: 69 }, { rank: 7, score: 154.5, pretestRank: null, pretestScore: null },
+                    { rank: 8, score: 154.17, pretestRank: 256, pretestScore: 57 }, { rank: 9, score: 149.33, pretestRank: null, pretestScore: null },
+                    { rank: 10, score: 148.5, pretestRank: 348, pretestScore: 53 }, { rank: 11, score: 148, pretestRank: 490, pretestScore: 48 },
+                    { rank: 12, score: 147.67, pretestRank: 346, pretestScore: 53 }, { rank: 13, score: 145.83, pretestRank: 377, pretestScore: 52 },
+                    { rank: 14, score: 145.67, pretestRank: null, pretestScore: null }, { rank: 19, score: 140.83, pretestRank: 275, pretestScore: 56 },
+                    { rank: 20, score: 140.33, pretestRank: 292, pretestScore: 55 }, { rank: 22, score: 139.83, pretestRank: 203, pretestScore: 60 },
+                    { rank: 25, score: 136.83, pretestRank: 419, pretestScore: 50 }, { rank: 27, score: 136.67, pretestRank: null, pretestScore: null },
+                    { rank: 31, score: 134.33, pretestRank: 97, pretestScore: 70 }, { rank: 37, score: 130, pretestRank: 373, pretestScore: 52 },
+                    { rank: 42, score: 127.67, pretestRank: 478, pretestScore: 48 }, { rank: 43, score: 126.5, pretestRank: 267, pretestScore: 56 },
+                    { rank: 44, score: 126.33, pretestRank: null, pretestScore: null }, { rank: 46, score: 125.5, pretestRank: 704, pretestScore: 41 },
+                    { rank: 47, score: 125.17, pretestRank: 301, pretestScore: 55 }, { rank: 49, score: 124.5, pretestRank: 421, pretestScore: 50 },
+                    { rank: 55, score: 122.33, pretestRank: 410, pretestScore: 51 }, { rank: 57, score: 122.17, pretestRank: null, pretestScore: null },
+                    { rank: 58, score: 119.83, pretestRank: 344, pretestScore: 53 }, { rank: 60, score: 119.17, pretestRank: 367, pretestScore: 52 },
+                    { rank: 61, score: 119, pretestRank: 622, pretestScore: 44 }, { rank: 62, score: 118.5, pretestRank: 438, pretestScore: 50 },
+                    { rank: 68, score: 116.5, pretestRank: 597, pretestScore: 45 }, { rank: 69, score: 115, pretestRank: null, pretestScore: null },
+                    { rank: 72, score: 114.83, pretestRank: null, pretestScore: null }, { rank: 77, score: 113.33, pretestRank: 268, pretestScore: 56 },
+                    { rank: 85, score: 110.5, pretestRank: null, pretestScore: null }, { rank: 87, score: 110.17, pretestRank: 635, pretestScore: 44 },
+                    { rank: 88, score: 109.67, pretestRank: 420, pretestScore: 50 }, { rank: 89, score: 109.67, pretestRank: 647, pretestScore: 43 },
+                    { rank: 96, score: 104.83, pretestRank: 645, pretestScore: 43 }, { rank: 98, score: 104.5, pretestRank: 484, pretestScore: 48 },
+                    { rank: 101, score: 103.83, pretestRank: null, pretestScore: null }, { rank: 105, score: 101.33, pretestRank: null, pretestScore: null },
+                    { rank: 108, score: 101.17, pretestRank: 780, pretestScore: 39 }, { rank: 110, score: 101, pretestRank: 609, pretestScore: 44 },
+                    { rank: 112, score: 100.17, pretestRank: 569, pretestScore: 46 }, { rank: 115, score: 99.17, pretestRank: 692, pretestScore: 42 },
+                    { rank: 116, score: 99, pretestRank: 687, pretestScore: 42 }, { rank: 118, score: 97.67, pretestRank: 808, pretestScore: 38 },
+                    { rank: 120, score: 96.83, pretestRank: 442, pretestScore: 49 }, { rank: 121, score: 96.67, pretestRank: null, pretestScore: null }
+                ]
+            },
+            smte: {
+                label: "SMTE",
+                fullScore: 100,
+                pretestFullScore: 110,
+                passingRank: 30,
+                reserveRank: 37,
+                color: 'rgba(22, 163, 74, 0.8)', // Green
+                reserveColor: 'rgba(251, 146, 158, 0.8)', // Pink
+                pretestColor: 'rgba(59, 130, 246, 0.6)',
+                data: [
+                    { rank: 1, score: 77.25, pretestRank: null, pretestScore: null }, { rank: 2, score: 70.75, pretestRank: 34, pretestScore: 80 },
+                    { rank: 7, score: 63, pretestRank: 'ไม่ได้สอบ', pretestScore: null }, { rank: 8, score: 61.25, pretestRank: null, pretestScore: null },
+                    { rank: 9, score: 61.25, pretestRank: 206, pretestScore: 59 }, { rank: 10, score: 60.25, pretestRank: 195, pretestScore: 60 },
+                    { rank: 15, score: 56.75, pretestRank: 469, pretestScore: 48 }, { rank: 18, score: 55.5, pretestRank: null, pretestScore: null },
+                    { rank: 19, score: 54.75, pretestRank: 306, pretestScore: 54 }, { rank: 24, score: 51, pretestRank: 878, pretestScore: 36 },
+                    { rank: 26, score: 51, pretestRank: 518, pretestScore: 48 }, { rank: 27, score: 51, pretestRank: null, pretestScore: null },
+                    { rank: 30, score: 47.75, pretestRank: 256, pretestScore: null }, { rank: 31, score: 47.25, pretestRank: 188, pretestScore: 60 },
+                    { rank: 33, score: 46.75, pretestRank: null, pretestScore: null }, { rank: 34, score: 46.75, pretestRank: 234, pretestScore: 58 },
+                    { rank: 35, score: 46.25, pretestRank: null, pretestScore: null }, { rank: 36, score: 46.25, pretestRank: null, pretestScore: null },
+                    { rank: 37, score: 46.00, pretestRank: null, pretestScore: null }, // Dummy rank 37
+                    { rank: 38, score: 45.75, pretestRank: 636, pretestScore: 43 }, { rank: 40, score: 45, pretestRank: 499, pretestScore: 47 },
+                    { rank: 41, score: 45, pretestRank: 395, pretestScore: 71 }, { rank: 44, score: 44, pretestRank: null, pretestScore: null },
+                    { rank: 48, score: 43.5, pretestRank: 452, pretestScore: 50 }, { rank: 49, score: 42.5, pretestRank: null, pretestScore: null },
+                    { rank: 50, score: 42.25, pretestRank: null, pretestScore: null }, { rank: 58, score: 37.75, pretestRank: 600, pretestScore: null },
+                    { rank: 59, score: 37.75, pretestRank: 449, pretestScore: 69 }, { rank: 62, score: 37.5, pretestRank: null, pretestScore: null },
+                    { rank: 63, score: 37, pretestRank: 945, pretestScore: null }, { rank: 65, score: 36.75, pretestRank: 312, pretestScore: 54 },
+                    { rank: 76, score: 34.25, pretestRank: 504, pretestScore: 47 }
+                ]
+            },
+            gm: {
+                label: "Gifted Math (GM)",
+                fullScore: 110,
+                pretestFullScore: 110,
+                passingRank: 72,
+                reserveRank: 95,
+                color: 'rgba(22, 163, 74, 0.8)', // Green
+                reserveColor: 'rgba(251, 146, 158, 0.8)', // Pink
+                pretestColor: 'rgba(59, 130, 246, 0.6)',
+                data: [
+                    { rank: 1, score: 90, pretestRank: 'พิเศษ=1x, ปกติ=5', pretestScore: null }, { rank: 2, score: 89, pretestRank: null, pretestScore: null },
+                    { rank: 4, score: 83, pretestRank: 11, pretestScore: 91 }, { rank: 6, score: 82.5, pretestRank: 75, pretestScore: 71 },
+                    { rank: 7, score: 82.5, pretestRank: 22, pretestScore: 86 }, { rank: 10, score: 81.5, pretestRank: null, pretestScore: null },
+                    { rank: 12, score: 78.5, pretestRank: 121, pretestScore: 67 }, { rank: 13, score: 78.5, pretestRank: null, pretestScore: null },
+                    { rank: 14, score: 77.5, pretestRank: null, pretestScore: null }, { rank: 15, score: 77, pretestRank: 184, pretestScore: 60 },
+                    { rank: 18, score: 75.5, pretestRank: 42, pretestScore: 79 }, { rank: 20, score: 75.5, pretestRank: null, pretestScore: null },
+                    { rank: 24, score: 73, pretestRank: null, pretestScore: null }, { rank: 26, score: 72.5, pretestRank: 99, pretestScore: null },
+                    { rank: 31, score: 71.5, pretestRank: null, pretestScore: null }, { rank: 34, score: 71, pretestRank: 91, pretestScore: 70 },
+                    { rank: 35, score: 71, pretestRank: 205, pretestScore: 59 }, { rank: 36, score: 70.5, pretestRank: 106, pretestScore: 68 },
+                    { rank: 37, score: 70.5, pretestRank: null, pretestScore: null }, { rank: 38, score: 70, pretestRank: 191, pretestScore: 60 },
+                    { rank: 39, score: 70, pretestRank: 221, pretestScore: 59 }, { rank: 40, score: 69.5, pretestRank: 112, pretestScore: 68 },
+                    { rank: 41, score: 69.5, pretestRank: 114, pretestScore: 67 }, { rank: 42, score: 69.5, pretestRank: 183, pretestScore: 61 },
+                    { rank: 43, score: 69.5, pretestRank: 326, pretestScore: 54 }, { rank: 44, score: 69.5, pretestRank: 345, pretestScore: 53 },
+                    { rank: 46, score: 69, pretestRank: 154, pretestScore: 62 }, { rank: 47, score: 69, pretestRank: 319, pretestScore: 54 },
+                    { rank: 48, score: 69, pretestRank: 322, pretestScore: 54 }, { rank: 49, score: 68.5, pretestRank: 103, pretestScore: 69 },
+                    { rank: 50, score: 68, pretestRank: 36, pretestScore: 80 }, { rank: 53, score: 68, pretestRank: 169, pretestScore: 61 },
+                    { rank: 57, score: 67.5, pretestRank: null, pretestScore: null }, { rank: 59, score: 67.5, pretestRank: 219, pretestScore: 59 },
+                    { rank: 60, score: 67.5, pretestRank: 243, pretestScore: 58 }, { rank: 70, score: 66, pretestRank: 130, pretestScore: 65 },
+                    { rank: 72, score: 65.5, pretestRank: null, pretestScore: null }, // Dummy rank 72
+                    { rank: 75, score: 65, pretestRank: null, pretestScore: null }, { rank: 79, score: 64.5, pretestRank: 162, pretestScore: 62 },
+                    { rank: 80, score: 64.5, pretestRank: 57, pretestScore: 75 }, { rank: 81, score: 64.5, pretestRank: 332, pretestScore: 53 },
+                    { rank: 86, score: 64, pretestRank: 159, pretestScore: 62 }, { rank: 88, score: 64, pretestRank: 100, pretestScore: 69 },
+                    { rank: 90, score: 63, pretestRank: 321, pretestScore: 54 }, { rank: 92, score: 63, pretestRank: null, pretestScore: null },
+                    { rank: 94, score: 62.5, pretestRank: '95(ทั่วไป)', pretestScore: 87.5 }, { rank: 95, score: 62.25, pretestRank: null, pretestScore: null }, // Dummy rank 95
+                    { rank: 96, score: 62.5, pretestRank: null, pretestScore: null }, { rank: 99, score: 62, pretestRank: 174, pretestScore: 61 },
+                    { rank: 101, score: 62, pretestRank: 171, pretestScore: 61 }, { rank: 106, score: 61, pretestRank: null, pretestScore: null },
+                    { rank: 108, score: 61, pretestRank: 79, pretestScore: 71 }, { rank: 109, score: 60.5, pretestRank: 401, pretestScore: 51 },
+                    { rank: 122, score: 58.5, pretestRank: null, pretestScore: null }, { rank: 123, score: 58.5, pretestRank: 160, pretestScore: 62 },
+                    { rank: 131, score: 57, pretestRank: 247, pretestScore: 57 }, { rank: 132, score: 57, pretestRank: null, pretestScore: null },
+                    { rank: 133, score: 56.5, pretestRank: 236, pretestScore: 58 }, { rank: 134, score: 56.5, pretestRank: 351, pretestScore: 53 },
+                    { rank: 136, score: 56.5, pretestRank: 352, pretestScore: 53 }, { rank: 138, score: 56, pretestRank: 412, pretestScore: 51 },
+                    { rank: 140, score: 55, pretestRank: 360, pretestScore: 52 }, { rank: 149, score: 54, pretestRank: 363, pretestScore: 52 },
+                    { rank: 153, score: 53.5, pretestRank: 251, pretestScore: 57 }, { rank: 154, score: 53.5, pretestRank: 284, pretestScore: 55 },
+                    { rank: 156, score: 53.5, pretestRank: 558, pretestScore: 46 }, { rank: 157, score: 53, pretestRank: 446, pretestScore: 49 },
+                    { rank: 161, score: 51.5, pretestRank: 320, pretestScore: 54 }, { rank: 163, score: 51.5, pretestRank: 457, pretestScore: 49 },
+                    { rank: 165, score: 51.5, pretestRank: 507, pretestScore: 47 }, { rank: 172, score: 50, pretestRank: 471, pretestScore: 48 },
+                    { rank: 173, score: 50, pretestRank: 510, pretestScore: 47 }, { rank: 181, score: 49.5, pretestRank: 312, pretestScore: 54 },
+                    { rank: 185, score: 49, pretestRank: 422, pretestScore: 50 }, { rank: 191, score: 48, pretestRank: 537, pretestScore: 46 },
+                    { rank: 194, score: 47.5, pretestRank: 295, pretestScore: 55 }, { rank: 197, score: 47.5, pretestRank: 388, pretestScore: 51 },
+                    { rank: 210, score: 44, pretestRank: 404, pretestScore: 51 }, { rank: 211, score: 44, pretestRank: 620, pretestScore: 44 },
+                    { rank: 213, score: 44, pretestRank: 651, pretestScore: 43 }, { rank: 216, score: 43.5, pretestRank: 624, pretestScore: 44 },
+                    { rank: 221, score: 43, pretestRank: 601, pretestScore: 45 }, { rank: 225, score: 42.5, pretestRank: 733, pretestScore: 40 },
+                    { rank: 263, score: 37, pretestRank: 588, pretestScore: 45 }, { rank: 292, score: 26.5, pretestRank: 928, pretestScore: 35 }
+                ]
+            }
+        };
+
+        // --- DOM Elements ---
+        const programSelector = document.getElementById('programSelector');
+        const mainHeader = document.getElementById('mainHeader');
+        const mainSubHeader = document.getElementById('mainSubHeader');
+        const dataTable = document.getElementById('dataTable');
+        const scoreHeader = document.getElementById('scoreHeader');
+        const tableTitle = document.getElementById('tableTitle');
+        const chartTitle = document.getElementById('chartTitle');
+        const chartCanvas = document.getElementById('scoreChart');
+        const tableInfo = document.getElementById('tableInfo');
+        const chartInfo = document.getElementById('chartInfo');
+        let scoreChart = null;
+
+        function updateDashboard(programKey) {
+            const program = scoreData[programKey];
+            const data = program.data;
+            
+            // --- Update Headers ---
+            mainSubHeader.textContent = `หลักสูตร ${program.label} ปี 2568`;
+            tableTitle.textContent = `ตารางคะแนน (${program.label})`;
+            chartTitle.textContent = `กราฟเปรียบเทียบคะแนน (${program.label})`;
+            scoreHeader.textContent = `คะแนนรวม (${program.fullScore})`;
+
+            // --- Render Table ---
+            renderTableWithSummary(program);
+
+            // --- Render Chart ---
+            renderPairedBarChart(program);
+
+            // --- Update Info Texts ---
+            const infoText = `
+                <p><span class="inline-block w-3 h-3 bg-green-200 rounded-full mr-2"></span><span class="font-semibold">อันดับ 1–${program.passingRank}:</span> สอบติดรอบตัวจริง</p>
+                <p><span class="inline-block w-3 h-3 bg-pink-200 rounded-full mr-2"></span><span class="font-semibold">อันดับ ${program.passingRank + 1}–${program.reserveRank}:</span> สำรอง </p>
+                <p class="italic pt-2">ข้อมูล Pretest แสดงเพื่อเปรียบเทียบ ไม่ใช่เกณฑ์การคัดเลือกโดยตรง</p>
+            `;
+            tableInfo.innerHTML = infoText;
+            chartInfo.innerHTML = infoText;
+        }
+
+        function renderTableWithSummary(program) {
+            const data = program.data;
+            dataTable.innerHTML = '';
+            let tableHtml = '';
+
+            data.forEach(item => {
+                const pretestRank = item.pretestRank !== null ? item.pretestRank : '-';
+                const pretestScore = item.pretestScore !== null ? item.pretestScore : '-';
+                let rowClass = 'border-b border-gray-200';
+
+                if (item.rank <= program.passingRank) {
+                    rowClass += ' bg-green-50 hover:bg-green-100';
+                } else if (item.rank <= program.reserveRank) {
+                    rowClass += ' bg-pink-50 hover:bg-pink-100';
+                } else {
+                    rowClass += ' bg-gray-100 hover:bg-gray-200';
+                }
+                
+                tableHtml += `<tr class="${rowClass}">
+                    <td class="p-3">${item.rank}</td>
+                    <td class="p-3 font-semibold">${item.score.toFixed(2)}</td>
+                    <td class="p-3">${pretestRank}</td>
+                    <td class="p-3">${pretestScore}</td>
+                </tr>`;
+
+                if (item.rank === program.passingRank) {
+                    const passingData = data.filter(d => d.rank <= program.passingRank);
+                    const passingScores = passingData.map(d => d.score);
+                    const max = Math.max(...passingScores).toFixed(2);
+                    const min = Math.min(...passingScores).toFixed(2);
+                    const avg = (passingScores.reduce((a, b) => a + b, 0) / passingScores.length).toFixed(2);
+                    tableHtml += `<tr class="bg-gray-200 font-bold text-sm">
+                        <td colspan="4" class="p-2 text-center">
+  			<div>สรุปผลตัวจริง (อันดับที่ 1-${program.passingRank})</div>
+ 			 <div>สูงสุด: ${max} คะแนน</div>
+ 			 <div>ต่ำสุด: ${min} คะแนน</div>
+			 <div>เฉลี่ย: ${avg} คะแนน</div>
+			</td>
+                    </tr>`;
+                }
+            });
+            dataTable.innerHTML = tableHtml;
+        }
+
+        function renderPairedBarChart(program) {
+            const data = program.data;
+            if (scoreChart) scoreChart.destroy();
+            
+            const displayData = data.filter(d => d.rank <= program.reserveRank);
+            const cutOffScoreData = data.find(d => d.rank === program.passingRank);
+            const cutOffScore = cutOffScoreData ? cutOffScoreData.score : 0;
+
+            scoreChart = new Chart(chartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: displayData.map(item => item.rank),
+                    datasets: [
+                        {
+                            label: `คะแนนสอบจริง (เต็ม ${program.fullScore})`,
+                            data: displayData.map(item => item.score),
+                            backgroundColor: (context) => {
+                                const rank = context.chart.data.labels[context.dataIndex];
+                                return rank <= program.passingRank ? program.color : program.reserveColor;
+                            },
+                            order: 1
+                        },
+                        {
+                            label: `คะแนน Pretest (เต็ม ${program.pretestFullScore})`,
+                            data: displayData.map(item => item.pretestScore),
+                            backgroundColor: program.pretestColor,
+                            order: 2
+                        },
+                        {
+                            type: 'line',
+                            label: 'คะแนนต่ำสุด (ตัวจริง)',
+                            data: Array(displayData.length).fill(cutOffScore),
+                            borderColor: 'rgba(220, 38, 38, 1)',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            borderDash: [5, 5],
+                            fill: false,
+                            order: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { 
+                        x: { title: { display: true, text: `อันดับที่ได้ (1–${program.reserveRank})` } }, 
+                        y: { title: { display: true, text: 'คะแนน' } } 
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) { return `อันดับที่ ${context[0].label}`; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Event Listeners ---
+        programSelector.addEventListener('change', (e) => updateDashboard(e.target.value));
+
+        // --- Initial Load ---
+        window.addEventListener('DOMContentLoaded', () => updateDashboard('ep'));
+    </script>
+</body>
+</html>
