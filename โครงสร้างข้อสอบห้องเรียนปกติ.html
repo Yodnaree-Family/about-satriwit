@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โครงสร้างและแนวข้อสอบ ม.1 สตรีวิทยา (ห้องเรียนปกติ)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind and Custom Watermark Style -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sv-red': '#B91C1C', // Deep Red for Satriwittaya
+                        'sv-white': '#FFFFFF',
+                        'sv-light': '#FEE2E2',
+                        'sv-dark-red': '#991B1B',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Tahoma', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS for the Watermark */
+        body {
+            position: relative;
+            min-height: 100vh;
+            background-color: #f7f7f7;
+        }
+        body::before {
+            content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 8vw;
+            color: rgba(185, 28, 28, 0.05); /* Very light red */
+            z-index: -1;
+            pointer-events: none;
+            white-space: nowrap;
+            opacity: 0.9;
+            font-weight: 800;
+            line-height: 1;
+        }
+        /* Custom Scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B91C1C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #991B1B;
+        }
+
+        /* Tab specific styling */
+        .tab-button {
+            border: none;
+            cursor: pointer;
+            outline: none;
+            margin-right: 4px;
+            white-space: nowrap;
+        }
+        .tab-button.active {
+            background-color: #B91C1C;
+            color: white;
+        }
+        .tab-button:not(.active) {
+            background-color: #FFFFFF;
+            color: #B91C1C;
+            border: 1px solid #B91C1C;
+        }
+        /* Sticky tab bar adjustment */
+        .sticky-tabs {
+            top: 6rem; /* Adjusted below the header */
+        }
+    </style>
+    <script>
+        // JavaScript for Tab Switching
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            // Remove the 'active' class from all tab buttons
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // JavaScript for Accordion Toggling
+        function toggleAccordion(id) {
+            const content = document.getElementById(id + '_content');
+            const icon = document.getElementById(id + '_icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.remove('rotate-0');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+                icon.classList.add('rotate-0');
+            }
+        }
+
+        // Set default open tab on load
+        window.onload = function() {
+            document.getElementById("defaultOpen").click();
+        };
+    </script>
+</head>
+<body class="font-sans text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-sv-red shadow-xl p-6 md:p-8 sticky top-0 z-20 rounded-b-xl">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-sv-white tracking-wider">
+                เส้นทางสู่รั้วยอดนารี
+            </h1>
+            <p class="text-lg md:text-xl text-sv-light font-semibold mt-2">
+                โครงสร้าง & แนวข้อสอบเข้า ม.1 รร. สตรีวิทยา (ห้องเรียนปกติ)
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+
+        <!-- General Notes Section -->
+        <section class="mb-8 bg-sv-white p-6 rounded-2xl shadow-lg border-l-4 border-sv-red">
+            <h2 class="text-2xl font-bold text-sv-red mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                ข้อควรทราบในการเตรียมตัว
+            </h2>
+            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                <li><strong class="text-gray-900">การบูรณาการ:</strong> ข้อสอบบางข้อมีการบูรณาการระหว่างเนื้อหา (สำคัญมาก).</li>
+                <li><strong class="text-gray-900">หลักสูตร:</strong> ขอบเขตเนื้อหาอ้างอิงตาม "ตัวชี้วัดและสาระการเรียนรู้แกนกลาง" หลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน.</li>
+            </ul>
+        </section>
+        
+        <!-- Tab Buttons Container (Sticky) -->
+        <div class="flex border-b border-gray-300 mb-8 sticky sticky-tabs z-10 bg-[#f7f7f7] shadow-md rounded-xl p-2 justify-center flex-wrap">
+            <button onclick="openTab(event, 'structure_66')" id="defaultOpen" class="tab-button bg-sv-red text-sv-white px-4 py-3 text-sm md:text-lg font-semibold rounded-xl transition-all duration-200 m-1">
+                โครงสร้างข้อสอบ (2565-2566)
+            </button>
+            <button onclick="openTab(event, 'recollection_67')" class="tab-button text-sv-red px-4 py-3 text-sm md:text-lg font-semibold rounded-xl hover:bg-sv-light transition-all duration-200 m-1">
+                ข้อสอบจริง 2567 (จำออกมา)
+            </button>
+            <button onclick="openTab(event, 'recollection_68')" class="tab-button text-sv-red px-4 py-3 text-sm md:text-lg font-semibold rounded-xl hover:bg-sv-light transition-all duration-200 m-1">
+                ข้อสอบจริง 2568 (จำออกมา)
+            </button>
+        </div>
+
+
+        <!-- ============================================== -->
+        <!-- TAB 1: โครงสร้างข้อสอบ (2565-2566) -->
+        <!-- ============================================== -->
+        <div id="structure_66" class="tabcontent">
+            <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">
+                โครงสร้างเนื้อหาตามหลักสูตร (ปี 2566)
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Subject Card: สังคมศึกษา 2566 -->
+                <div class="bg-sv-white p-6 rounded-2xl shadow-xl border-t-8 border-sv-red transform hover:scale-[1.02] transition duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-sv-red">สังคมศึกษา (2566)</h3>
+                    <p class="text-sm font-semibold mb-3 text-gray-600 border-b pb-2">เน้น: ประวัติศาสตร์ไทย, สิทธิพลเมือง, ภูมิศาสตร์พื้นฐาน</p>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**ประวัติศาสตร์:** เหตุการณ์สำคัญไทย/โลก, บุคคลสำคัญ, อาณาจักรไทย</li>
+                        <li>**ภูมิศาสตร์:** ภูมิประเทศไทย, ทรัพยากร, การอนุรักษ์</li>
+                        <li>**พลเมือง:** สิทธิ/หน้าที่, กฎหมายพื้นฐาน, ระบบปกครอง</li>
+                        <li>**เศรษฐกิจ:** ความรู้พื้นฐาน, ปัญหาและการพัฒนา</li>
+                    </ul>
+                </div>
+
+                <!-- Subject Card: ภาษาอังกฤษ 2566 -->
+                <div class="bg-sv-white p-6 rounded-2xl shadow-xl border-t-8 border-sv-red transform hover:scale-[1.02] transition duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-sv-red">ภาษาอังกฤษ (2566)</h3>
+                    <p class="text-sm font-semibold mb-3 text-gray-600 border-b pb-2">เน้น: Tenses, คำศัพท์พื้นฐาน, Reading Comprehension</p>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**Vocabulary:** พื้นฐานชีวิตประจำวัน, คำพ้อง/คำตรงข้าม</li>
+                        <li>**Grammar:** Tenses (P/Pa/F), Articles, Prepositions, S-V Agreement</li>
+                        <li>**Reading:** อ่านบทความสั้น, หาความหมายหลัก</li>
+                        <li>**Writing:** เติมคำในช่องว่าง, เขียนประโยคสั้นๆ</li>
+                        <li>**Conversation:** เลือกคำตอบในบทสนทนา</li>
+                    </ul>
+                </div>
+
+                <!-- Subject Card: ภาษาไทย 2566 -->
+                <div class="bg-sv-white p-6 rounded-2xl shadow-xl border-t-8 border-sv-red transform hover:scale-[1.02] transition duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-sv-red">ภาษาไทย (2566)</h3>
+                    <p class="text-sm font-semibold mb-3 text-gray-600 border-b pb-2">เน้น: ไวยากรณ์, คำศัพท์, วรรณคดี, การอ่านจับใจความ</p>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**ไวยากรณ์:** คำพ้อง/คำตรงข้าม, คำเชื่อม/บุพบท, เครื่องหมายวรรคตอน</li>
+                        <li>**Reading:** สรุปใจความสำคัญ, หาความหมายจากบริบท</li>
+                        <li>**วรรณคดี:** คำศัพท์/ความหมาย, การตีความบทประพันธ์</li>
+                        <li>**Writing:** เรียงประโยค/เรียงความ, เขียนข้อความตามหัวข้อ</li>
+                    </ul>
+                </div>
+
+                <!-- Subject Card: วิทยาศาสตร์ (ทั่วไป) -->
+                <div class="bg-sv-white p-6 rounded-2xl shadow-xl border-t-8 border-sv-red transform hover:scale-[1.02] transition duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-sv-red">วิทยาศาสตร์ (ทั่วไป)</h3>
+                    <p class="text-sm font-semibold mb-3 text-gray-600 border-b pb-2">เนื้อหาครอบคลุมตามหลักสูตร ป.4-ป.6</p>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**ชีววิทยา:** ร่างกายมนุษย์, พืช, สัตว์, สิ่งมีชีวิตและสิ่งแวดล้อม</li>
+                        <li>**เคมี:** สสาร, การเปลี่ยนแปลง, สมบัติของสาร</li>
+                        <li>**ฟิสิกส์:** แรง, พลังงาน, ไฟฟ้า, แสง, เสียง</li>
+                        <li>**โลกและอวกาศ:** ระบบสุริยะ, ปรากฏการณ์ธรรมชาติ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-extrabold text-center text-gray-800 mt-12 mb-6">
+                โครงสร้างเนื้อหาตามหลักสูตร (ปี 2565)
+            </h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-sv-white p-5 rounded-xl shadow-lg border-t-4 border-sv-dark-red">
+                    <h4 class="text-lg font-bold text-sv-dark-red mb-2">สังคมศึกษา (2565)</h4>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**เน้น:** หลักธรรมศาสนา, หน้าที่พลเมือง, แผนที่, ปวศ.ไทย</li>
+                        <li>**ศาสนา:** หลักธรรมพุทธ, ศีลธรรมในชีวิตประจำวัน</li>
+                        <li>**พลเมือง:** กฎหมายพื้นฐาน, บทบาทหน้าที่พลเมืองที่ดี</li>
+                        <li>**ภูมิศาสตร์:** แผนที่และการอ่าน, ลักษณะภูมิประเทศ/ทรัพยากร</li>
+                    </ul>
+                </div>
+                <div class="bg-sv-white p-5 rounded-xl shadow-lg border-t-4 border-sv-dark-red">
+                    <h4 class="text-lg font-bold text-sv-dark-red mb-2">ภาษาอังกฤษ (2565)</h4>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**เน้น:** Tenses, คำศัพท์ในชีวิตประจำวัน, Reading ง่ายๆ</li>
+                        <li>**Vocabulary:** คำศัพท์พื้นฐานที่ใช้บ่อย, หมวดหมู่คำศัพท์</li>
+                        <li>**Grammar:** Tenses (P/Pa/F), S-V Agreement, Articles, Prepositions</li>
+                        <li>**Reading:** อ่านบทความสั้นและตอบคำถาม</li>
+                    </ul>
+                </div>
+                <div class="bg-sv-white p-5 rounded-xl shadow-lg border-t-4 border-sv-dark-red">
+                    <h4 class="text-lg font-bold text-sv-dark-red mb-2">ภาษาไทย (2565)</h4>
+                    <ul class="text-xs space-y-1 list-disc list-inside text-gray-700">
+                        <li>**เน้น:** หลักไวยากรณ์, การอ่านจับใจความ, การใช้คำภาษาไทย</li>
+                        <li>**ความรู้ภาษา:** การใช้คำ/ประโยค, คำศัพท์ พ้อง/ตรงข้าม</li>
+                        <li>**หลักภาษา:** การผันวรรณยุกต์, ชนิดของคำ, เครื่องหมายวรรคตอน</li>
+                        <li>**Reading:** วิเคราะห์เนื้อหา, ตอบคำถามจากเรื่อง</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 2: ข้อสอบจริง 2567 (ห้องปกติ) -->
+        <!-- ============================================== -->
+        <div id="recollection_67" class="tabcontent hidden">
+            <div class="mb-8 bg-sv-white p-6 rounded-2xl shadow-xl">
+                <h3 class="text-2xl font-extrabold text-sv-red mb-4">แนวข้อสอบจริง ม.1 ห้องเรียนปกติ ปี 2567</h3>
+                <p class="mb-6 text-gray-700 font-semibold border-b pb-2">**ภาพรวม:** เน้นความเข้าใจพื้นฐาน + การวิเคราะห์เชิงตรรกะและการอ่านจับใจความ ไม่ยากเท่าห้องพิเศษ แต่มีข้อวัดความคิด</p>
+                
+                <!-- Accordion Item: คณิตศาสตร์ 67 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_math_67')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🧮 คณิตศาสตร์</span>
+                        <svg id="acc_math_67_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_math_67_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">แนวออกข้อสอบ / หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>กราฟแสดงจำนวนปลาหางนกยูง (วิเคราะห์แนวโน้ม)</li>
+                            <li>โจทย์เรขาคณิตซ้อนรูป: สี่เหลี่ยม + วงกลมซ้อนกัน ถามพื้นที่ส่วนแรเงา</li>
+                            <li>การเปรียบเทียบข้อมูลและตรรกะ (ถูก/ผิด)</li>
+                            <li>โจทย์แนวคิดวิเคราะห์ ไม่มีคำนวณยาวมาก</li>
+                        </ul>
+                        <p class="font-semibold text-sv-red mt-3">ลักษณะโจทย์:</p>
+                        <p class="ml-4 text-sm text-gray-700">ปรนัย, มีภาพประกอบ, ทดสอบการคิดเป็นขั้นตอน</p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item: วิทยาศาสตร์ 67 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_science_67')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🧪 วิทยาศาสตร์</span>
+                        <svg id="acc_science_67_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_science_67_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">แนวออกข้อสอบ / หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>การถ่ายทอดลักษณะทางพันธุกรรม: หมู่เลือด ($A \times AB \rightarrow$ ลูกไม่เป็น O)</li>
+                            <li>การเปลี่ยนแปลงทางกายภาพ/เคมี (ผันกลับได้หรือไม่ได้)</li>
+                            <li>วงจรไฟฟ้า: หลอดไฟขาดบางดวง ถามผลที่เกิดขึ้น</li>
+                            <li>แรงและการเคลื่อนที่ (แรงหลายทิศทาง)</li>
+                            <li>วัตถุโปร่งใส/โปร่งแสง/ทึบแสง</li>
+                            <li>การสังเกตดวงดาวด้วยมือ (องศามุม)</li>
+                            <li>วัฏจักรหิน (เติมข้อความ), ดวงจันทร์อีก 15 วันจะเป็นอย่างไร</li>
+                            <li>กราฟอุณหภูมิ (ลมบก–ลมทะเล, มรสุมทิศต่าง ๆ)</li>
+                        </ul>
+                        <p class="font-semibold text-sv-red mt-3">ลักษณะโจทย์:</p>
+                        <p class="ml-4 text-sm text-gray-700">ปรนัย พร้อมภาพประกอบหลายข้อ เน้นสังเกตและเหตุผลเชิงวิทยาศาสตร์</p>
+                    </div>
+                </div>
+                
+                <!-- Accordion Item: ภาษาไทย 67 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_thai_67')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">📚 ภาษาไทย</span>
+                        <svg id="acc_thai_67_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_thai_67_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">แนวออกข้อสอบ / หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>ลักษณนามที่ถูกต้อง (เช่น พระสงฆ์ = รูป)</li>
+                            <li>คำบุพบทที่ถูกต้อง</li>
+                            <li>แยก “ข้อเท็จจริง–ข้อคิดเห็น” จากบทความสั้น</li>
+                            <li>วิเคราะห์โครงสร้างประโยค (ข้อใดแตกต่าง)</li>
+                            <li>อ่านบทความแล้วตอบคำถาม</li>
+                        </ul>
+                        <p class="font-semibold text-sv-red mt-3">ลักษณะโจทย์:</p>
+                        <p class="ml-4 text-sm text-gray-700">ปรนัย เน้นหลักภาษา + การอ่านจับใจความ</p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item: สังคมศึกษา 67 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_social_67')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🌏 สังคมศึกษา</span>
+                        <svg id="acc_social_67_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_social_67_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">แนวออกข้อสอบ / หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>จับคู่สิ่งบ่งชี้ภูมิศาสตร์ (ปลาทู–สมุทรสงคราม, ไดโนเสาร์–ขอนแก่น)</li>
+                            <li>ถามเกี่ยวกับ Soft Power เช่น “กางเกงช้าง” “กางเกงทุเรียน”</li>
+                            <li>พระบรมฯ เสด็จจังหวัดใดบ้าง (ความรู้รอบตัว)</li>
+                            <li>ชาดก (ทีฆีติโกสลชาดก), ศาสนา: พิธีฮัจญ์ลดความเห็นแก่ตัว (ผิด)</li>
+                            <li>ภูมิศาสตร์: เทือกเขาพนมดงรัก, แผนที่ตามลักษณะการใช้งาน</li>
+                            <li>เศรษฐศาสตร์: เปิดร้านอาหาร ข้อใดคือ “แรงงาน” (พนักงานเสิร์ฟ), หน่วยงานจัดเก็บภาษีฟุ่มเฟือย</li>
+                            <li>การแปลง พ.ศ. เป็นทศวรรษ/ศตวรรษ</li>
+                            <li>ธนาคารที่สอดคล้องหลักเศรษฐกิจพอเพียง $\rightarrow$ ธนาคารออมสิน</li>
+                        </ul>
+                        <p class="font-semibold text-sv-red mt-3">ลักษณะโจทย์:</p>
+                        <p class="ml-4 text-sm text-gray-700">ปรนัย เน้นความรู้ทั่วไป + ศีลธรรม + เศรษฐกิจพอเพียง + ภูมิศาสตร์</p>
+                    </div>
+                </div>
+                
+                <!-- Accordion Item: ภาษาอังกฤษ 67 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_english_67')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🗣️ ภาษาอังกฤษ</span>
+                        <svg id="acc_english_67_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_english_67_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">แนวออกข้อสอบ / หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>Conversation เติมคำให้ถูกต้องตามบริบท</li>
+                            <li>ตรวจสอบประโยคถูก/ผิด (Grammar check)</li>
+                            <li>Underlined error: ขีดเส้นใต้ 1–4 ให้เลือกข้อผิด</li>
+                            <li>Reading passage + คำถามความเข้าใจ</li>
+                            <li>การเลือกประโยคเหมาะสมกับสถานการณ์</li>
+                        </ul>
+                        <p class="font-semibold text-sv-red mt-3">ลักษณะโจทย์:</p>
+                        <p class="ml-4 text-sm text-gray-700">ปรนัย เน้น grammar + reading comprehension + situational use</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- ============================================== -->
+        <!-- TAB 3: ข้อสอบจริง 2568 (จำออกมา) -->
+        <!-- ============================================== -->
+        <div id="recollection_68" class="tabcontent hidden">
+            <div class="mb-8 bg-sv-white p-6 rounded-2xl shadow-xl">
+                <h3 class="text-2xl font-extrabold text-sv-red mb-4">แนวข้อสอบจริงที่จำออกมา ปี 2568 (ล่าสุด)</h3>
+                <p class="mb-6 text-gray-700 font-semibold border-b pb-2">ข้อสอบปีล่าสุดมีแนวโน้มเน้นการวิเคราะห์เชิงลึกและการบูรณาการความรู้</p>
+
+                <!-- Accordion Item: ภาษาไทย 68 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_thai_68')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">📚 ภาษาไทย</span>
+                        <svg id="acc_thai_68_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_thai_68_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>จากบท “สะพานสมมติอมรมารค”: คำถามเกี่ยวกับ "คำเปิด" และ "คำปิด"</li>
+                            <li>วิเคราะห์คำจากโปสเตอร์ข่าว, เปรียบเทียบอาชีพกับลักษณะ MBTI</li>
+                            <li>*หลักภาษา:เรียงคำตามพจนานุกรม, ระบุคำประพันธ์, คำถามการใช้คำราชาศัพท์</li>
+                            <li>*การวิเคราะห์: แยกข้อเท็จจริง/ข้อคิดเห็น, วิเคราะห์โฆษณาที่ตรงกับข้อความ</li>
+                            <li>*วรรณคดี: เปรียบเทียบความหมายจากบทประพันธ์, วิเคราะห์ฉันทลักษณ์</li>
+                            <li>ระบุประโยคที่ไม่ใช่ประโยคความซ้อน</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Accordion Item: สังคมศึกษา 68 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_social_68')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🌏 สังคมศึกษา</span>
+                        <svg id="acc_social_68_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_social_68_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>*หมีเนย (Soft Power): ผู้สร้างต้องการสื่ออะไร และสอดคล้องกับหลักธรรมข้อใด</li>
+                            <li>*Soft Power อื่นๆ:* “กางเกงลายหนุมาน” เป็นของจังหวัดใด</li>
+                            <li>วิเคราะห์เหตุการณ์ของบุคคล 4 คน ว่าเกี่ยวข้องกับจังหวัดใด (ภูมิศาสตร์/ประวัติศาสตร์ท้องถิ่น)</li>
+                            <li>เรียงลำดับอำนาจการปกครองจากมากไปหาน้อย</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Accordion Item: ภาษาอังกฤษ 68 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_english_68')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🗣️ ภาษาอังกฤษ</span>
+                        <svg id="acc_english_68_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_english_68_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>บทความเกี่ยวกับภาพยนตร์ **Interstellar** (3 ข้อ)</li>
+                            <li>คำถามไวยากรณ์ (Grammar) และวิเคราะห์ประโยค</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Accordion Item: คณิตศาสตร์ 68 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_math_68')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🧮 คณิตศาสตร์</span>
+                        <svg id="acc_math_68_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_math_68_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>หาพื้นที่ของส่วนแรเงา (เรขาคณิต)</li>
+                            <li>โจทย์เกี่ยวกับมุม</li>
+                            <li>นับจำนวนทศนิยมในรูปแบบ 0.ab</li>
+                            <li>คำนวณปริมาตรของน้ำ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Accordion Item: วิทยาศาสตร์ 68 -->
+                <div class="border border-gray-200 rounded-lg mb-3">
+                    <button onclick="toggleAccordion('acc_science_68')" class="w-full text-left p-4 bg-sv-light text-gray-800 font-bold flex justify-between items-center rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <span class="text-lg">🧪 วิทยาศาสตร์</span>
+                        <svg id="acc_science_68_icon" class="w-5 h-5 transition-transform duration-300 transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc_science_68_content" class="accordion-content hidden p-4 bg-white rounded-b-lg">
+                        <p class="font-semibold text-sv-red">หัวข้อที่ออก:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1 text-gray-700">
+                            <li>วิเคราะห์พันธุกรรมจากผังลักษณะทางกรรมพันธุ์ของครอบครัว</li>
+                            <li>คำถามเกี่ยวกับแรงไฟฟ้า และ Flowchart</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Practice Exam Links Section (Updated) -->
+        <section class="mb-16 mt-12">
+            <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">
+                🔥 คลังแนวข้อสอบย้อนหลัง (TruePlookpanya)
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Subject Group: วิทยาศาสตร์ -->
+                <div class="p-4 bg-sv-light rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-sv-red pb-2 flex items-center">
+                        <span class="w-3 h-3 bg-sv-red rounded-full mr-2"></span> วิทยาศาสตร์
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14529" target="_blank" class="text-sv-red hover:underline block">ปี 2566</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14465" target="_blank" class="text-sv-red hover:underline block">ปี 2565</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14530" target="_blank" class="text-sv-red hover:underline block">ปี 2562</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/doExam?id=14534" target="_blank" class="text-sv-red hover:underline block">ปี 2560</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/doExam?id=14538" target="_blank" class="text-sv-red hover:underline block">ปี 2559</a></li>
+                    </ul>
+                </div>
+
+                <!-- Subject Group: ภาษาอังกฤษ -->
+                <div class="p-4 bg-sv-light rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-sv-red pb-2 flex items-center">
+                        <span class="w-3 h-3 bg-sv-red rounded-full mr-2"></span> ภาษาอังกฤษ
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14485" target="_blank" class="text-sv-red hover:underline block">ปี 2566</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14462" target="_blank" class="text-sv-red hover:underline block">ปี 2565</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14533" target="_blank" class="text-sv-red hover:underline block">ปี 2562</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14537" target="_blank" class="text-sv-red hover:underline block">ปี 2560</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14541" target="_blank" class="text-sv-red hover:underline block">ปี 2559</a></li>
+                    </ul>
+                </div>
+
+                <!-- Subject Group: สังคมศึกษา -->
+                <div class="p-4 bg-sv-light rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-sv-red pb-2 flex items-center">
+                        <span class="w-3 h-3 bg-sv-red rounded-full mr-2"></span> สังคมศึกษา
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14484" target="_blank" class="text-sv-red hover:underline block">ปี 2566</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14446" target="_blank" class="text-sv-red hover:underline block">ปี 2565</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14531" target="_blank" class="text-sv-red hover:underline block">ปี 2562</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14536" target="_blank" class="text-sv-red hover:underline block">ปี 2560</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14540" target="_blank" class="text-sv-red hover:underline block">ปี 2559</a></li>
+                    </ul>
+                </div>
+
+                <!-- Subject Group: ภาษาไทย -->
+                <div class="p-4 bg-sv-light rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-sv-red pb-2 flex items-center">
+                        <span class="w-3 h-3 bg-sv-red rounded-full mr-2"></span> ภาษาไทย
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14483" target="_blank" class="text-sv-red hover:underline block">ปี 2566</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14455" target="_blank" class="text-sv-red hover:underline block">ปี 2565</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14535" target="_blank" class="text-sv-red hover:underline block">ปี 2560</a></li>
+                        <li><a href="https://www.trueplookpanya.com/examination2/start-exam/14539" target="_blank" class="text-sv-red hover:underline block">ปี 2559</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section (Mandatory Text) -->
+    <footer class="bg-sv-red p-6 text-center text-sv-light mt-12 rounded-t-xl shadow-inner">
+        <p class="text-sm md:text-base font-medium">รวบรวมข้อมูลและจัดทำโดย...ลุ้นสอวอไปด้วยกันนะ</p>
+        <p class="text-xl md:text-2xl font-bold tracking-wider my-2">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+        
+        <!-- LINE OPC Link -->
+        <div class="flex justify-center items-center mt-3">
+            <a href="https://shorturl.asia/BlJVn" target="_blank" class="text-sv-white bg-[#06C755] hover:bg-[#05AE49] p-2 rounded-full shadow-lg transition duration-300 flex items-center space-x-2">
+                <!-- Simple Line Icon SVG (Approximation of Line's look) -->
+                <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current text-white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0c6.627 0 12 5.373 12 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0zm5.66 16.59c-.067.067-.145.112-.232.145l-1.37.525c-.21.08-.432.12-.656.12-.224 0-.447-.04-.656-.12l-1.37-.525c-.087-.033-.165-.078-.232-.145-.067-.067-.112-.145-.145-.232-.033-.087-.078-.165-.112-.257-.033-.087-.067-.179-.088-.271-.021-.092-.045-.184-.045-.276v-5.2c0-.552.448-1 1-1h6c.552 0 1 .448 1 1v5.2c0 .092-.024.184-.045.276-.021.092-.055.184-.088.271-.033.087-.078.165-.112.257-.033.087-.078.165-.145.232zM12 9c-.276 0-.5.224-.5.5v2.5c0 .276.224.5.5.5s.5-.224.5-.5V9.5c0-.276-.224-.5-.5-.5zm2 0c-.276 0-.5.224-.5.5v2.5c0 .276.224.5.5.5s.5-.224.5-.5V9.5c0-.276-.224-.5-.5-.5zm-4 0c-.276 0-.5.224-.5.5v2.5c0 .276.224.5.5.5s.5-.224.5-.5V9.5c0-.276-.224-.5-.5-.5z"/>
+                </svg>
+                <span class="text-sm font-semibold">LINE OPC</span>
+            </a>
+        </div>
+    </footer>
+
+</body>
+</html>
