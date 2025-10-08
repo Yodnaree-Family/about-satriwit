@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สถิติคะแนนสอบเข้า ม.1 - ครอบครัวยอดนารี❤️สตรีวิทยา</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for plotting graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <!-- Inter Font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+Thai:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            position: relative;
+        }
+        .tab-button {
+            transition: all 0.2s;
+        }
+        .sub-tab-button {
+            transition: all 0.2s;
+        }
+        /* Sticky header for the ranking table */
+        #full-ranking-table th {
+            z-index: 10;
+        }
+        /* Watermark Style */
+        .watermark-bg::before {
+            content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5vw; /* Responsive font size */
+            font-weight: 900;
+            color: rgba(107, 114, 128, 0.05); /* Very light gray color */
+            pointer-events: none; /* Make it unclickable */
+            z-index: 0; /* Behind content */
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 watermark-bg">
+
+    <div class="max-w-6xl mx-auto bg-white/95 backdrop-blur-sm shadow-xl rounded-2xl p-6 sm:p-8 relative z-10">
+        <!-- New Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-extrabold text-pink-600">ครอบครัวยอดนารี❤️สตรีวิทยา</h1>
+            <p class="text-lg text-gray-600">โดย...ลุ้นสอวอไปด้วยกันนะ</p>
+            <h2 class="text-2xl font-bold text-blue-700 mt-4 border-t-4 border-blue-100 pt-4">
+                📊 ระบบวิเคราะห์สถิติคะแนนสอบเข้า ม.1
+            </h2>
+        </div>
+
+
+        <!-- Main Tabs -->
+        <div class="flex flex-col sm:flex-row mb-6 space-y-2 sm:space-y-0 sm:space-x-4 border-b border-gray-200">
+            <button id="tab-main-1" data-tab="ห้องเรียนพิเศษ" class="tab-button px-6 py-3 text-lg font-semibold rounded-t-lg bg-blue-600 text-white shadow-md hover:bg-blue-700">
+                ห้องเรียนพิเศษ
+            </button>
+            <button id="tab-main-2" data-tab="ห้องเรียนปกติ" class="tab-button px-6 py-3 text-lg font-semibold rounded-t-lg text-gray-700 hover:bg-gray-100">
+                ห้องเรียนปกติ
+            </button>
+        </div>
+
+        <!-- Content Area -->
+        <div id="tab-content">
+            <!-- Sub-Tabs and Data will be rendered here -->
+        </div>
+
+    </div>
+    
+    <!-- New Footer -->
+    <footer class="text-center mt-8 text-xs text-gray-500 max-w-6xl mx-auto">
+        <p>รวบรวมข้อมูลเพื่อความสะดวกในการวางแผนของผู้ปกครองและนักเรียน</p>
+        <p class="font-semibold">ข้อมูลนี้เป็นผลจากการสำรวจเพื่อการวิเคราะห์เบื้องต้นเท่านั้น ไม่ใช่ข้อมูลทางการของโรงเรียน</p>
+        <div class="mt-4 font-bold text-gray-600">
+            <p>จัดทำโดย...ลุ้นสอวอไปด้วยกันนะ</p>
+            <p>ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <a href="https://shorturl.asia/BlJVn" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-2 text-green-600 hover:text-green-700 hover:underline transition-colors">
+                <!-- Line SVG Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M21.928 11.607c0-5.242-4.42-9.472-9.928-9.472s-9.928 4.23-9.928 9.472c0 4.23 2.94 7.842 6.946 8.956.345.062.519.231.519.463 0 .221-.01.99-.015 1.638-.006.666.016.927.464.927.433 0 1.921-1.332 3.655-2.955 1.054.143 2.158.221 3.287.221 5.508 0 9.928-4.23 9.928-9.472zm-16.195-2.228c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm4.414 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm5.586 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm-1.173 5.426h-2.102v-3.33h-1.626v3.33h-2.102v-4.93c0-.302.246-.547.547-.547h4.83c.302 0 .547.246.547.547v4.93zm6.275-5.426h-4.93c-.302 0-.547.246-.547.547v4.93h1.626v-3.33h1.25v2.22h1.626v-2.22h1.25v3.33h1.626v-4.93c0-.302-.245-.547-.547-.547z"></path></svg>
+                Line OpenChat
+            </a>
+        </div>
+    </footer>
+
+
+    <script>
+        // Global variables for Firebase access (required by platform environment)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // --- DATA STRUCTURE UPDATE ---
+        // Scores are now objects to include subject-specific scores
+        
+        const mapScoresToObjects = (scores, subjects = []) => {
+            return scores.map(score => {
+                if (score === null || score === undefined) return null;
+                const scoreObj = { total: score };
+                subjects.forEach(sub => scoreObj[sub] = null);
+                return scoreObj;
+            });
+        };
+        
+        // Helper to build ranking array from sparse data
+        const buildRankingArray = (sparseData, totalRanks) => {
+            return Array(totalRanks).fill(null).map((_, i) => {
+                const rank = i + 1;
+                const data = sparseData[rank];
+                if (!data) return null;
+
+                // Handle if data is just a number (total score)
+                if (typeof data === 'number') {
+                    return { total: data, math: null, science: null, english: null, thai: null, social: null };
+                }
+                // Handle if data is an object with subject scores
+                return data;
+            });
+        };
+
+        const EP_2568_TOTALS = [
+            168.5, 163.83, 163, 154.83, 154.83, 154.5, 154.17, null, 149.33, 148.5, 
+            148, 147.67, 145.83, 145.67, null, null, null, null, 140.83, 140.33, 
+            null, 139.83, null, null, 136.83, 136.67, null, null, null, null, 
+            null, 134.33, null, null, null, 130, null, null, null, null, 
+            127.67, 126.5, 126.33, null, 125.5, null, 125.17, null, 124.5, null, 
+            null, null, null, 122.33, null, 122.17, 119.83, null, 119.17
+        ];
+        const EP_2568_RANKING = mapScoresToObjects(EP_2568_TOTALS, ['math', 'science', 'english', 'interview']);
+
+        const EP_2567_RANKING_SPARSE = {
+            1: { total: 171.66, math: 47, science: 38.66, english: 66, interview: 20 },
+            4: { total: 140.5, math: 42, science: 29.33, english: 50, interview: 19.17 },
+            5: { total: 139.17, math: 40, science: 38.5, english: 41, interview: 19.67 },
+            12: { total: 134.33, math: 35, science: 30.33, english: 49, interview: 20 },
+            17: { total: 127, math: null, science: null, english: null, interview: null },
+            19: { total: 126.33, math: 31, science: 25.5, english: 50, interview: 19.83 },
+            20: { total: 126.16, math: 31, science: 28.83, english: 47, interview: 19.33 },
+            23: { total: 124.83, math: 37, science: 20.33, english: 49, interview: 18.5 },
+            29: { total: 122.66, math: 37, science: 27.33, english: 39, interview: 19.33 },
+            34: { total: 120.17, math: 35, science: 27.5, english: 40, interview: 17.67 },
+            39: { total: 117.16, math: 28, science: 22.83, english: 47, interview: 19.33 },
+            48: { total: 112.83, math: 31, science: 33.66, english: 29, interview: 19.17 },
+            53: { total: 110.88, math: 17, science: 20.88, english: 53, interview: 20 },
+            54: { total: 110.83, math: 37, science: 24, english: 34, interview: 15.83 },
+        };
+        const EP_2567_RANKING = Array(54).fill(null).map((_, i) => EP_2567_RANKING_SPARSE[i + 1] || null);
+        
+        const EP_2566_TOTALS = [160.33, 154.17, 153.92, null, null, null, null, null, null, null, 145, 135.17, null, null, null, null, null, null, null, null, null, null, null, null, null, 135.17];
+        const EP_2566_RANKING = mapScoresToObjects(EP_2566_TOTALS, ['math', 'science', 'english', 'interview']);
+
+        const SMTE_2567_RANKING_SPARSE = {
+            3: { total: 81.5, math: 43, science: 38.5 }, 5: { total: 80, math: 43, science: 37 }, 6: { total: 79.5, math: 38.5, science: 41 }, 8: { total: 76, math: 38, science: 38 }, 9: { total: 75.5, math: 42.5, science: 33 }, 11: { total: 73.5, math: 38.5, science: 35 }, 12: { total: 73.5, math: 40, science: 33.5 }, 14: { total: 70.5, math: 29.5, science: 41 }, 15: { total: 70.5, math: 32.5, science: 38 }, 16: { total: 70.5, math: 39.5, science: 31 }, 17: { total: 69.5, math: 31.5, science: 38 }, 25: { total: 64, math: 28.5, science: 35.5 }, 27: { total: 61, math: 27, science: 34 }, 32: { total: 57, math: 20, science: 37 }, 40: { total: 52, math: 19.5, science: 32.5 },
+        };
+        const SMTE_2567_RANKING = Array(40).fill(null).map((_, i) => SMTE_2567_RANKING_SPARSE[i + 1] || null);
+
+        const GM_2567_RANKING_SPARSE = {
+            1: { total: 101.5, math: 50, science: 43, english: 8.5 }, 3: { total: 88.5, math: 37.5, science: 42, english: 9 }, 5: { total: 81.5, math: 30, science: 43, english: 8.5 }, 10: { total: 77.5, math: 38.5, science: 33.5, english: 5.5 }, 11: { total: 77, math: 36, science: 35.5, english: 5.5 }, 12: { total: 76.5, math: 30, science: 40, english: 6.5 }, 14: { total: 76, math: 35, science: 36, english: 5 }, 20: { total: 74, math: 29, science: 38.5, english: 6.5 }, 23: { total: 73.5, math: 26, science: 39, english: 8.5 }, 26: { total: 72, math: 28.5, science: 39, english: 4.5 }, 30: { total: 70.5, math: 25.5, science: 40.5, english: 4.5 }, 31: { total: 70, math: 26.5, science: 39, english: 4.5 }, 33: { total: 69, math: 29.5, science: 34.5, english: 5 }, 37: { total: 67.5, math: 21.5, science: 39, english: 7 }, 39: { total: 67.5, math: 27.5, science: 34, english: 6 }, 41: { total: 66.5, math: 27.5, science: 33, english: 6 }, 42: { total: 66.5, math: 31.5, science: 31.5, english: 3.5 }, 50: { total: 64, math: 28.5, science: 30.5, english: 5 }, 51: { total: 63.5, math: 27, science: 32.5, english: 4 }, 57: { total: 62.5, math: 24.5, science: 32, english: 6 }, 59: { total: 62.5, math: 19, science: 36.5, english: 7 }, 60: { total: 62, math: 23.5, science: 32.5, english: 6 }, 62: { total: 61.5, math: 27.5, science: 30, english: 4 }, 63: { total: 61, math: 29.5, science: 26.5, english: 5 }, 72: { total: 60, math: 21.5, science: 30, english: 8.5 },
+        };
+        const GM_2567_RANKING = Array(72).fill(null).map((_, i) => GM_2567_RANKING_SPARSE[i + 1] || null);
+        
+        // --- NEW GM DATA 2564-2566 ---
+        const GM_2566_RANKING_SPARSE = {
+            8: { total: 64, math: 32, science: 27, english: 5 },
+            11: { total: 61.5, math: 32, science: 27, english: 2.5 },
+            15: { total: 60, math: 28, science: 26, english: 6 },
+            32: { total: 50.75, math: 22, science: 25.75, english: 3 },
+            34: { total: 50.5, math: 18, science: 29, english: 3.5 },
+            47: { total: 48.5, math: 18, science: 26.5, english: 4 },
+            65: { total: 46.5, math: 20, science: 22, english: 4.5 },
+            66: { total: 46.25, math: 18, science: 26.75, english: 1.5 },
+            73: { total: 45.75, math: 10, science: 28.75, english: 7 },
+            74: { total: 45.75, math: 16, science: 26.75, english: 3 },
+            84: { total: 44.5, math: 22, science: 19.5, english: 3 },
+            102: { total: 42.75, math: 18, science: 22.75, english: 2 },
+            128: { total: 39.75, math: 14, science: 20.75, english: 5 }
+        };
+        const GM_2566_RANKING = buildRankingArray(GM_2566_RANKING_SPARSE, 128);
+
+        const GM_2565_RANKING_SPARSE = {
+            1: { total: 84.5, math: 42, science: 37.5, english: 5 }, 4: { total: 79.5, math: 42, science: 34.5, english: 3 }, 5: { total: 78, math: 44, science: 31.5, english: 2.5 }, 9: { total: 75.5, math: 44, science: 27, english: 4.5 }, 14: { total: 72, math: 34, science: 32, english: 6 }, 15: { total: 72, math: 28, science: 36, english: 8 }, 17: { total: 71, math: 38, science: 26.5, english: 6.5 }, 18: { total: 69.5, math: 38, science: 28, english: 3.5 }, 22: { total: 68.5, math: 34, science: 29, english: 5.5 }, 25: { total: 67.5, math: 36, science: 26.5, english: 5 }, 27: { total: 67, math: 36, science: 25.5, english: 5.5 }, 28: { total: 64, math: 34, science: 25.5, english: 4.5 }, 33: { total: 62.5, math: 26, science: 28, english: 8.5 }, 34: { total: 62.5, math: 36, science: 21.5, english: 5 }, 35: { total: 62.5, math: 36, science: 21, english: 5.5 }, 45: { total: 60.5, math: 26, science: 29.5, english: 5 }, 49: { total: 59.5, math: 28, science: 28, english: 3.5 }, 61: { total: 57, math: 26, science: 26.5, english: 4.5 }, 66: { total: 55.5, math: 24, science: 27, english: 4.5 }, 72: { total: 54.5, math: 26, science: 23.5, english: 5 }, 82: { total: 52, math: 20, science: 28.5, english: 3.5 }, 106: { total: 47.5, math: 20, science: 21, english: 6.5 }, 109: { total: 47, math: 18, science: 25, english: 4 }, 123: { total: 46, math: 22, science: 19.5, english: 4.5 }, 130: { total: 45.5, math: 24, science: 18, english: 3.5 }
+        };
+        const GM_2565_RANKING = buildRankingArray(GM_2565_RANKING_SPARSE, 130);
+        
+        const GM_2564_RANKING_SPARSE = {
+            8: { total: 67, math: 27.5, science: 31.5, english: 8 }, 13: { total: 64, math: 31, science: 27, english: 6 }, 28: { total: 60, math: 24.5, science: 28, english: 7.5 }, 34: { total: 57.5, math: 23.5, science: 29, english: 5 }, 37: { total: 57, math: 24, science: 26, english: 7 }, 47: { total: 54.5, math: 20.5, science: 28, english: 6 }, 53: { total: 54, math: 20.5, science: 27, english: 6.5 }, 56: { total: 53.5, math: 20.5, science: 27, english: 6 }, 64: { total: 52.5, math: 21.5, science: 25, english: 6 }, 67: { total: 52, math: 19, science: 27.5, english: 5.5 }, 69: { total: 51.5, math: 16.5, science: 28.5, english: 6.5 }, 74: { total: 51, math: 20, science: 25, english: 6 }, 93: { total: 49, math: 12.5, science: 29.5, english: 7 }, 102: { total: 48.5, math: 18.5, science: 25.5, english: 4.5 }, 107: { total: 48, math: 14, science: 29, english: 5 }, 114: { total: 47, math: 16, science: 25.5, english: 5.5 }, 127: { total: 45.5, math: 21.5, science: 20, english: 4 }, 159: { total: 43, math: 24, science: 17, english: 2 }
+        };
+        const GM_2564_RANKING = buildRankingArray(GM_2564_RANKING_SPARSE, 159);
+
+        // --- NEW DATA FOR REGULAR PROGRAM ---
+        const NORMAL_2568_IN_SPARSE = { 2: 58.5, 3: 55, 4: 54.5, 7: 47, 9: 46, 21: 41 };
+        const NORMAL_2568_IN_RANKING = buildRankingArray(NORMAL_2568_IN_SPARSE, 21);
+
+        const NORMAL_2568_OUT_SPARSE = { 4: 65.5, 6: 63.5, 7: 63.5, 8: 62.5, 13: 61.5, 15: 61, 21: 60, 23: 59.5, 24: 59.5, 25: 59.5, 26: 59, 28: 58.5, 32: 58, 36: 57.5, 41: 56.5, 42: 56.5, 48: 55.5, 49: 55.5, 50: 55.5, 55: 41.5, 58: 54.5, 59: 54.5, 63: 54, 64: 54, 75: 53, 76: 52.5, 78: 52.5, 79: 52.5, 81: 52, 82: 52, 84: 52, 88: 52, 91: 52, 93: 51.5, 94: 51.5, 100: 51, 101: 51, 104: 51, 105: 51, 107: 50.5, 108: 50.5, 110: 50.5, 111: 50.5, 113: 50.5, 115: 50.5, 117: 50.5, 120: 50, 122: 50, 123: 50, 124: 50, 125: 50, 128: 50, 129: 50, 134: 50, 136: 49.5, 138: 49.5, 145: 49, 146: 49, 149: 48.5, 150: 48.5, 153: 48.5, 156: 48.5, 162: 48, 163: 48, 164: 48, 165: 48, 166: 48, 168: 48, 170: 48, 175: 47, 185: 47.5, 186: 47.5, 194: 47, 195: 47, 202: 46.5, 207: 46.5, 210: 46, 211: 46.5, 216: 45.5, 217: 45.5, 220: 45.5, 224: 45, 228: 45, 249: 44.5, 250: 44.5, 259: 44, 263: 44, 264: 44, 265: 44 };
+        const NORMAL_2568_OUT_RANKING = buildRankingArray(NORMAL_2568_OUT_SPARSE, 265);
+        
+        const NORMAL_2567_IN_SPARSE = { 6: 56.5, 10: 52.0, 12: 50.5, 17: 48.5, 18: 48.0, 22: 45.5, 31: 40.5, 41: 38.0, 45: 35.0 };
+        const NORMAL_2567_IN_RANKING = buildRankingArray(NORMAL_2567_IN_SPARSE, 45);
+
+        const NORMAL_2567_OUT_SPARSE = { 1: 78.0, 4: 76.0, 8: 73.0, 15: 68.0, 21: 65.5, 30: 64.0, 49: 60.5, 52: 60.0, 59: 59.5, 64: 59.0, 70: 58.5, 71: 58.5, 72: 58.5, 73: 58.5, 77: 58.0, 79: 58.0, 83: 57.5, 90: 57.0, 101: 56.5, 105: 56.5, 107: 56.0, 108: 56.0, 116: 55.5, 126: 55.0, 131: 54.5, 146: 54.0, 151: 54.0, 152: 54.0, 187: 53.0, 191: 52.5, 195: 52.5, 197: 52.5, 204: 52.0, 206: 52.0, 209: 52.0, 212: 51.5, 239: 50.5, 256: 50.0, 264: 49.5, 265: 49.5 };
+        const NORMAL_2567_OUT_RANKING = buildRankingArray(NORMAL_2567_OUT_SPARSE, 265);
+
+
+        // --- MAIN DATA STRUCTURE ---
+        const examData = {
+            "ห้องเรียนพิเศษ": {
+                "EP": {
+                    "2568": { type: "EP 2568 (200 คะแนน)", stats: { max: 168.50, min: 119.17, avg: 139.89, maxScore: 200 }, ranking: EP_2568_RANKING },
+                    "2567": { type: "EP 2567 (200 คะแนน)", stats: { max: 171.66, min: 110.83, avg: 127.47, maxScore: 200 }, ranking: EP_2567_RANKING },
+                    "2566": { type: "EP 2566 (200 คะแนน)", stats: { max: 160.33, min: 112.92, avg: 135.14, maxScore: 200 }, ranking: EP_2566_RANKING },
+                    "2565": { type: "EP 2565 (200 คะแนน)", stats: { max: 134.00, min: 102.33, avg: 118.39, maxScore:200 }, ranking: mapScoresToObjects([134, 131.8, 129.5, 128, 123, 119, 116.75, 114.75, 111.17, 107, 103.3, 102.3, 100.3, 96.5], ['math', 'science', 'english', 'interview']) }
+                },
+                "SMTE": {
+                    "2568": { type: "SMTE 2568 (100 คะแนน)", stats: { max: 77.25, min: 47.75, avg: 58.58, maxScore: 100 }, ranking: mapScoresToObjects([77.25, 70.75, null, null, null, null, 63, 61.25, 61.25, 60.25, null, null, null, null, 56.75, null, null, 55.5, 54.75, null, null, null, null, 51, null, 51, 51, null, null, 47.75], ['math', 'science']) },
+                    "2567": { type: "SMTE 2567 (100 คะแนน)", stats: { max: 81.50, min: 52.00, avg: 70.00, maxScore: 100 }, ranking: SMTE_2567_RANKING }
+                },
+                "GM": {
+                    "2568": { type: "GM 2568 (110 คะแนน)", stats: { max: 90.00, min: 66.0, avg: 73.3, maxScore: 110 }, ranking: mapScoresToObjects([90, 89, null, 83, null, 82.5, 82.5, null, null, 81.5, null, 78.5, 78.5, 77.5, 77, null, null, 75.5, null, 75.5, null, null, null, 73, null, 72.5, null, null, null, null, 71.5, null, null, 71, 71, 70.5, 70, 70, 70, 69.5, 69.5, null, 69.5, 69.5, null, 69, 69, null, null, 68.5, 68, null, 68, null, null, null, 67.5, null, 67.5, 67.5, null, null, null, null, null, null, null, null, null, 66], ['math', 'science', 'english'])},
+                    "2567": { type: "GM 2567 (110 คะแนน)", stats: { max: 101.50, min: 60.00, avg: 75.00, maxScore: 110 }, ranking: GM_2567_RANKING },
+                    "2566": { type: "GM 2566 (110 คะแนน)", stats: { max: 64.00, min: 46.3, avg: 53.5, maxScore: 110 }, ranking: GM_2566_RANKING },
+                    "2565": { type: "GM 2565 (110 คะแนน)", stats: { max: 84.50, min: 54.50, avg: 67.2, maxScore: 110 }, ranking: GM_2565_RANKING },
+                    "2564": { type: "GM 2564 (110 คะแนน)", stats: { max: 67.00, min: 51.5, avg: 57.5, maxScore: 110 }, ranking: GM_2564_RANKING }
+                }
+            },
+            "ห้องเรียนปกติ": {
+                "ในเขต": {
+                    "2568": { type: "ปกติ ในเขต 2568 (100 คะแนน)", stats: { max: 58.5, min: 41, avg: 50.33, maxScore: 100 }, ranking: NORMAL_2568_IN_RANKING }, 
+                    "2567": { type: "ปกติ ในเขต 2567(100 คะแนน)", stats: { max: 56.50, min: 35.00, avg: 46.06, maxScore: null }, ranking: NORMAL_2567_IN_RANKING },
+                    "2566": { type: "ปกติ ในเขต 2566 (ไม่มีข้อมูล)", stats: { max: null, min: null, avg: null, maxScore: null }, ranking: [] } 
+                },
+                "นอกเขต": {
+                    "2568": { type: "ปกติ นอกเขต 2568 (100 คะแนน)", stats: { max: 65.5, min: 44.0, avg: 51.41, maxScore: 100 }, ranking: NORMAL_2568_OUT_RANKING },
+                    "2567": { type: "ปกติ นอกเขต 2567 (100 คะแนน)", stats: { max: 78.00, min: 49.50, avg: 57.44, maxScore: null }, ranking: NORMAL_2567_OUT_RANKING },
+                    "2566": { type: "ปกติ นอกเขต 2566 (ไม่มีข้อมูล)", stats: { max: null, min: null, avg: null, maxScore: null }, ranking: [] } 
+                }
+            }
+        };
+
+        let activeMainTab = "ห้องเรียนพิเศษ";
+        let activeSubTab = "EP";
+        let chartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            renderMainTab(activeMainTab);
+        });
+
+        function setupEventListeners() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    activeMainTab = e.target.dataset.tab;
+                    renderMainTab(activeMainTab);
+                });
+            });
+        }
+
+        function renderMainTab(mainTabName) {
+            // Update Main Tab Styles
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                const isActive = btn.dataset.tab === mainTabName;
+                btn.classList.toggle('bg-blue-600', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('shadow-md', isActive);
+                btn.classList.toggle('text-gray-700', !isActive);
+                btn.classList.toggle('hover:bg-gray-100', !isActive);
+            });
+
+            const subTabs = Object.keys(examData[mainTabName]);
+            if (!subTabs.includes(activeSubTab)) {
+                 activeSubTab = subTabs[0];
+            }
+
+            const contentHTML = `
+                <div class="flex flex-wrap gap-2 mb-6 p-2 bg-gray-50 rounded-lg shadow-inner">
+                    ${subTabs.map(subTab => `
+                        <button data-subtab="${subTab}" class="sub-tab-button px-4 py-2 text-sm font-medium rounded-xl text-gray-600 border border-transparent hover:border-blue-300 transition-colors">
+                            ${subTab}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="sub-tab-content" class="p-4 border border-gray-200 rounded-lg bg-white shadow-lg"></div>
+            `;
+            document.getElementById('tab-content').innerHTML = contentHTML;
+
+            document.querySelectorAll('.sub-tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    activeSubTab = e.target.dataset.subtab;
+                    renderSubTabContent(activeMainTab, activeSubTab);
+                });
+            });
+            renderSubTabContent(activeMainTab, activeSubTab);
+        }
+
+        function renderSubTabContent(mainTabName, subTabName) {
+            document.querySelectorAll('.sub-tab-button').forEach(btn => {
+                const isActive = btn.dataset.subtab === subTabName;
+                btn.classList.toggle('bg-blue-100', isActive);
+                btn.classList.toggle('text-blue-700', isActive);
+                btn.classList.toggle('border-blue-400', isActive);
+            });
+
+            const subGroupData = examData[mainTabName][subTabName];
+            const years = Object.keys(subGroupData).sort((a, b) => b - a);
+            const currentYear = years[0];
+            let yearOptions = years.map(year => `<option value="${year}">พ.ศ. ${year}</option>`).join('');
+
+            const contentHTML = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">${subTabName}</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 p-4 border rounded-xl bg-gray-50">
+                    <div>
+                        <label for="year-select" class="block text-sm font-medium text-gray-700 mb-2">ปีหลักสำหรับสรุปคะแนน</label>
+                        <select id="year-select" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">${yearOptions}</select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">ตัวชี้วัดเปรียบเทียบ</label>
+                        <div id="metric-checkboxes" class="flex flex-col space-y-2">
+                            <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox h-4 w-4 text-green-600" value="max" checked><span class="ml-2 text-sm text-gray-700">คะแนนสูงสุด (Max)</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox h-4 w-4 text-yellow-600" value="avg" checked><span class="ml-2 text-sm text-gray-700">คะแนนเฉลี่ย (Avg)</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox h-4 w-4 text-red-600" value="min"><span class="ml-2 text-sm text-gray-700">คะแนนต่ำสุด (Min)</span></label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">ปีที่ต้องการแสดงในกราฟ</label>
+                        <div id="chart-years-checkboxes" class="flex flex-col space-y-2 p-2 border rounded-lg max-h-28 overflow-y-auto bg-white">
+                            ${years.map(year => `<label class="inline-flex items-center"><input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" value="${year}"><span class="ml-2 text-sm text-gray-700">พ.ศ. ${year}</span></label>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div id="score-summary" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+                <div class="w-full h-96 mb-6"><canvas id="comparisonChart"></canvas></div>
+                <p class="text-sm text-red-600 text-center mt-2 mb-6">
+                    <strong>หมายเหตุ:</strong> ค่าคะแนนสูงสุด ต่ำสุด และค่าเฉลี่ย คำนวณจากข้อมูลที่มีอยู่ในปัจจุบัน อาจมีความคลาดเคลื่อนจากการที่บางอันดับไม่มีข้อมูลคะแนน
+                </p>
+                <div id="full-ranking-table" class="mt-8"></div>
+                <div id="score-data-table" class="mt-8"></div>
+            `;
+            document.getElementById('sub-tab-content').innerHTML = contentHTML;
+
+            const yearSelect = document.getElementById('year-select');
+            yearSelect.value = currentYear;
+            // Default check the most recent year for the chart
+            document.querySelector(`#chart-years-checkboxes input[value="${currentYear}"]`).checked = true;
+
+            const updateDashboard = () => {
+                const main = activeMainTab;
+                const sub = activeSubTab;
+                const primaryYear = yearSelect.value;
+                const chartYears = Array.from(document.querySelectorAll('#chart-years-checkboxes input:checked')).map(cb => cb.value);
+                const chartMetrics = Array.from(document.querySelectorAll('#metric-checkboxes input:checked')).map(cb => cb.value);
+                
+                renderSummary(main, sub, primaryYear);
+                renderChart(main, sub, chartYears, chartMetrics);
+                renderRankingTable(main, sub, primaryYear);
+                renderDataTable(main, sub);
+            };
+
+            yearSelect.addEventListener('change', updateDashboard);
+            document.querySelectorAll('#chart-years-checkboxes input, #metric-checkboxes input').forEach(checkbox => {
+                checkbox.addEventListener('change', updateDashboard);
+            });
+            updateDashboard();
+        }
+
+        function renderSummary(mainTab, subTab, year) {
+            const data = examData[mainTab][subTab][year];
+            const stats = data?.stats || { max: null, min: null, avg: null };
+            const type = data?.type || `ไม่พบรายละเอียดหลักสูตรสำหรับ พ.ศ. ${year}`;
+            const summaryHTML = `
+                <div class="bg-indigo-50 p-4 rounded-xl shadow-lg border-l-4 border-indigo-500">
+                    <p class="text-sm font-medium text-indigo-700">ปีการศึกษา ${year}</p>
+                    <p class="text-lg font-bold text-gray-900">${type}</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl shadow-lg border-l-4 border-green-500">
+                    <p class="text-sm font-medium text-green-700">คะแนนสูงสุด (MAX)</p>
+                    <p class="text-2xl font-extrabold text-gray-900">${stats.max ? stats.max.toFixed(2) : 'N/A'}</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-xl shadow-lg border-l-4 border-yellow-500">
+                    <p class="text-sm font-medium text-yellow-700">คะแนนเฉลี่ย (AVG)</p>
+                    <p class="text-2xl font-extrabold text-gray-900">${stats.avg ? stats.avg.toFixed(2) : 'N/A'}</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-xl shadow-lg border-l-4 border-red-500">
+                    <p class="text-sm font-medium text-red-700">คะแนนต่ำสุด (MIN)</p>
+                    <p class="text-2xl font-extrabold text-gray-900">${stats.min ? stats.min.toFixed(2) : 'N/A'}</p>
+                </div>
+            `;
+            document.getElementById('score-summary').innerHTML = summaryHTML;
+        }
+
+        function renderRankingTable(mainTab, subTab, year) {
+            const dataContainer = document.getElementById('full-ranking-table');
+            const data = examData[mainTab][subTab][year];
+            const ranking = data?.ranking;
+
+            if (!ranking || ranking.length === 0) {
+                dataContainer.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">ตารางคะแนนทุกอันดับ: พ.ศ. ${year} (${subTab})</h3>
+                    <p class="text-gray-600 p-4 bg-yellow-50 rounded-lg border border-yellow-300">
+                        <span class="font-bold">หมายเหตุ:</span> ไม่พบข้อมูลคะแนนทุกอันดับสำหรับปี พ.ศ. ${year}
+                    </p>`;
+                return;
+            }
+
+            const thClass = "px-4 py-3 text-xs font-bold text-red-700 uppercase tracking-wider";
+            let subjectHeaders = '';
+            // For regular program, there are no subject breakdowns in the provided data
+            if (mainTab === "ห้องเรียนพิเศษ") {
+                if (subTab === 'EP') {
+                    subjectHeaders = `<th class="${thClass} text-right">คณิตฯ</th><th class="${thClass} text-right">วิทย์ฯ</th><th class="${thClass} text-right">อังกฤษ</th><th class="${thClass} text-right">สัมภาษณ์</th>`;
+                } else if (subTab === 'SMTE') {
+                    subjectHeaders = `<th class="${thClass} text-right">คณิตฯ</th><th class="${thClass} text-right">วิทย์ฯ</th>`;
+                } else if (subTab === 'GM') {
+                    subjectHeaders = `<th class="${thClass} text-right">คณิตฯ</th><th class="${thClass} text-right">วิทย์ฯ</th><th class="${thClass} text-right">อังกฤษ</th>`;
+                }
+            }
+
+
+            let tableHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">ตารางคะแนนทุกอันดับ: พ.ศ. ${year} (${subTab})</h3>
+                <div class="overflow-auto shadow-xl rounded-lg border border-gray-200 max-h-96">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-red-50 sticky top-0">
+                            <tr>
+                                <th class="${thClass} text-center">อันดับ</th>
+                                ${subjectHeaders}
+                                <th class="${thClass} text-right">คะแนนรวม</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">`;
+            
+            const formatScore = (val, decimalPlaces = 2) => (val !== null && val !== undefined) ? val.toFixed(decimalPlaces) : 'N/A';
+            
+            ranking.forEach((scoreData, index) => {
+                const rank = index + 1;
+                const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                
+                let subjectCells = '';
+                const totalScoreDisplay = scoreData ? formatScore(scoreData.total) : 'N/A';
+
+                if (mainTab === "ห้องเรียนพิเศษ") {
+                     if (subTab === 'EP') {
+                        subjectCells = `<td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.math) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.science) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.english) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.interview) : 'N/A'}</td>`;
+                    } else if (subTab === 'SMTE') {
+                        subjectCells = `<td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.math) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.science) : 'N/A'}</td>`;
+                    } else if (subTab === 'GM') {
+                        subjectCells = `<td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.math) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.science) : 'N/A'}</td><td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData.english) : 'N/A'}</td>`;
+                    }
+                }
+                
+                tableHTML += `<tr class="${rowClass} text-sm whitespace-nowrap hover:bg-blue-50">
+                                <td class="px-4 py-2 text-center font-medium">${rank}</td>
+                                ${subjectCells}
+                                <td class="px-4 py-2 text-right font-bold ${!scoreData ? 'text-gray-400' : 'text-gray-900'}">${totalScoreDisplay}</td>
+                              </tr>`;
+            });
+
+            tableHTML += `</tbody></table></div>`;
+            dataContainer.innerHTML = tableHTML;
+        }
+
+        function renderDataTable(mainTab, subTab) {
+            const dataContainer = document.getElementById('score-data-table');
+            const subGroupData = examData[mainTab][subTab];
+            const years = Object.keys(subGroupData).sort((a, b) => b - a);
+            let tableHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">ตารางสรุปข้อมูลคะแนนย้อนหลัง: ${subTab}</h3>
+                <div class="overflow-x-auto shadow-xl rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-blue-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">ปี</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">รายละเอียด</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-blue-700 uppercase tracking-wider">สูงสุด</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-blue-700 uppercase tracking-wider">เฉลี่ย</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-blue-700 uppercase tracking-wider">ต่ำสุด</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">`;
+            years.forEach((year, index) => {
+                const data = subGroupData[year];
+                const stats = data?.stats || {};
+                const type = data?.type || `N/A`;
+                const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                tableHTML += `
+                    <tr class="${rowClass} hover:bg-blue-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">พ.ศ. ${year}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${type}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-right text-green-600">${stats.max?.toFixed(2) || 'N/A'}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-right text-yellow-600">${stats.avg?.toFixed(2) || 'N/A'}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-right text-red-600">${stats.min?.toFixed(2) || 'N/A'}</td>
+                    </tr>`;
+            });
+            tableHTML += `</tbody></table></div>`;
+            dataContainer.innerHTML = tableHTML;
+        }
+
+        function renderChart(mainTab, subTab, chartYears, chartMetrics) {
+            if (chartInstance) chartInstance.destroy();
+            
+            const chartCanvas = document.getElementById('comparisonChart');
+            const chartContainer = chartCanvas.parentNode;
+            
+            if (chartYears.length === 0 || chartMetrics.length === 0) {
+                 if (chartContainer.querySelector('div')) return; // Avoid re-rendering message
+                chartContainer.innerHTML = '<div class="h-full flex items-center justify-center rounded-lg bg-gray-50"><p class="text-center text-gray-500">กรุณาเลือกปีและตัวชี้วัดอย่างน้อยหนึ่งรายการเพื่อแสดงกราฟ</p></div>';
+                return;
+            } 
+            
+            if (chartContainer.querySelector('div')) {
+                 chartContainer.innerHTML = '<canvas id="comparisonChart"></canvas>';
+            }
+
+            const metricLabels = {'max': 'คะแนนสูงสุด', 'avg': 'คะแนนเฉลี่ย', 'min': 'คะแนนต่ำสุด'};
+            const chartLabels = chartMetrics.map(metric => metricLabels[metric]);
+            const colors = [
+                { bg: 'rgba(59, 130, 246, 0.7)', border: 'rgb(59, 130, 246)' }, { bg: 'rgba(239, 68, 68, 0.7)', border: 'rgb(239, 68, 68)' },
+                { bg: 'rgba(34, 197, 94, 0.7)', border: 'rgb(34, 197, 94)' }, { bg: 'rgba(245, 158, 11, 0.7)', border: 'rgb(245, 158, 11)' },
+                { bg: 'rgba(124, 58, 237, 0.7)', border: 'rgb(124, 58, 237)' }, { bg: 'rgba(6, 182, 212, 0.7)', border: 'rgb(6, 182, 212)' }
+            ];
+            
+            const sortedYears = chartYears.sort((a,b) => a-b);
+
+            let datasets = sortedYears.map((year, index) => {
+                const yearData = examData[mainTab][subTab][year];
+                if (!yearData) return null;
+                const dataForYear = chartMetrics.map(metric => yearData.stats[metric] || 0);
+                const colorSet = colors[index % colors.length];
+                return { label: `พ.ศ. ${year}`, data: dataForYear, backgroundColor: colorSet.bg, borderColor: colorSet.border, borderWidth: 1, borderRadius: 8 };
+            }).filter(d => d);
+
+            chartInstance = new Chart(document.getElementById('comparisonChart').getContext('2d'), {
+                type: 'bar',
+                data: { labels: chartLabels, datasets: datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { family: 'Noto Sans Thai, Inter' }}},
+                        title: { display: true, text: `เปรียบเทียบคะแนน ห้องเรียน ${subTab}`, font: { size: 16, family: 'Noto Sans Thai, Inter' }, color: '#1f2937' }
+                    },
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'คะแนน', font: { family: 'Noto Sans Thai, Inter' }}}, x: { ticks: { font: { family: 'Noto Sans Thai, Inter' }}} }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
