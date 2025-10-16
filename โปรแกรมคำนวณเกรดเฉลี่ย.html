@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมคำนวณเกรดเฉลี่ย</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* CSS ภายในที่ใช้สำหรับโครงสร้างและสไตล์หลักที่ไม่ใช่ Tailwind */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700;800&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f7fa;
+            --text-color: #333;
+            --border-color: #dce1e6;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --reset-color: #ffc107; 
+            --header-color: #ff4081; /* สีสดใสสำหรับหัวข้อหลัก */
+            --highlight-color: #4CAF50; /* สีเขียวสดใสสำหรับจัดทำโดย */
+        }
+
+        /* ปรับใช้ Font Sarabun กับทุกส่วน และเพิ่มลายน้ำ */
+        body {
+            font-family: 'Sarabun', sans-serif;
+            color: var(--text-color);
+            /* --- ลายน้ำ (Watermark) --- */
+            background-image: repeating-linear-gradient(
+                -45deg, 
+                rgba(255, 64, 129, 0.05), /* สีชมพูจางมาก */
+                rgba(255, 64, 129, 0.05) 50px,
+                transparent 50px,
+                transparent 100px
+            );
+            /* เพิ่มข้อความลายน้ำด้วย CSS Content */
+            position: relative;
+        }
+
+        /* Watermark Text Layer (ใช้ ::before ใน body เพื่อสร้างลายน้ำกลางหน้า) */
+        body::before {
+            content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: -1; /* ให้มันอยู่ด้านหลังเนื้อหาหลัก */
+            color: rgba(255, 64, 129, 0.1); /* สีจางมาก */
+            font-size: 4em;
+            font-weight: 800;
+            opacity: 0.8;
+            pointer-events: none; /* ไม่ให้รบกวนการคลิก */
+            transform: translate(-50%, -50%) rotate(-25deg); /* จัดกลางและหมุน */
+            white-space: nowrap;
+        }
+        /* --- สิ้นสุดลายน้ำ --- */
+
+
+        main {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        
+        .header-section {
+            text-align: center; /* จัดให้อยู่ตรงกลาง */
+            margin-bottom: 20px;
+        }
+
+        .header-section h1 {
+            font-family: 'Sarabun', sans-serif;
+            font-size: 3em; 
+            color: var(--header-color); 
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 5px;
+        }
+
+        .header-section p {
+            font-size: 1.1em; /* เพิ่มขนาดให้อ่านง่ายขึ้น */
+            color: var(--highlight-color); /* ใช้สีสันเด่นชัด */
+            font-weight: 700; /* ตัวหนา */
+            margin-top: 0;
+        }
+        
+        /* ... [CSS ส่วนที่เหลือเหมือนเดิม] ... */
+        
+        h2, h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        h3.table-header {
+            margin-top: 15px;
+            border-bottom: none;
+            color: #555;
+        }
+        
+        .note-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .note-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .note-box ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: decimal;
+            color: #856404;
+        }
+        
+        .grade-input-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .grade-input-section {
+            flex: 1;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            font-family: 'Sarabun', sans-serif;
+        }
+        
+        input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        #calculate-btn {
+            width: 50%;
+            font-size: 1.2em;
+            padding: 15px;
+            background-color: var(--success-color);
+            margin-top: 20px;
+        }
+        #calculate-btn:hover { background-color: #218838; }
+        
+        #reset-btn {
+            width: 48%; 
+            font-size: 1.2em;
+            padding: 15px;
+            background-color: var(--reset-color);
+            margin-top: 20px;
+            color: var(--text-color);
+        }
+        #reset-btn:hover { background-color: #e0a800; }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .add-row-btn {
+            background-color: #6c757d;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .add-row-btn:hover { background-color: #5a6268; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .grade-input-section th:nth-child(1), 
+        .grade-input-section td:nth-child(1) {
+            width: 45%; 
+        }
+        .grade-input-section th:nth-child(2), 
+        .grade-input-section td:nth-child(2) {
+            width: 130px; 
+        }
+        .grade-input-section th:nth-child(3), 
+        .grade-input-section td:nth-child(3) {
+            width: 80px; 
+        }
+        
+        .grade-input-section td input {
+             width: 100%;
+        }
+
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+        }
+        
+        .delete-row-btn {
+            background-color: var(--danger-color);
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+        .delete-row-btn:hover { background-color: #c82333; }
+        .delete-row-btn[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #results-section {
+            margin-top: 30px;
+        }
+        
+        #results-summary-table { margin-top: 15px; }
+        #results-summary-table th, #results-summary-table td { text-align: center; }
+        
+        .pass { color: var(--success-color); font-weight: bold; }
+        .fail { color: var(--danger-color); font-weight: bold; }
+
+        #final-result {
+            font-size: 2.2em;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="bg-white p-2 text-center shadow-md">
+        <a href="Page5.html" class="text-blue-600 hover:underline mx-2">ข้อมูลการรับนักเรียน</a>
+        <a href="Page2.html" class="text-blue-600 hover:underline mx-2">การเตรียมตัวการสอบเข้า</a>
+        <a href="Page3.html" class="text-blue-600 hover:underline mx-2">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
+        <a href="Page4.html" class="text-blue-600 hover:underline mx-2">สถิติอัตราการแข่งขัน</a>
+        <a href="Page6.html" class="text-blue-600 hover:underline mx-2">แผนลับหลักสูตรม.1</a>
+        <a href="Page7.html" class="text-blue-600 hover:underline mx-2">ตัวอย่างตารางเรียนม.1</a>
+        <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="text-blue-600 hover:underline mx-2">ระบบสถิติคะแนนสอบเข้าม.1</a>
+        <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="text-blue-600 hover:underline mx-2">โครงสร้างข้อสอบห้องเรียนปกติ</a>
+    </div>
+
+    <datalist id="subjects">
+        <option value="คณิตศาสตร์"></option>
+        <option value="วิทยาศาสตร์"></option>
+        <option value="ภาษาอังกฤษ"></option>
+        <option value="ภาษาไทย"></option>
+        <option value="สังคมศึกษา ศาสนา และวัฒนธรรม"></option>
+        <option value="ประวัติศาสตร์"></option>
+        <option value="สุขศึกษาและพลศึกษา"></option>
+        <option value="ศิลปะ"></option>
+        <option value="การงานอาชีพ"></option>
+        <option value="ภาษาต่างประเทศ"></option>
+        <option value="ภาษาอังกฤษเพื่อการสื่อสาร"></option>
+    </datalist>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <main>
+            <div class="header-section">
+                <h1>ครอบครัวยอดนารี❤️สตรีวิทยา</h1>
+                <p>จัดทำโดย... ลุ้นสอวอไปด้วยกันนะ</p>
+            </div>
+
+            <div class="note-box">
+                <strong>สำคัญ: อ่านก่อนพิมพ์</strong>
+                <ul>
+                    <li>พิมพ์รายวิชาทุกรายวิชาที่ระบุระดับคะแนน/เกรด ทั้งพื้นฐานและเพิ่มเติม</li>
+                    <li>พิมพ์ชื่อเต็มรายวิชาตามหลักฐานแสดงระดับผลการเรียน</li>
+                    <li>พิมพ์ค่า **น้ำหนักคะแนน หรือหน่วยกิต** และระดับคะแนน/เกรดให้ครบถ้วนถูกต้อง</li>
+                    <li>กรณีที่ไม่มีค่าน้ำหนักคะแนนหรือหน่วยกิต ให้ใส่เลย **1**</li>
+                    <li>กรณีที่มีผลการเรียนเป็นร้อยละ ให้คิดเป็นระดับผลการเรียนเกรด 8 ระดับ (0-4)</li>
+                </ul>
+            </div>
+
+            <section>
+                <label for="program">เลือกหลักสูตร (สำหรับตรวจสอบเงื่อนไข):</label>
+                <select id="program">
+                    <option value="ep">EP (English Program)</option>
+                    <option value="smte">SMTE</option>
+                    <option value="gm">Gifted Math</option>
+                </select>
+            </section>
+
+            <div class="grade-input-container">
+                <div class="grade-input-section">
+                    <h3 class="table-header">ผลการเรียนชั้น ป.4</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>รายวิชา</th>
+                                <th>น้ำหนักคะแนน หรือหน่วยกิต</th>
+                                <th>เกรด</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list-g4"></tbody>
+                    </table>
+                    <button type="button" id="add-row-g4" class="add-row-btn">+ เพิ่มรายวิชา</button>
+                </div>
+
+                <div class="grade-input-section">
+                    <h3 class="table-header">ผลการเรียนชั้น ป.5</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>รายวิชา</th>
+                                <th>น้ำหนักคะแนน หรือหน่วยกิต</th>
+                                <th>เกรด</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list-g5"></tbody>
+                    </table>
+                    <button type="button" id="add-row-g5" class="add-row-btn">+ เพิ่มรายวิชา</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" id="calculate-btn">คำนวณและแสดงผลลัพธ์</button>
+                <button type="button" id="reset-btn">ล้างข้อมูล (Reset)</button>
+            </div>
+
+            <section id="results-section" style="display: none;">
+                <hr style="margin: 30px 0; border-top: 1px solid var(--border-color);">
+                <h2>สรุปผลการพิจารณา</h2>
+                <table id="results-summary-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">รายวิชา</th>
+                            <th>ป.๔</th>
+                            <th>ป.๕</th>
+                            <th>เฉลี่ย (ป.๔+ป.๕)</th>
+                            <th>คุณสมบัติ </th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-summary-body">
+                        </tbody>
+                </table>
+                <div id="final-result"></div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-4 pb-8 text-gray-600 bg-gray-200 pt-8">
+            <p class="font-normal text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <p class="font-normal text-base">จัดทำโดย...ลุ้นสอวอไปด้วยกันนะ</p>
+            <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-flex items-center gap-2 font-semibold text-green-600 hover:underline text-lg">
+                <i class="fab fa-line text-2xl"></i> Line OPC
+            </a>
+        </footer>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DOM Elements ---
+            const programSelect = document.getElementById('program');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn'); 
+            const addRowBtnG4 = document.getElementById('add-row-g4');
+            const subjectListG4 = document.getElementById('subject-list-g4');
+            const addRowBtnG5 = document.getElementById('add-row-g5');
+            const subjectListG5 = document.getElementById('subject-list-g5');
+            const resultsSection = document.getElementById('results-section');
+            const summaryBody = document.getElementById('results-summary-body');
+            const finalResultDiv = document.getElementById('final-result');
+
+            // --- Configuration for Locked Rows ---
+            const initialSubjects = {
+                'ep': ['ภาษาอังกฤษ'],
+                'smte': ['คณิตศาสตร์', 'วิทยาศาสตร์'],
+                'gm': ['คณิตศาสตร์', 'วิทยาศาสตร์']
+            };
+            
+            let lockedSubjectInputs = { g4: {}, g5: {} };
+            let currentProgram = programSelect.value;
+            
+            // --- Core Logic Functions ---
+
+            const createLockedRow = (subjectName, targetTbody, gradeGroup, index) => {
+                const row = document.createElement('tr');
+                row.className = 'locked-row';
+                const subjectKey = subjectName.trim().toLowerCase(); 
+                
+                row.innerHTML = `
+                    <td><input type="text" class="subject-name locked-subject" value="${subjectName}" readonly data-subject-key="${subjectKey}"></td>
+                    <td><input type="number" class="credits" min="0.5" step="0.5" value="1"></td>
+                    <td><input type="number" class="grade" min="0" max="4" step="0.5"></td>
+                    <td><button type="button" class="delete-row-btn" disabled>ลบ</button></td>
+                `;
+                targetTbody.appendChild(row);
+                
+                // Store references to the inputs
+                lockedSubjectInputs[gradeGroup][subjectKey] = {
+                    nameInput: row.querySelector('.subject-name'),
+                    creditsInput: row.querySelector('.credits'),
+                    gradeInput: row.querySelector('.grade')
+                };
+            };
+            
+            const addRow = (targetTbody) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" class="subject-name" list="subjects" placeholder="เลือกหรือพิมพ์..."></td>
+                    <td><input type="number" class="credits" min="0.5" step="0.5" value="1"></td>
+                    <td><input type="number" class="grade" min="0" max="4" step="0.5"></td>
+                    <td><button type="button" class="delete-row-btn">ลบ</button></td>
+                `;
+                targetTbody.appendChild(row);
+                row.querySelector('.delete-row-btn').addEventListener('click', () => row.remove());
+            };
+            
+            // Calculates GPA for a given array of grade objects
+            const calculateGroupGPA = (rows) => {
+                let totalCredits = 0, totalScore = 0;
+                rows.forEach(r => {
+                    totalCredits += r.credits;
+                    totalScore += r.score; // score = credits * grade
+                });
+                return totalCredits > 0 ? totalScore / totalCredits : 0;
+            };
+
+            const processGrades = () => {
+                const allRows = document.querySelectorAll('#subject-list-g4 tr, #subject-list-g5 tr');
+                let gradesData = { g4: [], g5: [] };
+
+                allRows.forEach(row => {
+                    const nameInput = row.querySelector('.subject-name');
+                    const subjectName = nameInput.dataset.subjectKey || nameInput.value.trim().toLowerCase();
+                    
+                    const creditsInput = row.querySelector('.credits').value;
+                    const gradeInput = row.querySelector('.grade').value;
+                    
+                    const credits = parseFloat(creditsInput);
+                    const grade = parseFloat(gradeInput);
+                    
+                    const gradeGroup = row.parentElement.id.includes('g4') ? 'g4' : 'g5';
+
+                    if (subjectName && !isNaN(credits) && !isNaN(grade) && credits > 0) {
+                        gradesData[gradeGroup].push({
+                            name: subjectName,
+                            credits: credits,
+                            grade: grade,
+                            score: credits * grade
+                        });
+                    }
+                });
+                return gradesData;
+            };
+            
+            const createSummaryRow = (label, gpa4, gpa5, avgGpa, requiredGpa = 3.5) => {
+                const conditionPass = avgGpa >= requiredGpa; 
+                const status = conditionPass ? 'ผ่าน' : 'ไม่ผ่าน';
+                const statusClass = conditionPass ? 'pass' : 'fail';
+                return `
+                    <tr>
+                        <td style="text-align: left;"><b>${label}</b></td>
+                        <td>${gpa4.toFixed(2)}</td>
+                        <td>${gpa5.toFixed(2)}</td>
+                        <td>${avgGpa.toFixed(2)}</td>
+                        <td><span class="${statusClass}">${status}</span></td>
+                    </tr>
+                `;
+            };
+            
+            const getLockedGpa = (subjectKey) => {
+                const grade4 = parseFloat(lockedSubjectInputs.g4[subjectKey]?.gradeInput.value || 0);
+                const credits4 = parseFloat(lockedSubjectInputs.g4[subjectKey]?.creditsInput.value || 0);
+                const grade5 = parseFloat(lockedSubjectInputs.g5[subjectKey]?.gradeInput.value || 0);
+                const credits5 = parseFloat(lockedSubjectInputs.g5[subjectKey]?.creditsInput.value || 0);
+
+                const totalCredits = credits4 + credits5;
+                const avg = totalCredits > 0 ? ((grade4 * credits4) + (grade5 * credits5)) / totalCredits : 0;
+
+                return { 
+                    g4: credits4 > 0 ? grade4 : 0, 
+                    g5: credits5 > 0 ? grade5 : 0, 
+                    avg: avg 
+                };
+            };
+
+            // --- UI Setup and Update Functions ---
+
+            const updateLockedRows = (program) => {
+                // Clear existing rows
+                subjectListG4.innerHTML = '';
+                subjectListG5.innerHTML = '';
+                lockedSubjectInputs = { g4: {}, g5: {} };
+                
+                const subjectsToLock = initialSubjects[program];
+                
+                // Add locked rows
+                subjectsToLock.forEach((subject, index) => {
+                    createLockedRow(subject, subjectListG4, 'g4', index);
+                    createLockedRow(subject, subjectListG5, 'g5', index);
+                });
+                
+                // Add default number of empty rows
+                for (let i = 0; i < (5 - subjectsToLock.length); i++) {
+                    addRow(subjectListG4);
+                    addRow(subjectListG5);
+                }
+                
+                // ซ่อนผลลัพธ์เมื่อมีการเปลี่ยนโปรแกรม
+                resultsSection.style.display = 'none'; 
+            };
+
+            const displayResults = () => {
+                const program = programSelect.value;
+                const gradesData = processGrades();
+                const allGrades = [...gradesData.g4, ...gradesData.g5];
+                
+                // --- 1. Calculate Overall GPAs ---
+                const gpa = {
+                    overall4: calculateGroupGPA(gradesData.g4),
+                    overall5: calculateGroupGPA(gradesData.g5),
+                };
+
+                const avgGpa = {
+                    overall: calculateGroupGPA(allGrades),
+                };
+                
+                summaryBody.innerHTML = '';
+                let overallPass = false;
+
+                // --- 2. Program Specific Checks ---
+                if (program === 'smte' || program === 'gm') {
+                    const mathKey = 'คณิตศาสตร์';
+                    const sciKey = 'วิทยาศาสตร์';
+                    const gpaMath = getLockedGpa(mathKey);
+                    const gpaSci = getLockedGpa(sciKey);
+                    
+                    // Display rows
+                    summaryBody.innerHTML += createSummaryRow('คณิตศาสตร์', gpaMath.g4, gpaMath.g5, gpaMath.avg);
+                    summaryBody.innerHTML += createSummaryRow('วิทยาศาสตร์', gpaSci.g4, gpaSci.g5, gpaSci.avg);
+                    summaryBody.innerHTML += createSummaryRow('ทุกรายวิชา', gpa.overall4, gpa.overall5, avgGpa.overall);
+
+                    // Final Check: (Locked Math GPA >= 3.5) AND (Locked Sci GPA >= 3.5) AND (Overall GPA >= 3.5)
+                    if (gpaMath.avg >= 3.5 && gpaSci.avg >= 3.5 && avgGpa.overall >= 3.5) {
+                        overallPass = true;
+                    }
+                } 
+                
+                // --- 3. Program Specific Checks (EP) ---
+                else { // EP program
+                    const engKey = 'ภาษาอังกฤษ';
+                    const gpaEng = getLockedGpa(engKey);
+
+                    // Display rows
+                    summaryBody.innerHTML += createSummaryRow('ภาษาอังกฤษ', gpaEng.g4, gpaEng.g5, gpaEng.avg);
+                    summaryBody.innerHTML += createSummaryRow('ทุกรายวิชา', gpa.overall4, gpa.overall5, avgGpa.overall);
+
+                    // Final Check: (Locked English GPA >= 3.5) AND (Overall GPA >= 3.5)
+                    if (gpaEng.avg >= 3.5 && avgGpa.overall >= 3.5) {
+                        overallPass = true;
+                    }
+                }
+
+                // --- 4. Final Verdict ---
+                if (overallPass) {
+                    finalResultDiv.textContent = 'คุณสมบัติผ่าน';
+                    finalResultDiv.style.backgroundColor = 'var(--success-color)';
+                    finalResultDiv.style.color = 'white';
+                } else {
+                    finalResultDiv.textContent = 'คุณสมบัติไม่ผ่าน';
+                    finalResultDiv.style.backgroundColor = 'var(--danger-color)';
+                    finalResultDiv.style.color = 'white';
+                }
+                
+                resultsSection.style.display = 'block';
+                window.scrollTo(0, document.body.scrollHeight);
+            };
+            
+            const handleReset = () => {
+                if (confirm('คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลทั้งหมด?')) {
+                    // Reset program to default EP and clear all grades
+                    programSelect.value = 'ep';
+                    currentProgram = 'ep';
+                    updateLockedRows(currentProgram);
+                    
+                    // Hide results section
+                    resultsSection.style.display = 'none'; 
+                }
+            };
+
+
+            // --- Event Listeners and Initialization ---
+            programSelect.addEventListener('change', (e) => {
+                currentProgram = e.target.value;
+                updateLockedRows(currentProgram);
+            });
+            
+            addRowBtnG4.addEventListener('click', () => addRow(subjectListG4));
+            addRowBtnG5.addEventListener('click', () => addRow(subjectListG5));
+            
+            calculateBtn.addEventListener('click', displayResults);
+            resetBtn.addEventListener('click', handleReset);
+
+            // Initial setup based on default selection (EP)
+            updateLockedRows(currentProgram);
+        });
+    </script>
+</body>
+</html>
