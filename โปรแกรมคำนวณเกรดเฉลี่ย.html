@@ -270,19 +270,44 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    
-    <div class="bg-white p-2 text-center shadow-md">
-        <a href="index.html" class="text-blue-600 hover:underline mx-2">ครอบครัวยอดนารี</a>
-        <a href="Page5.html" class="text-blue-600 hover:underline mx-2">ข้อมูลการรับนักเรียน</a>
-        <a href="Page2.html" class="text-blue-600 hover:underline mx-2">การเตรียมตัวการสอบเข้า</a>
-        <a href="Page3.html" class="text-blue-600 hover:underline mx-2">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
-        <a href="Page4.html" class="text-blue-600 hover:underline mx-2">สถิติอัตราการแข่งขัน</a>
-        <a href="Page6.html" class="text-blue-600 hover:underline mx-2">แผนลับหลักสูตรม.1</a>
-        <a href="Page7.html" class="text-blue-600 hover:underline mx-2">ตัวอย่างตารางเรียนม.1</a>
-        <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="text-blue-600 hover:underline mx-2">ระบบสถิติคะแนนสอบเข้าม.1</a>
-        <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="text-blue-600 hover:underline mx-2">โครงสร้างข้อสอบห้องเรียนปกติ</a>
+    <div class="bg-white p-2 text-center shadow-md relative">
+        <button id="dropdownButton" class="text-blue-600 hover:underline mx-2">
+            เมนูหลัก ▼
+        </button>
+        <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-md rounded-md z-10">
+             <a href="index.html" class="text-blue-600 hover:underline mx-2">ครอบครัวยอดนารี</a>
+            <a href="Page5.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">ข้อมูลการรับนักเรียน</a>
+            <a href="Page2.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">การเตรียมตัวการสอบเข้า</a>
+            <a href="Page3.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
+            <a href="Page4.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">สถิติอัตราการแข่งขัน</a>
+            <a href="Page6.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">แผนลับหลักสูตรม.1</a>
+            <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">โปรแกรมคำนวณเกรดเฉลี่ยห้องเรียนพิเศษ</a>
+            <a href="Page7.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">ตัวอย่างตารางเรียนม.1</a>
+            <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">ระบบสถิติคะแนนสอบเข้าม.1</a>
+            <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">โครงสร้างข้อสอบห้องเรียนปกติ</a>
+        </div>
+    </div>  
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <!-- เนื้อหาของหน้า -->
     </div>
 
+    <script>
+        const btn = document.getElementById('dropdownButton');
+        const menu = document.getElementById('dropdownMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // ปิดเมนูเมื่อคลิกข้างนอก
+        window.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
     <datalist id="subjects">
         <option value="คณิตศาสตร์"></option>
         <option value="วิทยาศาสตร์"></option>
