@@ -12,6 +12,7 @@
     
     <style>
         body::before {
+            /* ... (CSS สำหรับ Watermark) ... */
             content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
             position: fixed;
             top: 50%;
@@ -19,12 +20,13 @@
             transform: translate(-50%, -50%) rotate(-30deg);
             font-size: 5rem;
             font-weight: 600;
-            color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
+            color: rgba(0, 0, 0, 0.05);
             white-space: nowrap;
-            pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
+            pointer-events: none;
             z-index: 0;
         }
         :root {
+            /* ... (CSS Variables) ... */
             --bg-color: #f0f7ff;
             --card-bg: #ffffff;
             --header-bg: #4a90e2;
@@ -36,25 +38,25 @@
             --lunch-bg: #fff0f0;
             --shadow-color: rgba(74, 144, 226, 0.15);
 
-            /* สีสำหรับวิชาในตารางหลัก */
-            --sub-math: #a8dadc;      /* Light Blue */
-            --sub-thai: #fec89a;      /* Light Orange */
-            --sub-science: #b8e0d4;   /* Light Teal */
-            --sub-english: #e2e8f0;   /* Light Gray */
-            --sub-social: #ffb703;    /* Yellow/Gold */
-            --sub-pe: #c8e6c9;        /* Mint Green */
-            --sub-art: #f9d8f7;       /* Light Pink/Purple */
-            --sub-comp: #f7a28e;      /* Light Salmon */
-            --sub-homeroom: #d8f3dc;  /* Very Light Green */
-            --sub-empty: #f8f8f8;     /* Light Gray for Empty Slot */
+            --sub-math: #a8dadc;
+            --sub-thai: #fec89a;
+            --sub-science: #b8e0d4;
+            --sub-english: #e2e8f0;
+            --sub-social: #ffb703;
+            --sub-pe: #c8e6c9;
+            --sub-art: #f9d8f7;
+            --sub-comp: #f7a28e;
+            --sub-homeroom: #d8f3dc;
+            --sub-empty: #f8f8f8;
 
-            /* สีสำหรับตารางเสริมวันเสาร์ */
             --subject-1: #cceeff;
             --subject-2: #cce7ff;
             --subject-3: #d4ffcc;
             --subject-4: #fff4cc;
-            --activity-color: #ffe0e0; /* สีใหม่สำหรับกิจกรรมพิเศษ */
+            --activity-color: #ffe0e0;
         }
+        
+        /* ... (CSS Styles for body, container, table, cells, media queries) ... */
 
         body {
             font-family: 'Kanit', sans-serif;
@@ -145,12 +147,11 @@
             color: var(--accent-color);
         }
 
-        /* Subject Cells Styling */
         .subject-cell {
             padding: 0.5rem;
             font-weight: 500;
             color: var(--text-color);
-            background-color: var(--sub-empty); /* Default to empty slot color */
+            background-color: var(--sub-empty);
         }
         .hr-cell { background-color: var(--sub-homeroom); font-weight: 600;}
         .math-cell { background-color: var(--sub-math); }
@@ -164,19 +165,15 @@
         .empty-cell { background-color: var(--sub-empty); color: #777; font-style: italic; }
 
 
-        /* ************************************** */
-        /* CSS สำหรับกิจกรรมพิเศษที่เพิ่มเข้ามา */
         .activity-cell {
             background-color: var(--activity-color);
             font-weight: 600;
-            color: #b00020; /* สีแดงเข้ม */
+            color: #b00020;
             white-space: normal;
             line-height: 1.2;
             padding: 1rem 0.5rem; 
         }
-        /* ************************************** */
 
-        /* Saturday Schedule Specific Styles */
         .time-col {
             background-color: var(--day-bg);
             font-weight: 600;
@@ -192,8 +189,6 @@
         .subject-physics { background-color: var(--subject-3); }
         .subject-math { background-color: var(--subject-4); }
 
-        /* ************************************** */
-        /* CSS สำหรับ Footer ที่จัดกึ่งกลาง */
         .schedule-footer {
             text-align: center;
             margin-top: 2rem;
@@ -211,7 +206,7 @@
             align-items: center;
             gap: 0.5rem;
             font-weight: 600;
-            color: #00b900; /* Line Green */
+            color: #00b900;
             text-decoration: none;
             margin-bottom: 2rem;
             font-size: 1.1rem;
@@ -219,8 +214,6 @@
         .schedule-footer a:hover {
             text-decoration: underline;
         }
-        /* ************************************** */
-
 
         @media (max-width: 768px) {
             body { padding: 0.5rem; }
@@ -233,6 +226,7 @@
     </style>
 </head>
 <body class="bg-gray-100">
+    
     <div class="bg-white p-2 text-center shadow-md relative z-10">
         <button id="dropdownButton" class="text-pink-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-pink-50 hover:bg-pink-100 shadow-md">
             เมนูหลัก ☰
@@ -250,7 +244,6 @@
             <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โครงสร้างข้อสอบห้องเรียนปกติ</a>
         </div>
     </div>
-
     <div class="container">
         <div class="schedule-card">
             <div class="card-header">
@@ -382,8 +375,6 @@
                 </tbody>
             </table>
         </div>
-        
-
     </div>
     
     <footer class="schedule-footer">
@@ -394,7 +385,7 @@
     </footer>
 
     <script>
-        // โค้ด Dropdown (ทำงานได้ถูกต้อง)
+        // โค้ด Dropdown (ถูกต้องและทำงานได้ตามที่คุณต้องการ)
         const dropdownButton = document.getElementById('dropdownButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -409,12 +400,6 @@
                 dropdownMenu.classList.add('hidden');
             }
         });
-        
-        // ลบโค้ด Tab function ที่ไม่ได้ใช้งานออก เพื่อความสะอาดของโค้ด
-        /*
-        function setupTabs(tabContainerId) { ... }
-        document.addEventListener('DOMContentLoaded', () => { ... });
-        */
     </script>
 </body>
 </html>
