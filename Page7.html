@@ -1,46 +1,29 @@
 <!DOCTYPE html>
 <html lang="th">
-
-</head>
-<body class="bg-gray-100">
-    <div class="bg-white p-2 text-center shadow-md relative z-10">
-        <button id="dropdownButton" class="text-pink-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-pink-50 hover:bg-pink-100 shadow-md">
-            เมนูหลัก ☰
-        </button>
-        <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-md border-t-4 border-pink-500 z-50">
-            <a href="index.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">หน้าหลักครอบครัวยอดนารี</a>
-            <a href="Page5.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ข้อมูลการรับนักเรียน</a>
-            <a href="Page2.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">การเตรียมตัวการสอบเข้า</a>
-            <a href="Page3.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
-            <a href="Page4.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">สถิติอัตราการแข่งขัน</a>
-            <a href="Page6.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">แผนลับหลักสูตรม.1</a>
-            <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โปรแกรมคำนวณเกรดเฉลี่ยห้องเรียนพิเศษ</a>
-            <a href="Page7.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ตัวอย่างตารางเรียนม.1</a>
-            <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ระบบสถิติคะแนนสอบเข้าม.1</a>
-            <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โครงสร้างข้อสอบห้องเรียนปกติ</a>
-        </div>
-    </div>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตารางเรียน ม.1 (ตัวอย่าง)</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJd/rB9gQn/uC4s4K/zI4I+7f2l2kM+2vXgW5eFv3tEwS6gC9f1qB/v5A8Gg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJd/rB9gQn/uC4s4K/zI4I+7f2l2kM+2vXgW5eFv3tEwS6gC9f1qB/v5A8Gg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <style>
         body::before {
-    content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 5rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
-    white-space: nowrap;
-    pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
-    z-index: 0;
-}
+            content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.05); /* สีเทาจาง ๆ */
+            white-space: nowrap;
+            pointer-events: none; /* ไม่ให้คลิกลายน้ำ */
+            z-index: 0;
+        }
         :root {
             --bg-color: #f0f7ff;
             --card-bg: #ffffff;
@@ -249,10 +232,26 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
+    <div class="bg-white p-2 text-center shadow-md relative z-10">
+        <button id="dropdownButton" class="text-pink-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-pink-50 hover:bg-pink-100 shadow-md">
+            เมนูหลัก ☰
+        </button>
+        <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-md border-t-4 border-pink-500 z-50">
+            <a href="index.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">หน้าหลักครอบครัวยอดนารี</a>
+            <a href="Page5.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ข้อมูลการรับนักเรียน</a>
+            <a href="Page2.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">การเตรียมตัวการสอบเข้า</a>
+            <a href="Page3.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
+            <a href="Page4.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">สถิติอัตราการแข่งขัน</a>
+            <a href="Page6.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">แผนลับหลักสูตรม.1</a>
+            <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โปรแกรมคำนวณเกรดเฉลี่ยห้องเรียนพิเศษ</a>
+            <a href="Page7.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ตัวอย่างตารางเรียนม.1</a>
+            <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ระบบสถิติคะแนนสอบเข้าม.1</a>
+            <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โครงสร้างข้อสอบห้องเรียนปกติ</a>
+        </div>
+    </div>
 
     <div class="container">
-        <!-- ตารางเรียน ม.1 หลัก (Homeroom - คาบ 9) -->
         <div class="schedule-card">
             <div class="card-header">
                 <h1>ตารางเรียน (ตัวอย่าง)</h1>
@@ -260,7 +259,6 @@
             </div>
             <table>
                 <thead>
-                    <!-- แถวแรก: ผสานเซลล์สำหรับภาคเช้าและภาคบ่าย -->
                     <tr>
                         <th rowspan="2" class="day-col">วัน</th>
                         <th rowspan="2">Homeroom<br>(08.00-08.30)</th>
@@ -268,7 +266,6 @@
                         <th rowspan="2" class="lunch-header">พักกลางวัน<br>(11.00-11.50)</th>
                         <th colspan="5">ภาคบ่าย (11.50-16.00)</th>
                     </tr>
-                    <!-- แถวที่สอง: รายละเอียดคาบเรียน -->
                     <tr>
                         <th>คาบ 1<br>(08.30-09.20)</th>
                         <th>คาบ 2<br>(09.20-10.10)</th>
@@ -281,7 +278,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- จันทร์: คาบ 9 ประชุมระดับ -->
                     <tr>
                         <td class="day-col">จันทร์</td>
                         <td class="hr-cell">HR</td>
@@ -295,7 +291,6 @@
                         <td class="subject-cell english-cell">เนตรนารี - ยุวกาชาด</td>
                         <td class="activity-cell">ประชุมระดับ</td> 
                     </tr>
-                    <!-- อังคาร: คาบ 9 ว่าง -->
                     <tr>
                         <td class="day-col">อังคาร</td>
                         <td class="hr-cell">HR</td>
@@ -309,7 +304,6 @@
                         <td class="subject-cell math-cell">คณิต2</td>
                         <td class="subject-cell empty-cell"></td> 
                     </tr>
-                    <!-- พุธ: คาบ 9 ว่าง -->
                     <tr>
                         <td class="day-col">พุธ</td>
                         <td class="hr-cell">HR</td>
@@ -323,7 +317,6 @@
                         <td class="subject-cell pe-cell">ภาษาไทย</td>
                         <td class="subject-cell empty-cell"></td> 
                     </tr>
-                    <!-- พฤหัสบดี: คาบ 8-9 บริหารจิต -->
                     <tr>
                         <td class="day-col">พฤหัสบดี</td>
                         <td class="hr-cell">HR</td>
@@ -336,7 +329,6 @@
                         <td class="subject-cell art-cell">ศิลปะ</td>
                         <td class="activity-cell" colspan="2">บริหารจิต (ห้องคู่)</td> 
                     </tr>
-                    <!-- ศุกร์: คาบ 8-9 บริหารจิต -->
                     <tr>
                         <td class="day-col">ศุกร์</td>
                         <td class="hr-cell">HR</td>
@@ -353,7 +345,6 @@
             </table>
         </div>
 
-        <!-- ตารางเรียนเสริมวันเสาร์ (SMTE/GM) -->
         <div class="schedule-card">
             <div class="card-header">
                 <h2>ตารางเรียนเสริมวันเสาร์ (เรียนฟรี)</h2>
@@ -395,7 +386,6 @@
 
     </div>
     
-    <!-- Footer ที่จัดกึ่งกลาง -->
     <footer class="schedule-footer">
         <p>ครอบครัวยอดนารี❤️สตรีวิทยา</p>
         <a href="https://shorturl.asia/BlJVn" target="_blank">
@@ -404,7 +394,7 @@
     </footer>
 
     <script>
-        // *** โค้ด Dropdown ที่ถูกเพิ่มกลับเข้ามา ***
+        // โค้ด Dropdown (ทำงานได้ถูกต้อง)
         const dropdownButton = document.getElementById('dropdownButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -413,49 +403,18 @@
             event.stopPropagation(); // กันการคลิกทะลุ
             dropdownMenu.classList.toggle('hidden');
         });
-	// คลิกที่อื่นให้ปิด dropdown
+        // คลิกที่อื่นให้ปิด dropdown
         document.addEventListener('click', (event) => {
             if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 dropdownMenu.classList.add('hidden');
             }
         });
-        // ***************************************
-
-        function setupTabs(tabContainerId) {
-            const tabContainer = document.getElementById(tabContainerId);
-            if (!tabContainer) return;
-	const tabs = Array.from(tabContainer.querySelectorAll('[data-tab]'));
-            const contentContainerId = tabContainer.id.replace('-tabs', '-content');
-            const contentContainer = document.getElementById(contentContainerId);
-            if(!contentContainer) return;
-            const contents = Array.from(contentContainer.children);
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = tab.getAttribute('data-tab');
-					tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    contents.forEach(content => {
-                        content.classList.add('hidden-content');
-                        content.classList.remove('content-enter');
-                        if (content.id === targetId) {
-                            content.classList.remove('hidden-content');
-                            setTimeout(() => {
-                                content.classList.add('content-enter');
-                            }, 10);
-                        }
-                    });
-                });
-            });
-        }
-	document.addEventListener('DOMContentLoaded', () => {
-            setupTabs('main-tabs');
-            setupTabs('special-nested-tabs');
-            setupTabs('normal-nested-tabs');
-            setupTabs('exam-sub-nested-tabs');
-        });
+        
+        // ลบโค้ด Tab function ที่ไม่ได้ใช้งานออก เพื่อความสะอาดของโค้ด
+        /*
+        function setupTabs(tabContainerId) { ... }
+        document.addEventListener('DOMContentLoaded', () => { ... });
+        */
     </script>
 </body>
 </html>
