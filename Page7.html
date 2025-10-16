@@ -56,8 +56,6 @@
             --activity-color: #ffe0e0;
         }
         
-        /* ... (CSS Styles for body, container, table, cells, media queries) ... */
-
         body {
             font-family: 'Kanit', sans-serif;
             background-color: var(--bg-color);
@@ -69,6 +67,31 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+        }
+
+        /* ปรับ padding ด้านบนของ body เพื่อรองรับ Dropdown ที่อยู่ด้านบนสุด */
+        body {
+            padding-top: 3.5rem; /* เพิ่มพื้นที่ด้านบนสำหรับเมนู */
+        }
+        
+        /* สไตล์สำหรับ Dropdown Container ให้ติดด้านบนสุด */
+        .dropdown-container {
+            position: fixed; /* ทำให้เมนูติดอยู่กับขอบบนตลอด */
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            padding: 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* ให้อยู่เหนือเนื้อหาอื่น ๆ */
+        }
+
+        /* ปรับให้ dropdown menu เริ่มต้นจากขอบซ้ายของ container (ซึ่งตอนนี้ติดขอบซ้ายจอ) */
+        .dropdown-container #dropdownMenu {
+             left: 0 !important;
+             right: auto;
+             margin-top: 0.5rem;
         }
 
         .container {
@@ -216,7 +239,7 @@
         }
 
         @media (max-width: 768px) {
-            body { padding: 0.5rem; }
+            body { padding: 0.5rem; padding-top: 3.5rem; }
             th, td { padding: 0.5rem; font-size: 0.75rem; }
             .card-header h1 { font-size: 1.25rem; }
             .card-header h2 { font-size: 1.1rem; }
@@ -227,7 +250,7 @@
 </head>
 <body class="bg-gray-100">
     
-    <div class="bg-white p-2 text-center shadow-md relative z-10">
+    <div class="dropdown-container relative z-1000">
         <button id="dropdownButton" class="text-pink-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-pink-50 hover:bg-pink-100 shadow-md">
             เมนูหลัก ☰
         </button>
@@ -369,37 +392,4 @@
                     </tr>
                     <tr>
                         <td class="time-col">15.10 - 17.10</td>
-                        <td><div class="subject subject-math">คณิตศาสตร์</div></td>
-                        <td><div class="subject subject-physics">ฟิสิกส์</div></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <footer class="schedule-footer">
-        <p>ครอบครัวยอดนารี❤️สตรีวิทยา</p>
-        <a href="https://shorturl.asia/BlJVn" target="_blank">
-            <i class="fab fa-line fa-2x"></i> Line OPC
-        </a>
-    </footer>
-
-    <script>
-        // โค้ด Dropdown (ถูกต้องและทำงานได้ตามที่คุณต้องการ)
-        const dropdownButton = document.getElementById('dropdownButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        // เมื่อคลิกปุ่ม "เมนูหลัก" ให้สลับแสดง / ซ่อนเมนู
-        dropdownButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // กันการคลิกทะลุ
-            dropdownMenu.classList.toggle('hidden');
-        });
-        // คลิกที่อื่นให้ปิด dropdown
-        document.addEventListener('click', (event) => {
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-    </script>
-</body>
-</html>
+                        <td><div class="subject subject-math">
