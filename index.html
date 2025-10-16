@@ -144,6 +144,25 @@
 
         </main>
     </div>
+<script>
+        const dropdownButton = document.getElementById('dropdownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
 
+        // เมื่อคลิกปุ่ม "เมนูหลัก" ให้สลับแสดง / ซ่อนเมนู
+        dropdownButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // กันการคลิกทะลุ
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // คลิกที่อื่นให้ปิด dropdown
+        document.addEventListener('click', (event) => {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+	
 </body>
 </html>
