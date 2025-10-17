@@ -50,26 +50,33 @@
             font-size: 3rem;
             line-height: 1;
         }
-    </style>
-
+   </style>      
 </head>
-<body class="bg-gray-100">
-    <div class="bg-white p-2 text-center shadow-md relative">
-        <button id="dropdownButton" class="text-blue-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-blue-50 hover:bg-blue-100">
-            เมนูหลัก ☰
-        </button>
-        <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-md border-t-4 border-[#D72C2C] z-50">
-            <a href="Page5.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">ข้อมูลการรับนักเรียน</a>
-            <a href="Page2.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">การเตรียมตัวการสอบเข้า</a>
-            <a href="Page3.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
-            <a href="Page4.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">สถิติอัตราการแข่งขัน</a>
-            <a href="Page6.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">แผนลับหลักสูตรม.1</a>
-            <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">โปรแกรมคำนวณเกรดเฉลี่ยห้องเรียนพิเศษ</a>
-            <a href="Page7.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">ตัวอย่างตารางเรียนม.1</a>
-            <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">ระบบสถิติคะแนนสอบเข้าม.1</a>
-            <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-blue-600 hover:bg-[#D72C2C] hover:text-white font-semibold">โครงสร้างข้อสอบห้องเรียนปกติ</a>
-        </div>
+
+<body>
+
+<!-- ✅ เมนูหลัก -->
+<div class="dropdown-container">
+  <div class="dropdown-wrapper">
+    <button id="dropdownButton" class="dropdown-btn">
+      ☰ เมนูหลัก
+    </button>
+    <div id="dropdownMenu" class="dropdown-menu hidden">
+      <a href="Page5.html">📘 ข้อมูลการรับนักเรียน</a>
+      <a href="Page2.html">📖 การเตรียมตัวการสอบเข้า</a>
+      <a href="Page3.html">📊 วิเคราะห์คะแนนสอบเข้า</a>
+      <a href="Page4.html">📈 สถิติอัตราการแข่งขัน</a>
+      <a href="Page6.html">🧭 แผนลับหลักสูตรม.1</a>
+      <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html">🧮 โปรแกรมคำนวณเกรดเฉลี่ย</a>
+      <a href="Page7.html">🗓️ ตัวอย่างตารางเรียน ม.1</a>
+      <a href="ระบบสถิติคะแนนสอบเข้าม.1.html">📚 ระบบสถิติคะแนนสอบเข้า</a>
+      <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html">📑 โครงสร้างข้อสอบห้องเรียนปกติ</a>
     </div>
+  </div>
+</div>
+
+        
+
      
     <div class="container mx-auto p-4 md:p-8 max-w-5xl">
 
@@ -145,21 +152,38 @@
         </main>
     </div>
 <script>
-        const dropdownButton = document.getElementById('dropdownButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+document.addEventListener("DOMContentLoaded", function() {
+  const button = document.getElementById("dropdownButton");
+  const menu = document.getElementById("dropdownMenu");
+  let isOpen = false;
 
-        // เมื่อคลิกปุ่ม "เมนูหลัก" ให้สลับแสดง / ซ่อนเมนู
-        dropdownButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // กันการคลิกทะลุ
-            dropdownMenu.classList.toggle('hidden');
-        });
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isOpen = !isOpen;
+    if (isOpen) {
+      button.innerHTML = "✖ ปิดเมนู";
+      menu.classList.remove("hidden");
+      setTimeout(() => menu.classList.add("show"), 10);
+    } else {
+      button.innerHTML = "☰ เมนูหลัก";
+      menu.classList.remove("show");
+      setTimeout(() => menu.classList.add("hidden"), 300);
+    }
+  });
 
-        // คลิกที่อื่นให้ปิด dropdown
-        document.addEventListener('click', (event) => {
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-    </script>
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !button.contains(e.target)) {
+      if (isOpen) {
+        isOpen = false;
+        button.innerHTML = "☰ เมนูหลัก";
+        menu.classList.remove("show");
+        setTimeout(() => menu.classList.add("hidden"), 300);
+      }
+    }
+  });
+});
+</script>
+
 </body>
 </html>
+
