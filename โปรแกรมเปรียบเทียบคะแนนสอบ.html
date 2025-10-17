@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -10,103 +10,136 @@
     <!-- Load Font Awesome for the LINE icon in the footer -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap');
+        /* --- Font and Base Styles --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700;800&display=swap');
         
-        /* Modern Background Gradient */
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
-            background-color: #f0f4f8; 
-            background-image: linear-gradient(to top right, #f8f9fe, #eef1f6); 
+            background-color: #f8fafc; /* Lighter background */
+            background-image: linear-gradient(to bottom right, #ffffff, #f1f5f9); 
             color: #334155;
             min-height: 100vh;
         }
         
-        /* Main Container Card Style */
         .container-wrapper {
             background-color: #ffffff;
-            border-radius: 1.5rem; /* Larger rounded corners */
-            box-shadow: 0 25px 50px rgba(17, 24, 39, 0.15); /* Deeper shadow */
-            padding: 2rem;
+            border-radius: 1.5rem; 
+            /* Subtle, clean shadow for a professional look */
+            box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08); 
+            padding: 2.5rem; 
         }
         
-        /* Header and Title Styles */
+        /* --- New Typography Hierarchy (Reduced and Balanced) --- */
+        
+        /* 1. Branding/Subtitle (Now the largest element as requested) */
+        .branding-subtitle {
+            font-size: 1.75rem; /* Prominent size for mobile */
+            font-weight: 800;
+            color: #4f46e5; 
+            line-height: 1.2;
+        }
+        @media (min-width: 640px) {
+            .branding-subtitle {
+                font-size: 2.25rem; /* text-4xl on desktop */
+            }
+        }
+        
+        /* 2. Main Functional Title (Reduced for better balance with branding line) */
         .header-title {
             font-family: 'Noto Sans Thai', sans-serif;
             color: #1e3a8a; 
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 800; 
+            line-height: 1.3;
         }
-        .section-title {
-            color: #1e40af; 
-            border-bottom: 3px solid #6366f1; /* Primary color line */
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
+        @media (min-width: 640px) {
+            .header-title {
+                font-size: 2rem; /* sm:text-3xl */
+            }
         }
         
-        /* Input and Selection Styles */
+        /* Section Title (Step 1 Title) */
+        .section-title {
+            color: #4f46e5; 
+            border-bottom: 2px solid #e0e7ff; 
+            padding-bottom: 0.5rem; 
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700;
+        }
+        
+        /* Step 2 Title (Slightly smaller for visual hierarchy) */
+        .subsection-title {
+            color: #4f46e5; 
+            border-bottom: 2px solid #e0e7ff; 
+            padding-bottom: 0.5rem; 
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700;
+        }
+
+        /* --- Input and Selection Styles --- */
         .input-field {
             border-radius: 0.75rem; 
-            padding: 0.85rem 1rem;
-            border: 1px solid #e2e8f0;
+            padding: 0.8rem 1rem; 
+            border: 1px solid #cbd5e1;
             transition: border-color 0.3s, box-shadow 0.3s;
-            background-color: #fefefe;
+            background-color: #ffffff;
+            font-size: 1.125rem; /* text-lg for high readability */
         }
         .input-field:focus {
             border-color: #4f46e5;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); 
             outline: none;
         }
         .radio-label {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 1rem;
-            padding: 1.25rem;
+            padding: 1.25rem; 
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04); 
         }
         .radio-label:hover {
             background-color: #eff6ff;
-            border-color: #6366f1;
+            border-color: #a5b4fc; 
         }
         .radio-label input:checked + span {
             color: #4f46e5;
             font-weight: 700;
         }
-        .radio-label input:checked {
-            accent-color: #4f46e5;
-        }
         
-        /* Primary Button Style (Gradient & Hover) */
+        /* --- Primary Button Style (Modern Gradient) --- */
         .btn-primary {
-            background-image: linear-gradient(to right, #4f46e5, #8b5cf6);
+            background-image: linear-gradient(to right, #4f46e5, #6366f1); 
             border-radius: 1rem;
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.25); 
         }
         .btn-primary:hover {
-            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
-            transform: translateY(-3px);
-            opacity: 0.95;
+            box-shadow: 0 12px 20px rgba(79, 70, 229, 0.35);
+            transform: translateY(-1px);
+            opacity: 0.98;
         }
 
-        /* Result Card Refinement */
+        /* --- Result Card Refinement --- */
         .result-card {
-            background-color: #f0fdf4; /* Very light green */
+            background-color: #f0fdf4; 
             border: 1px solid #dcfce7;
             border-radius: 1.5rem;
         }
 
-        /* New Footer Style */
+        /* --- Footer Style --- */
         .credit-footer {
-            background-color: #1e3a8a; /* Dark Blue matching header */
-            color: #d1d5db; /* Light gray text */
+            background-color: #1e3a8a; 
+            color: #d1d5db; 
             border-radius: 1rem;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
         }
         .credit-footer a {
-            color: #6ee7b7; /* Bright green for contrast */
+            color: #a7f3d0; 
         }
         .credit-footer a:hover {
-            color: #34d399;
+            color: #6ee7b7;
         }
     </style>
 </head>
@@ -119,21 +152,36 @@
     </div>
 
     <div class="max-w-4xl mx-auto container-wrapper">
-        <div class="text-center mb-12">
-            <p class="text-xl font-medium text-gray-700 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
-            <h1 class="text-5xl font-extrabold header-title leading-snug">
+        
+        <!-- START: Back to Home Button -->
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition duration-300 font-medium text-base">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                กลับไปยังหน้าหลัก
+            </a>
+        </div>
+        <!-- END: Back to Home Button -->
+
+        <div class="text-center mb-10">
+            <!-- 1. Branding (Largest as requested, with heart) -->
+            <p class="font-extrabold branding-subtitle mb-2">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <!-- 2. Functional Title (Balanced size) -->
+            <h1 class="font-extrabold header-title leading-tight">
                 เครื่องมือประเมินคะแนนสอบจริง<br class="sm:hidden"> จากคะแนน Pre-test
             </h1>
-            <p class="text-lg text-gray-600 mt-4">กรุณากรอกข้อมูลเพื่อประเมินผลคะแนนสอบจริงประมาณการ</p>
+            <!-- 3. Description (Reduced font size) -->
+            <p class="text-base text-gray-600 mt-2">กรุณากรอกข้อมูลเพื่อประเมินผลคะแนนสอบจริงประมาณการ</p>
         </div>
 
         
         <div id="input-section" class="bg-white p-6 sm:p-8 rounded-xl mb-10 border border-gray-100 shadow-xl">
-            <h2 class="text-3xl font-bold section-title">1. กรอกข้อมูล Pre-test ของคุณ</h2>
             
             <form id="score-form">
                 
-                <div class="mb-8">
+                <!-- STEP 1: Exam Type Selection -->
+                <div id="step-1" class="mb-8">
+                    <h2 class="font-bold section-title">1. เลือกประเภทการสอบ Pre-test</h2>
+                    
                     <label class="block text-gray-700 font-semibold text-lg mb-4">คุณสอบ Pre-test ประเภทใด?</label>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <label class="flex items-center radio-label cursor-pointer">
@@ -150,50 +198,56 @@
                         </label>
                     </div>
                 </div>
-                
-                <!-- Dynamic Input Block for Details (Ranks removed) -->
-                <div id="dynamic-input-block" class="space-y-6 mb-8">
+                <!-- END STEP 1 -->
 
-                    <!-- Special Program Inputs (Curriculum) -->
-                    <div id="special-program-details" class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-xl border-4 border-indigo-400 bg-indigo-50 hidden shadow-lg">
-                        <h3 class="col-span-full text-2xl font-bold text-indigo-800 mb-2">รายละเอียดห้องเรียนพิเศษ</h3>
+                <!-- STEP 2: Scores and Details (Hidden by default) -->
+                <div id="step-2" class="hidden pt-6 mt-6 border-t border-gray-200">
+                    <h2 class="font-bold subsection-title">2. กรอกคะแนน Pre-test และรายละเอียด</h2>
+
+                    <!-- Dynamic Input Block for Details (Curriculum, etc.) -->
+                    <div id="dynamic-input-block" class="space-y-6 mb-8">
+
+                        <!-- Special Program Inputs (Curriculum) -->
+                        <div id="special-program-details" class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-xl border-4 border-indigo-400 bg-indigo-50 hidden shadow-lg">
+                            <h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2">รายละเอียดห้องเรียนพิเศษ</h3>
+                            
+                            <div id="curriculum-container" class="col-span-1"> <!-- Curriculum Container -->
+                                <label for="curriculum" class="block text-gray-700 font-semibold mb-2 text-base">หลักสูตร (ห้องพิเศษ)</label>
+                                <select id="curriculum" class="input-field w-full text-lg" required>
+                                    <option value="">เลือกหลักสูตร</option>
+                                </select>
+                            </div>
+                            <div class="col-span-1">
+                                <p class="text-sm text-gray-500 mt-2">เลือกหลักสูตรเพื่อกรอกคะแนนที่เกี่ยวข้อง</p>
+                            </div>
+                        </div>
                         
-                        <div id="curriculum-container" class="col-span-1"> <!-- Curriculum Container -->
-                            <label for="curriculum" class="block text-gray-700 font-semibold mb-2">หลักสูตร (ห้องพิเศษ)</label>
-                            <select id="curriculum" class="input-field w-full" required>
-                                <option value="">เลือกหลักสูตร</option>
-                            </select>
-                        </div>
-                        <div class="col-span-1">
-                            <!-- Empty space after curriculum selection -->
-                            <p class="text-sm text-gray-500 mt-2">เลือกหลักสูตรเพื่อกรอกคะแนนที่เกี่ยวข้อง</p>
+                        <!-- Normal Program Inputs (No input needed here, only for structure) -->
+                        <div id="normal-program-details" class="p-6 rounded-xl border-4 border-emerald-400 bg-emerald-50 hidden shadow-lg">
+                            <h3 class="text-lg font-bold text-emerald-800 mb-2">รายละเอียดห้องเรียนปกติ</h3>
+                            <p class="text-base text-gray-600">กรอกคะแนน Pre-test ห้องปกติในส่วนถัดไป</p>
                         </div>
                     </div>
+                    <!-- END Dynamic Input Block -->
+
                     
-                    <!-- Normal Program Inputs (No input needed here, only for structure) -->
-                    <div id="normal-program-details" class="p-6 rounded-xl border-4 border-emerald-400 bg-emerald-50 hidden shadow-lg">
-                        <h3 class="text-2xl font-bold text-emerald-800 mb-2">รายละเอียดห้องเรียนปกติ</h3>
-                        <p class="text-sm text-gray-500">คุณสามารถกรอกคะแนน Pre-test ห้องปกติในส่วนถัดไป</p>
+                    <div id="score-inputs-wrapper">
+                        <!-- Removed initial prompt from here since step 2 is hidden -->
+                        
+                        <div id="special-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-indigo-50 hidden">
+                            <h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>
+                            <!-- Scores will be injected here with text-base labels -->
+                        </div>
+
+                        <div id="normal-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-emerald-50 hidden">
+                            <h3 class="col-span-full text-lg font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>
+                            <!-- Scores will be injected here with text-base labels -->
+                        </div>
                     </div>
                 </div>
-                <!-- END Dynamic Input Block -->
+                <!-- END STEP 2 -->
 
-                
-                <div id="score-inputs-wrapper">
-                    <p id="initial-prompt-p" class="text-center text-gray-500 text-xl py-10 font-medium">กรุณาเลือกประเภทการสอบ Pre-test ก่อน</p>
-                    
-                    <div id="special-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-indigo-50 hidden">
-                        <h3 class="col-span-full text-xl font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>
-                        <!-- Scores will be injected here -->
-                    </div>
-
-                    <div id="normal-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-emerald-50 hidden">
-                        <h3 class="col-span-full text-xl font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>
-                         <!-- Scores will be injected here -->
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary w-full text-white font-bold py-4 px-6 rounded-xl text-2xl shadow-lg mt-8">
+                <button type="submit" class="btn-primary w-full text-white font-bold py-4 px-6 rounded-xl text-xl sm:text-2xl shadow-lg mt-8">
                     คำนวณและบันทึกผลคะแนนของคุณ
                 </button>
             </form>
@@ -201,29 +255,27 @@
 
         
         <div id="result-section" class="result-card p-6 sm:p-8 hidden mb-10 shadow-xl">
-            <h2 class="text-3xl font-bold section-title text-emerald-700">2. ผลการประเมินคะแนนสอบจริงประมาณการ</h2>
+            <h2 class="font-bold section-title text-emerald-700">3. ผลการประเมินคะแนนสอบจริงประมาณการ</h2>
             
             <div id="user-result" class="mb-4 p-6 rounded-xl bg-green-50 border border-green-200 shadow-md">
-                <h3 class="text-2xl font-bold text-green-800 mb-4">คะแนนสอบจริงประมาณการ</h3>
+                <h3 class="text-xl font-bold text-green-800 mb-4">คะแนนสอบจริงประมาณการ</h3>
                 <div id="calculated-scores" class="space-y-4 text-lg">
                     <!-- Calculated scores will be displayed here -->
                 </div>
             </div>
 
-            <!-- RANK COMPARISON SECTION REMOVED COMPLETELY -->
-
         </div>
 
-        <!-- NEW FOOTER -->
+        <!-- FOOTER: Confirmed text: "ออกแบบ และจัดทำโดย" -->
         <footer class="credit-footer text-center py-6 mt-10">
-            <p class="font-semibold text-white text-xl">ออกแบบ และจัดทำโดย.. ลุ้นสอวอไปด้วยกันนะ</p>
-            <p class="mt-2 text-gray-300 text-lg">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+            <p class="font-semibold text-white text-lg">ออกแบบ และจัดทำโดย</p>
+            <p class="mt-1 text-gray-300 text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
             <a href="https://shorturl.asia/BlJVn" target="_blank" 
-            class="mt-4 inline-flex items-center gap-2 font-bold text-green-300 hover:text-green-200 hover:underline transition text-xl">
-            <i class="fab fa-line text-3xl"></i> LINE OPC (Open Chat)
+            class="mt-3 inline-flex items-center gap-2 font-bold text-green-300 hover:text-green-200 hover:underline transition text-lg">
+            <i class="fab fa-line text-2xl"></i> LINE OPC (Open Chat)
             </a>
         </footer>
-        <!-- END NEW FOOTER -->
+        <!-- END FOOTER -->
 
 
         <div id="message-box" class="fixed top-4 right-4 z-50 w-80"></div>
@@ -244,7 +296,7 @@
         let db, auth, userId = null;
         let isAuthReady = false;
         // Updated collection path to reflect that this is only scores
-        const collectionPath = `artifacts/${appId}/public/data/pretest_scores_only`; 
+        const collectionPath = `artifacts/${appId}/public/data/pretest_scores_only_v6`; 
 
         // Set Firebase Log Level (for debugging in console)
         setLogLevel('Error'); // Change to 'Debug' for more verbose logs
@@ -359,7 +411,7 @@
             const curriculumSelect = document.getElementById('curriculum');
             const specialScoreInputsDiv = document.getElementById('special-score-inputs');
             const normalScoreInputsDiv = document.getElementById('normal-score-inputs');
-            const initialPromptP = document.getElementById('initial-prompt-p');
+            const step2Div = document.getElementById('step-2');
 
             // 1. Reset/Clear all dynamic fields (details and scores)
             specialDetailsDiv.classList.add('hidden');
@@ -367,12 +419,22 @@
             toggleRequired(curriculumSelect, false);
             
             curriculumSelect.innerHTML = '<option value="">เลือกหลักสูตร</option>';
-            specialScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-xl font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>';
-            normalScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-xl font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>';
+            specialScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>';
+            normalScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-lg font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>';
             specialScoreInputsDiv.classList.add('hidden');
             normalScoreInputsDiv.classList.add('hidden');
             
-            initialPromptP.classList.toggle('hidden', !!examTypeSelection);
+            // Show/Hide Step 2
+            if (examTypeSelection) {
+                step2Div.classList.remove('hidden');
+                // Scroll smoothly to the start of Step 2 for better UX
+                setTimeout(() => {
+                    step2Div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } else {
+                step2Div.classList.add('hidden');
+            }
+
 
             // 2. Handle Selected Type
             if (examTypeSelection === 'Special' || examTypeSelection === 'Both') {
@@ -394,8 +456,8 @@
                     const max = weights.Special.max_pretest[subjectKey];
                     specialScoreInputsDiv.innerHTML += `
                         <div>
-                            <label for="score_Special_${subjectKey}" class="block text-gray-700 text-sm font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
-                            <input type="number" id="score_Special_${subjectKey}" data-program="Special" data-subject="${subjectKey}" class="input-field w-full" placeholder="0 - ${max}" min="0" max="${max}" required>
+                            <label for="score_Special_${subjectKey}" class="block text-gray-700 text-base font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
+                            <input type="number" id="score_Special_${subjectKey}" data-program="Special" data-subject="${subjectKey}" class="input-field w-full text-lg" placeholder="0 - ${max}" min="0" max="${max}" required>
                         </div>
                     `;
                 });
@@ -412,8 +474,8 @@
                     const max = weights.Normal.max_pretest[subjectKey];
                     normalScoreInputsDiv.innerHTML += `
                         <div>
-                            <label for="score_Normal_${subjectKey}" class="block text-gray-700 text-sm font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
-                            <input type="number" id="score_Normal_${subjectKey}" data-program="Normal" data-subject="${subjectKey}" class="input-field w-full" placeholder="0 - ${max}" min="0" max="${max}" required>
+                            <label for="score_Normal_${subjectKey}" class="block text-gray-700 text-base font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
+                            <input type="number" id="score_Normal_${subjectKey}" data-program="Normal" data-subject="${subjectKey}" class="input-field w-full text-lg" placeholder="0 - ${max}" min="0" max="${max}" required>
                         </div>
                     `;
                 });
@@ -559,19 +621,20 @@
             
             calculatedScoresDiv.innerHTML = '';
             
+            // Adjusted font size for readability
             let detailHtml = `
-                <p><strong>ประเภทการสอบ Pre-test ที่บันทึก:</strong> ${data.examTypeSelection === 'Special' ? 'ห้องเรียนพิเศษ' : (data.examTypeSelection === 'Normal' ? 'ห้องเรียนปกติ' : 'ทั้งสองประเภท')}</p>
+                <p class="text-xl"><strong>ประเภทการสอบ Pre-test ที่บันทึก:</strong> ${data.examTypeSelection === 'Special' ? 'ห้องเรียนพิเศษ' : (data.examTypeSelection === 'Normal' ? 'ห้องเรียนปกติ' : 'ทั้งสองประเภท')}</p>
             `;
 
             if (data.specialProgram.analysis) {
                 const analysis = data.specialProgram.analysis;
                 detailHtml += `
                     <div class="mt-6 pt-4 border-t border-indigo-200">
-                        <h4 class="text-xl font-bold text-indigo-700 mb-2">ผลประมาณการสำหรับห้องเรียนพิเศษ (${analysis.curriculum})</h4>
-                        <p class="font-bold text-xl">คะแนนสอบจริงประมาณการรวม: <span class="text-2xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
-                        <div class="mt-2 text-base text-gray-700">
+                        <h4 class="text-xl font-bold text-indigo-700 mb-3">ผลประมาณการสำหรับห้องเรียนพิเศษ (${analysis.curriculum})</h4>
+                        <p class="font-bold text-2xl">คะแนนสอบจริงประมาณการรวม: <span class="text-3xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
+                        <div class="mt-3 text-lg text-gray-700">
                             <p class="font-semibold">รายละเอียดคะแนนวิชา:</p>
-                            <ul class="list-disc ml-5 space-y-1">
+                            <ul class="list-disc ml-5 space-y-1 text-base">
                 `;
                 for (const [subjectKey, scores] of Object.entries(analysis.subjects)) {
                     const thaiSubject = subjectMap[subjectKey];
@@ -584,11 +647,11 @@
                 const analysis = data.normalProgram.analysis;
                 detailHtml += `
                     <div class="mt-6 pt-4 border-t ${data.specialProgram.analysis ? 'border-dashed border-gray-300' : 'border-emerald-200'}">
-                        <h4 class="text-xl font-bold text-emerald-700 mb-2">ผลประมาณการสำหรับห้องเรียนปกติ</h4>
-                        <p class="font-bold text-xl">คะแนนสอบจริงประมาณการรวม: <span class="text-2xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
-                        <div class="mt-2 text-base text-gray-700">
+                        <h4 class="text-xl font-bold text-emerald-700 mb-3">ผลประมาณการสำหรับห้องเรียนปกติ</h4>
+                        <p class="font-bold text-2xl">คะแนนสอบจริงประมาณการรวม: <span class="text-3xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
+                        <div class="mt-3 text-lg text-gray-700">
                             <p class="font-semibold">รายละเอียดคะแนนวิชา:</p>
-                            <ul class="list-disc ml-5 space-y-1">
+                            <ul class="list-disc ml-5 space-y-1 text-base">
                 `;
                 for (const [subjectKey, scores] of Object.entries(analysis.subjects)) {
                     const thaiSubject = subjectMap[subjectKey];
@@ -610,3 +673,4 @@
     </script>
 </body>
 </html>
+                       
