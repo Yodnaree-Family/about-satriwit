@@ -619,7 +619,38 @@
             setupTabs('exam-sub-nested-tabs');
         });
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const button = document.getElementById("dropdownButton");
+  const menu = document.getElementById("dropdownMenu");
+  let isOpen = false;
+
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isOpen = !isOpen;
+    if (isOpen) {
+      button.innerHTML = "✖ ปิดเมนู";
+      menu.classList.remove("hidden");
+      setTimeout(() => menu.classList.add("show"), 10);
+    } else {
+      button.innerHTML = "☰ เมนูหลัก";
+      menu.classList.remove("show");
+      setTimeout(() => menu.classList.add("hidden"), 300);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !button.contains(e.target)) {
+      if (isOpen) {
+        isOpen = false;
+        button.innerHTML = "☰ เมนูหลัก";
+        menu.classList.remove("show");
+        setTimeout(() => menu.classList.add("hidden"), 300);
+      }
+    }
+  });
+});
+</script>
+
 </body>
 </html>
-
-
