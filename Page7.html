@@ -408,20 +408,57 @@
     </footer>
 
     <script>
-        // โค้ด Dropdown (ถูกต้องและทำงานได้ตามที่คุณต้องการ)
+        // *** โค้ด Dropdown ที่ถูกเพิ่มกลับเข้ามา ***
         const dropdownButton = document.getElementById('dropdownButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
         // เมื่อคลิกปุ่ม "เมนูหลัก" ให้สลับแสดง / ซ่อนเมนู
         dropdownButton.addEventListener('click', (event) => {
-            event.stopPropagation();
+            event.stopPropagation(); // กันการคลิกทะลุ
             dropdownMenu.classList.toggle('hidden');
         });
-        // คลิกที่อื่นให้ปิด dropdown
+	// คลิกที่อื่นให้ปิด dropdown
         document.addEventListener('click', (event) => {
             if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 dropdownMenu.classList.add('hidden');
             }
+        });
+        // ***************************************
+
+        function setupTabs(tabContainerId) {
+            const tabContainer = document.getElementById(tabContainerId);
+            if (!tabContainer) return;
+	const tabs = Array.from(tabContainer.querySelectorAll('[data-tab]'));
+            const contentContainerId = tabContainer.id.replace('-tabs', '-content');
+            const contentContainer = document.getElementById(contentContainerId);
+            if(!contentContainer) return;
+            const contents = Array.from(contentContainer.children);
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = tab.getAttribute('data-tab');
+					tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    contents.forEach(content => {
+                        content.classList.add('hidden-content');
+                        content.classList.remove('content-enter');
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden-content');
+                            setTimeout(() => {
+                                content.classList.add('content-enter');
+                            }, 10);
+                        }
+                    });
+                });
+            });
+        }
+	document.addEventListener('DOMContentLoaded', () => {
+            setupTabs('main-tabs');
+            setupTabs('special-nested-tabs');
+            setupTabs('normal-nested-tabs');
+            setupTabs('exam-sub-nested-tabs');
         });
     </script>
 </body>
