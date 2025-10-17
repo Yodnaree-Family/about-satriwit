@@ -32,7 +32,7 @@
             font-weight: 700;
         }
         .sub-tab-active {
-            background-color: #c53030;
+            background-color: #f56565;
             color: white;
         }
         .program-tab-active {
@@ -57,27 +57,123 @@
             border-left-width: 4px;
         }
         
+    /* ======= เมนูหลัก ======= */
+.dropdown-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  text-align: center;
+  padding: 0.6rem 0;
+}
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  /* ใช้สีแดงเข้ม (Maroon) */
+  background: #a01a1a;
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 0.7rem 1.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+}
+.dropdown-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* เมนูเลื่อนลง */
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  margin-top: 0.6rem;
+  width: 270px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-15px);
+  pointer-events: none;
+  transition: all 0.35s ease;
+  border-top: 4px solid #b91c1c;
+}
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #b91c1c;
+  font-weight: 600;
+  text-decoration: none;
+  background: white;
+  transition: all 0.25s ease;
+}
+.dropdown-menu a:hover {
+  background: #fee2e2;
+  color: #7f1d1d;
+  padding-left: 22px;
+}
+
+/* มือถือ */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: 90%;
+    border-radius: 14px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  }
+  .dropdown-menu.show {
+    transform: translateX(-50%) translateY(0);
+  }
+  .dropdown-btn {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
     </style>
-    
-</head>
-<body class="bg-gray-100">
-    <div class="bg-white p-2 text-center shadow-md relative z-10">
-        <button id="dropdownButton" class="text-pink-600 hover:underline mx-2 font-bold p-2 rounded-lg bg-pink-50 hover:bg-pink-100 shadow-md">
-            เมนูหลัก ☰
-        </button>
-        <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-md border-t-4 border-pink-500 z-50">
-            <a href="index.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">หน้าหลักครอบครัวยอดนารี</a>
-            <a href="Page5.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ข้อมูลการรับนักเรียน</a>
-            <a href="Page2.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">การเตรียมตัวการสอบเข้า</a>
-            <a href="Page3.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">วิเคราะห์เจาะลึกคะแนนสอบเข้า</a>
-            <a href="Page4.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">สถิติอัตราการแข่งขัน</a>
-            <a href="Page6.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">แผนลับหลักสูตรม.1</a>
-            <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โปรแกรมคำนวณเกรดเฉลี่ยห้องเรียนพิเศษ</a>
-            <a href="Page7.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ตัวอย่างตารางเรียนม.1</a>
-            <a href="ระบบสถิติคะแนนสอบเข้าม.1.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">ระบบสถิติคะแนนสอบเข้าม.1</a>
-            <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html" class="block px-4 py-2 text-pink-600 hover:bg-pink-100 hover:text-pink-800 font-semibold">โครงสร้างข้อสอบห้องเรียนปกติ</a>
-        </div>
+    </head>
+<body class="font-sans text-gray-800 pt-[80px]">
+<!-- ✅ เมนูหลัก -->
+<div class="dropdown-container flex justify-start pl-4">
+  <div class="dropdown-wrapper relative inline-block">
+    <button id="dropdownButton" class="dropdown-btn">
+      ☰ เมนูหลัก
+    </button>
+    <div id="dropdownMenu" class="dropdown-menu hidden">
+      <a href="index.html">🏠 หน้าหลักครอบครัวยอดนารี</a>
+      <a href="Page5.html">📘 ข้อมูลการรับนักเรียน</a>
+      <a href="Page2.html">📖 การเตรียมตัวการสอบเข้า</a>
+      <a href="Page3.html">📊 วิเคราะห์คะแนนสอบเข้า</a>
+      <a href="Page4.html">📈 สถิติอัตราการแข่งขัน</a>
+      <a href="Page6.html">🧭 แผนลับหลักสูตรม.1</a>
+      <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html">🧮 โปรแกรมคำนวณเกรดเฉลี่ย</a>
+      <a href="Page7.html">🗓️ ตัวอย่างตารางเรียน ม.1</a>
+      <a href="ระบบสถิติคะแนนสอบเข้าม.1.html">📚 ระบบสถิติคะแนนสอบเข้า</a>
+      <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html">📑 โครงสร้างข้อสอบห้องเรียนปกติ</a>
     </div>
+  </div>
+</div>
+
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-red-800">สถิติการรับสมัครนักเรียน โรงเรียนสตรีวิทยา</h1>
@@ -87,10 +183,10 @@
         <!-- Main Tabs -->
         <div class="border-b border-gray-200 mb-6">
             <nav class="flex justify-center -mb-px space-x-4 md:space-x-8" aria-label="Tabs">
-                <button class="main-tab py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-red-700 hover:border-red-400" data-level="m1">
+                <button class="main-tab py-4 px-1 border-b-2 font-medium text-lg text-blue-800 hover:text-red-700 hover:border-red-400" data-level="m1">
                     มัธยมศึกษาปีที่ 1
                 </button>
-                <button class="main-tab py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-red-700 hover:border-red-400" data-level="m4">
+                <button class="main-tab py-4 px-1 border-b-2 font-medium text-lg text-blue-800 hover:text-red-700 hover:border-red-400" data-level="m4">
                     มัธยมศึกษาปีที่ 4
                 </button>
             </nav>
@@ -166,10 +262,10 @@
         function setupSubTabs() {
             subTabsContainer.innerHTML = `
                 <div class="inline-flex rounded-lg shadow-sm" role="group">
-                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700" data-type="special">
+                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-grey-500 bg-grey rounded-l-lg border border-gray-400 hover:bg-gray-100 hover:text-grey-400" data-type="special">
                         ห้องเรียนพิเศษ
                     </button>
-                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700" data-type="regular">
+                    <button type="button" class="sub-tab py-2 px-4 text-sm font-medium text-grey-500 bg-grey rounded-r-lg border border-gray-400 hover:bg-gray-100 hover:text-grey-400" data-type="regular">
                         ห้องเรียนปกติ
                     </button>
                 </div>
@@ -218,7 +314,7 @@
                     const yearIndex = programData.years.indexOf(year);
                     if (yearIndex !== -1) {
                         tableHtml += `
-                            <td class="py-4 px-2 border-l border-gray-200">${programData.accepted[yearIndex] ?? '-'}</td>
+                            <td class="py-4 px-2 border-l border-indigo-500">${programData.accepted[yearIndex] ?? '-'}</td>
                             <td class="py-4 px-2">${programData.applicants[yearIndex] ?? '-'}</td>
                             <td class="py-4 px-2 font-semibold">${programData.rate[yearIndex] ? (programData.rate[yearIndex]).toFixed(2) : '-'}</td>`;
                     } else {
@@ -264,7 +360,7 @@
                     <p class="text-sm text-gray-500 mb-4">คลิกเลือกหลักสูตรเพื่อดูกราฟแนวโน้มอัตราการแข่งขันในแต่ละปี</p>
                     <div class="flex flex-wrap gap-2 mb-4">
                         ${programs.map((p) => `
-                            <button class="program-tab py-2 px-4 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-200 hover:bg-gray-100" data-program="${p}">
+                            <button class="program-tab py-2 px-4 text-sm font-medium text-gray-700 bg-Light Blue rounded-lg border border-gray-200 hover:bg-gray-100" data-program="${p}">
                                 ${p}
                             </button>
                         `).join('')}
@@ -386,58 +482,37 @@
 
     </script>
 <script>
-        // *** โค้ด Dropdown ที่ถูกเพิ่มกลับเข้ามา ***
-        const dropdownButton = document.getElementById('dropdownButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+document.addEventListener("DOMContentLoaded", function() {
+  const button = document.getElementById("dropdownButton");
+  const menu = document.getElementById("dropdownMenu");
+  let isOpen = false;
 
-        // เมื่อคลิกปุ่ม "เมนูหลัก" ให้สลับแสดง / ซ่อนเมนู
-        dropdownButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // กันการคลิกทะลุ
-            dropdownMenu.classList.toggle('hidden');
-        });
-	// คลิกที่อื่นให้ปิด dropdown
-        document.addEventListener('click', (event) => {
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-        // ***************************************
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isOpen = !isOpen;
+    if (isOpen) {
+      button.innerHTML = "✖ ปิดเมนู";
+      menu.classList.remove("hidden");
+      setTimeout(() => menu.classList.add("show"), 10);
+    } else {
+      button.innerHTML = "☰ เมนูหลัก";
+      menu.classList.remove("show");
+      setTimeout(() => menu.classList.add("hidden"), 300);
+    }
+  });
 
-        function setupTabs(tabContainerId) {
-            const tabContainer = document.getElementById(tabContainerId);
-            if (!tabContainer) return;
-	const tabs = Array.from(tabContainer.querySelectorAll('[data-tab]'));
-            const contentContainerId = tabContainer.id.replace('-tabs', '-content');
-            const contentContainer = document.getElementById(contentContainerId);
-            if(!contentContainer) return;
-            const contents = Array.from(contentContainer.children);
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !button.contains(e.target)) {
+      if (isOpen) {
+        isOpen = false;
+        button.innerHTML = "☰ เมนูหลัก";
+        menu.classList.remove("show");
+        setTimeout(() => menu.classList.add("hidden"), 300);
+      }
+    }
+  });
+});
+</script>
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = tab.getAttribute('data-tab');
-					tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    contents.forEach(content => {
-                        content.classList.add('hidden-content');
-                        content.classList.remove('content-enter');
-                        if (content.id === targetId) {
-                            content.classList.remove('hidden-content');
-                            setTimeout(() => {
-                                content.classList.add('content-enter');
-                            }, 10);
-                        }
-                    });
-                });
-            });
-        }
-	document.addEventListener('DOMContentLoaded', () => {
-            setupTabs('main-tabs');
-            setupTabs('special-nested-tabs');
-            setupTabs('normal-nested-tabs');
-            setupTabs('exam-sub-nested-tabs');
-        });
-    </script>
 </body>
 </html>
