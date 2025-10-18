@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือประเมินคะแนนสอบจริงจากคะแนน Pre-test สตรีวิทยา</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        .main-container {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+            border: 1px solid #e2e8f0;
+            position: relative; /* Needed for the back button */
+        }
+        .header-gradient {
+            background-image: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+        .section-title {
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .input-field {
+            border-radius: 0.75rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e1;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #f8fafc;
+        }
+        .input-field:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none;
+        }
+        .radio-card {
+            background-color: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.5rem 1rem;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            text-align: center;
+        }
+        .radio-card:hover {
+            border-color: #c7d2fe;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        input[type="radio"]:checked + .radio-card {
+            background-color: #eef2ff;
+            border-color: #6366f1;
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, #4f46e5, #8b5cf6);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+            transform: translateY(-3px);
+        }
+        .result-wrapper {
+            background-color: #f0fdf4;
+            border-radius: 1.25rem;
+            border: 1px solid #bbf7d0;
+        }
+        .result-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto main-container">
+        
+        <a href="index.html" class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm">
+            <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
+        </a>
+
+        <header class="text-center p-8 sm:p-12 header-gradient rounded-t-2xl">
+            <p class="text-lg text-indigo-200 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                เครื่องมือประเมินคะแนนสอบจริง
+            </h1>
+            <p class="text-lg text-indigo-200 mt-2">จากคะแนน Pre-test สตรีวิทยา</p>
+        </header>
+
+        <main class="p-6 sm:p-10">
+            <form id="score-form" class="space-y-12">
+                <section>
+                    <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">1</span>
+                        เลือกประเภทการสอบ Pre-test
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนพิเศษ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()" checked>
+                            <div class="radio-card">
+                                <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนปกติ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Both" class="sr-only" onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-layer-group text-3xl text-sky-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">สอบทั้งสองประเภท</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+                
+                <section id="score-inputs-wrapper" class="hidden">
+                    <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">2</span>
+                        กรอกคะแนน Pre-test ของคุณ
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <div id="special-program-inputs" class="p-6 border rounded-2xl bg-indigo-50 border-indigo-200 hidden">
+                            <h3 class="text-xl font-bold text-indigo-800 mb-2">ห้องเรียนพิเศษ</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
+                                    <select id="curriculum" class="input-field w-full" required></select>
+                                </div>
+                                <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+                            </div>
+                        </div>
+
+                        <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
+                            <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
+                            <div id="normal-scores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
+                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                        ประเมินคะแนน
+                    </button>
+                </section>
+            </form>
+            
+            <section id="result-section" class="result-wrapper p-6 sm:p-8 mt-12 hidden">
+                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนนสอบจริง</h2>
+                <div id="result-cards-container" class="space-y-8"></div>
+            </section>
+        </main>
+    </div>
+    
+    <footer class="text-center py-8 text-slate-500">
+        <p class="font-semibold">วิเคราะห์และพัฒนาโดย</p>
+        <p class="font-semibold">✌️ลุ้นสอวอไปด้วยกันนะ</p>
+        <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+        <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
+            <i class="fab fa-line text-xl"></i> LINE OpenChat
+        </a>
+    </footer>
+    
+    <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration (Placeholder - Replace with actual config if used outside this context)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let db, auth, userId = null;
+        const collectionPath = `artifacts/${appId}/public/data/pretest_estimators_v2`;
+
+        setLogLevel('Error');
+
+        // Initialize Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+            userId = auth.currentUser.uid;
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+        }
+        
+        // --- DATA & CONFIGURATION (UPDATED) ---
+        let resultCharts = {};
+        const subjectMap = {
+            'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
+            'Thai': 'ภาษาไทย', 'Social': 'สังคมศึกษา'
+        };
+
+        const weights = {
+            Special: {
+                max_pretest: { Math: 50, Science: 30, English: 30 },
+                curriculums: {
+                    // EP real exam max written score = 80+50+50 = 180. Total max = 180 (written) + 20 (interview) = 200.
+                    EP: { English: 80, Science: 50, Math: 50, subjects: ['Math', 'Science', 'English'], interview: 20 }, 
+                    GM: { Science: 50, Math: 50, English: 10, subjects: ['Math', 'Science', 'English'], interview: 0 },
+                    SMTE: { Science: 50, Math: 50, subjects: ['Math', 'Science'], interview: 0 }
+                }
+            },
+            Normal: {
+                max_pretest: { Math: 30, Science: 30, Thai: 30, Social: 30, English: 30 },
+                curriculums: {
+                    Normal: { Math: 20, Science: 20, Thai: 20, Social: 20, English: 20, subjects: ['Math', 'Science', 'Thai', 'Social', 'English'], interview: 0 }
+                }
+            }
+        };
+
+        // Historical cut-off data for comparison
+        const historicalData = {
+            EP: { max: 168.50, avg: 139.89, min: 119.17, maxTotal: 200, label: 'EP 2568' },
+            SMTE: { max: 77.25, avg: 58.58, min: 47.75, maxTotal: 100, label: 'SMTE 2568' },
+            GM: { max: 90.00, avg: 73.30, min: 66.00, maxTotal: 110, label: 'GM 2568' },
+            Normal: {
+                InArea: { max: 58.50, avg: 50.33, min: 41.00, maxTotal: 100, label: 'ปกติ ในเขต 2568' },
+                OutArea: { max: 65.50, avg: 51.41, min: 44.00, maxTotal: 100, label: 'ปกติ นอกเขต 2568' }
+            }
+        };
+
+        // --- UI HELPER FUNCTIONS ---
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('message-box');
+            const colors = { success: 'green', error: 'red', warning: 'yellow' };
+            const icons = { success: '✅', error: '🚨', warning: '⚠️' };
+            
+            const alert = document.createElement('div');
+            alert.className = `p-4 rounded-lg shadow-lg mb-2 bg-${colors[type]}-100 border-l-4 border-${colors[type]}-500 text-${colors[type]}-800 transition-all duration-300 transform translate-x-full opacity-0`;
+            alert.innerHTML = `${icons[type]} <span class="font-semibold">${message}</span>`;
+            
+            messageBox.prepend(alert);
+            setTimeout(() => {
+                alert.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                alert.classList.add('opacity-0');
+                setTimeout(() => alert.remove(), 400);
+            }, 3500);
+        }
+
+        function toggleLoading(show) {
+            document.getElementById('loading-overlay').classList.toggle('hidden', !show);
+        }
+        
+        function toggleRequired(element, isRequired) {
+            if (element) element.required = isRequired;
+        }
+
+        // --- DYNAMIC FORM LOGIC ---
+        window.updateFormDisplay = function() {
+            const examType = document.querySelector('input[name="exam_type_selection"]:checked')?.value;
+            if (!examType) return;
+            
+            const scoreWrapper = document.getElementById('score-inputs-wrapper');
+            const submitSection = document.getElementById('submit-section');
+            const specialInputsDiv = document.getElementById('special-program-inputs');
+            const normalInputsDiv = document.getElementById('normal-program-inputs');
+            
+            scoreWrapper.classList.remove('hidden');
+            submitSection.classList.remove('hidden');
+
+            specialInputsDiv.classList.add('hidden');
+            normalInputsDiv.classList.add('hidden');
+            
+            // Toggle required status for curriculum select (required only for Special/Both)
+            const curriculumSelect = document.getElementById('curriculum');
+            toggleRequired(curriculumSelect, (examType === 'Special' || examType === 'Both'));
+
+            if (examType === 'Special' || examType === 'Both') {
+                specialInputsDiv.classList.remove('hidden');
+                populateCurriculumOptions();
+                populateScoreInputs('Special');
+            }
+            if (examType === 'Normal' || examType === 'Both') {
+                normalInputsDiv.classList.remove('hidden');
+                populateScoreInputs('Normal');
+            }
+        }
+
+        function populateCurriculumOptions() {
+            const curriculumSelect = document.getElementById('curriculum');
+            // Clear existing options
+            curriculumSelect.innerHTML = '<option value="">-- กรุณาเลือกหลักสูตร --</option>';
+            
+            // Add new options
+            Object.keys(weights.Special.curriculums).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                curriculumSelect.appendChild(option);
+            });
+        }
+
+        function populateScoreInputs(programType) {
+            const gridId = programType === 'Special' ? 'special-scores-grid' : 'normal-scores-grid';
+            const scoresGrid = document.getElementById(gridId);
+            scoresGrid.innerHTML = '';
+            
+            const subjects = Object.keys(weights[programType].max_pretest);
+            subjects.forEach(subjectKey => {
+                const thaiSubject = subjectMap[subjectKey];
+                const max = weights[programType].max_pretest[subjectKey];
+                scoresGrid.innerHTML += `
+                    <div>
+                        <label for="score_${programType}_${subjectKey}" class="block text-slate-700 text-sm font-medium mb-1">${thaiSubject}</label>
+                        <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}">
+                    </div>
+                `;
+            });
+        }
+
+        // --- CALCULATION LOGIC (UPDATED) ---
+        function calculateEstimatedScore(roomType, curriculumKey, pretestScores) {
+            const typeData = weights[roomType];
+            const curriculumWeights = typeData.curriculums[curriculumKey];
+            if (!curriculumWeights) return null;
+
+            let result = { subjects: {}, total_estimated_written: 0, max_total_written: 0, total_estimated: 0, max_total_estimated: 0 };
+            const interviewScore = curriculumWeights.interview || 0; // 20 for EP, 0 for others
+
+            for (const subject of curriculumWeights.subjects) {
+                const preScore = pretestScores[subject] ?? 0;
+                const preMax = typeData.max_pretest[subject];
+                const realMax = curriculumWeights[subject] ?? 0;
+                
+                // Calculate estimated written score: (user_score / pre_test_max) * real_exam_max
+                const estimatedScore = preMax > 0 ? (preScore / preMax) * realMax : 0;
+                
+                result.subjects[subject] = { estimated: parseFloat(estimatedScore.toFixed(2)), realMax };
+                result.total_estimated_written += estimatedScore;
+                result.max_total_written += realMax;
+            }
+            
+            // Final total score includes assumed interview points
+            result.total_estimated = parseFloat(result.total_estimated_written.toFixed(2)) + interviewScore;
+            result.max_total_estimated = result.max_total_written + interviewScore;
+
+            result.total_estimated = parseFloat(result.total_estimated.toFixed(2));
+            result.max_total_written = parseFloat(result.max_total_written.toFixed(2));
+            return result;
+        }
+
+        // --- FORM SUBMISSION ---
+        document.getElementById('score-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!userId) return showMessage("ระบบยังไม่พร้อม กรุณาลองใหม่", 'error');
+
+            const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
+            let submissionData = {
+                userId, examType, timestamp: new Date().toISOString(),
+                pretestScores: { Special: {}, Normal: {} },
+                analysis: { Special: null, Normal: null }
+            };
+            let isValid = true;
+            
+            // Helper function for score validation and collection
+            const validateAndCollectScores = (programType) => {
+                let scores = {};
+                document.querySelectorAll(`[data-program="${programType}"]`).forEach(input => {
+                    const isRelevant = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) ||
+                                       (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
+
+                    if (isRelevant) {
+                        if (input.value === "") {
+                            isValid = false;
+                            return;
+                        }
+
+                        const value = parseInt(input.value);
+                        if (isNaN(value) || value < 0 || value > parseInt(input.max)) {
+                            isValid = false;
+                            return;
+                        }
+                        scores[input.dataset.subject] = value;
+                    } else {
+                        scores[input.dataset.subject] = 0;
+                    }
+                });
+                return scores;
+            };
+
+            if (examType === 'Special' || examType === 'Both') {
+                const curriculum = document.getElementById('curriculum').value;
+                if (!curriculum) {
+                    isValid = false;
+                    showMessage("โปรดเลือกหลักสูตรที่ต้องการประเมิน", 'error');
+                    return;
+                }
+                
+                submissionData.pretestScores.Special = validateAndCollectScores('Special');
+                submissionData.analysis.Special = calculateEstimatedScore('Special', curriculum, submissionData.pretestScores.Special);
+                if (submissionData.analysis.Special) submissionData.analysis.Special.curriculum = curriculum;
+                else isValid = false;
+            }
+            
+            if (examType === 'Normal' || examType === 'Both') {
+                submissionData.pretestScores.Normal = validateAndCollectScores('Normal');
+                submissionData.analysis.Normal = calculateEstimatedScore('Normal', 'Normal', submissionData.pretestScores.Normal);
+                if (submissionData.analysis.Normal) submissionData.analysis.Normal.curriculum = 'Normal';
+                else isValid = false;
+            }
+
+            if (!isValid) return showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
+            
+            try {
+                toggleLoading(true);
+                // Save to Firestore (Assuming Firestore is correctly configured)
+                await addDoc(collection(db, collectionPath), submissionData);
+                showMessage('ประเมินและบันทึกข้อมูลสำเร็จ!', 'success');
+                displayResult(submissionData.analysis);
+            } catch (error) {
+                console.error("Firestore Error:", error);
+                // Show message even if Firestore fails, but calculation succeeds
+                showMessage("เกิดข้อผิดพลาดในการบันทึกข้อมูล แต่แสดงผลการประเมินได้", 'warning'); 
+                displayResult(submissionData.analysis);
+            } finally {
+                toggleLoading(false);
+            }
+        });
+
+        // --- DISPLAY RESULTS (UPDATED) ---
+        function displayResult(analysis) {
+            const container = document.getElementById('result-cards-container');
+            container.innerHTML = '';
+            
+            // Render Special Program Results
+            if (analysis.Special && analysis.Special.total_estimated > 0) {
+                container.innerHTML += createResultCardHTML('Special', analysis.Special);
+            }
+            // Render Normal Program Results
+            if (analysis.Normal && analysis.Normal.total_estimated > 0) {
+                container.innerHTML += createResultCardHTML('Normal', analysis.Normal);
+            }
+            
+            // Render charts after HTML is in the DOM
+            if (analysis.Special && analysis.Special.total_estimated > 0) {
+                renderResultChart('Special', analysis.Special);
+                
+                const curriculumKey = analysis.Special.curriculum;
+                if(historicalData[curriculumKey]) {
+                   // Special programs use a single comparison chart
+                   renderComparisonChart('Special', analysis.Special, historicalData[curriculumKey]);
+                }
+            }
+            
+            if (analysis.Normal && analysis.Normal.total_estimated > 0) {
+                renderResultChart('Normal', analysis.Normal);
+                // Normal program displays two comparison charts (In-Area and Out-of-Area)
+                renderComparisonChart('Normal-InArea', analysis.Normal, historicalData.Normal.InArea);
+                renderComparisonChart('Normal-OutArea', analysis.Normal, historicalData.Normal.OutArea);
+            }
+
+            const resultSection = document.getElementById('result-section');
+            if (container.innerHTML !== '') {
+                resultSection.classList.remove('hidden');
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                 resultSection.classList.add('hidden');
+                 showMessage("ไม่พบข้อมูลการประเมิน (อาจเกิดจากไม่ได้กรอกคะแนน หรือคะแนนเป็น 0)", 'warning');
+            }
+        }
+
+        function createResultCardHTML(programType, data) {
+            const curriculumKey = data.curriculum;
+            const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${curriculumKey})` : 'ห้องเรียนปกติ';
+            const colors = programType === 'Special' ? 'indigo' : 'emerald';
+            const icon = programType === 'Special' ? 'fa-star' : 'fa-book-open';
+            const totalWritten = data.total_estimated_written.toFixed(2);
+            const maxWritten = data.max_total_written.toFixed(2);
+            
+            let noteHTML = '';
+            let comparisonChartHTML = '';
+
+            if (curriculumKey === 'EP') {
+                noteHTML = `
+                    <p class="text-sm text-red-600 font-semibold mt-4">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                        หมายเหตุ: คะแนนรวม ${data.max_total_estimated} คะแนน รวมคะแนนสอบสัมภาษณ์ 20 คะแนน (คำนวณบนสมมุติฐานที่ได้ส่วนนี้เต็ม)
+                    </p>
+                    <p class="text-sm text-slate-600 mt-1">คะแนนประมาณการส่วนข้อเขียน: <span class="font-bold">${totalWritten} / ${maxWritten}</span></p>
+                `;
+                // Single comparison chart for EP, SMTE, GM
+                comparisonChartHTML = `
+                     <div class="result-card p-6 border-2 border-${colors}-300 mt-6 bg-white">
+                        <h4 class="text-xl font-bold text-${colors}-700 mb-4">ผลเปรียบเทียบกับคะแนนปี 2568: ${historicalData[curriculumKey].label}</h4>
+                        <div class="h-64"><canvas id="comparison-chart-Special"></canvas></div>
+                    </div>
+                `;
+            } else if (programType === 'Special' && (curriculumKey === 'SMTE' || curriculumKey === 'GM')) {
+                 // Single comparison chart for EP, SMTE, GM
+                 comparisonChartHTML = `
+                     <div class="result-card p-6 border-2 border-${colors}-300 mt-6 bg-white">
+                        <h4 class="text-xl font-bold text-${colors}-700 mb-4">ผลเปรียบเทียบกับคะแนนปี 2568: ${historicalData[curriculumKey].label}</h4>
+                        <div class="h-64"><canvas id="comparison-chart-Special"></canvas></div>
+                    </div>
+                `;
+            } else if (programType === 'Normal') {
+                // Two comparison charts for Normal program (In-Area and Out-of-Area)
+                comparisonChartHTML = `
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div class="result-card p-4 border-2 border-${colors}-300 bg-white">
+                            <h4 class="text-lg font-bold text-${colors}-700 mb-2">${historicalData.Normal.InArea.label}</h4>
+                            <div class="h-48"><canvas id="comparison-chart-Normal-InArea"></canvas></div>
+                        </div>
+                        <div class="result-card p-4 border-2 border-${colors}-300 bg-white">
+                            <h4 class="text-lg font-bold text-${colors}-700 mb-2">${historicalData.Normal.OutArea.label}</h4>
+                            <div class="h-48"><canvas id="comparison-chart-Normal-OutArea"></canvas></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="result-card p-6">
+                    <h3 class="text-2xl font-bold text-${colors}-700 mb-4 flex items-center gap-2">
+                        <i class="fa-solid ${icon}"></i>
+                        ${title}
+                    </h3>
+                    
+                    <div class="mb-6 h-64 border-b pb-4 border-slate-200">
+                        <h4 class="text-xl font-semibold text-slate-700 mb-2">คะแนนประมาณการรายวิชา</h4>
+                        <canvas id="chart-${programType}"></canvas>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-${colors}-50 p-4 rounded-lg">
+                        <span class="text-lg font-bold text-${colors}-800">คะแนนรวมประมาณการ</span>
+                        <span class="text-2xl font-extrabold text-${colors}-600">${data.total_estimated} / ${data.max_total_estimated}</span>
+                    </div>
+                    ${noteHTML}
+                    ${comparisonChartHTML}
+                </div>
+            `;
+        }
+        
+        // Renders the Subject-by-Subject Bar Chart (Existing Logic)
+        function renderResultChart(programType, data) {
+            const canvasId = `chart-${programType}`;
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+
+            if (resultCharts[canvasId]) {
+                resultCharts[canvasId].destroy();
+            }
+
+            const labels = Object.keys(data.subjects).map(key => subjectMap[key]);
+            const estimatedScores = Object.values(data.subjects).map(s => s.estimated);
+            const maxScores = Object.values(data.subjects).map(s => s.realMax);
+            
+            const chartColors = programType === 'Special' 
+                ? { bg: 'rgba(99, 102, 241, 0.7)', border: 'rgba(99, 102, 241, 1)' } 
+                : { bg: 'rgba(16, 185, 129, 0.7)', border: 'rgba(16, 185, 129, 1)' };
+
+            resultCharts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                    {
+                        label: 'คะแนนเต็ม',
+                        data: maxScores,
+                        backgroundColor: 'rgba(203, 213, 225, 0.5)',
+                        borderColor: 'rgba(100, 116, 139, 1)',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'คะแนนประมาณการ',
+                        data: estimatedScores,
+                        backgroundColor: chartColors.bg,
+                        borderColor: chartColors.border,
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { display: true, color: 'rgba(0, 0, 0, 0.05)' },
+                            title: { display: true, text: 'คะแนน', font: { size: 14, weight: 'bold' } },
+                            stacked: false,
+                        },
+                        y: { grid: { display: false }, stacked: false }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.x !== null) { label += context.parsed.x; }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Renders the Total Score Comparison Chart (New Logic)
+        function renderComparisonChart(idSuffix, analysisData, cutoffData) {
+            let chartColors;
+            let canvasId = `comparison-chart-${idSuffix}`;
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+            
+            const isSpecial = idSuffix === 'Special' || idSuffix === 'Normal' ? false : true;
+            if (isSpecial) {
+                chartColors = { bg: 'rgba(99, 102, 241, 1)' };
+            } else {
+                chartColors = { bg: 'rgba(16, 185, 129, 1)' };
+            }
+
+            if (resultCharts[canvasId]) {
+                resultCharts[canvasId].destroy();
+            }
+
+            const labels = ['คะแนนประมาณการ', 'คะแนนสูงสุด', 'คะแนนเฉลี่ย', 'คะแนนต่ำสุด'];
+            const dataValues = [
+                analysisData.total_estimated, 
+                cutoffData.max, 
+                cutoffData.avg, 
+                cutoffData.min
+            ];
+            const maxScore = cutoffData.maxTotal;
+
+            resultCharts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'คะแนนรวม',
+                        data: dataValues,
+                        backgroundColor: [
+                            chartColors.bg, 
+                            'rgba(245, 158, 11, 0.7)', 
+                            'rgba(59, 130, 246, 0.7)', 
+                            'rgba(239, 68, 68, 0.7)' 
+                        ],
+                        borderColor: [
+                            chartColors.bg,
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: `คะแนนเต็ม ${maxScore} คะแนน`,
+                            font: { size: 14, weight: 'normal' },
+                            color: '#64748b'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed.y.toFixed(2)} คะแนน`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxScore * 1.05,
+                            grid: { display: true, color: 'rgba(0, 0, 0, 0.05)' },
+                            title: { display: true, text: 'คะแนนรวม', font: { size: 14, weight: 'bold' } },
+                            ticks: {
+                                callback: function(value) { return value.toFixed(0); }
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initial form setup when the script loads
+        document.addEventListener('DOMContentLoaded', updateFormDisplay);
+    </script>
+</body>
+</html>
