@@ -23,14 +23,14 @@
     <style>
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
-            background-color: #f8fafc; /* Light gray background */
+            background-color: #f8fafc;
         }
         .main-container {
             background: white;
             border-radius: 1.5rem;
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
             border: 1px solid #e2e8f0;
-            position: relative; /* Needed for the back button */
+            position: relative;
         }
         .header-gradient {
             background-image: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
@@ -101,22 +101,9 @@
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
             border: 1px solid #e5e7eb;
         }
-
-        /* --- FIX: TAILWIND WHITELISTING --- */
-        /* Forces Tailwind to include dynamically generated classes */
-        .tailwind-whitelist {
-            display: none;
-            /* Indigo Classes */
-            @apply bg-indigo-50 text-indigo-800 text-indigo-700 bg-indigo-600;
-            /* Emerald Classes */
-            @apply bg-emerald-50 text-emerald-800 text-emerald-700 bg-emerald-600;
-        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
-
-    <!-- Tailwind Whitelist container (invisible) -->
-    <div class="bg-indigo-50 text-indigo-800 text-indigo-700 bg-emerald-50 text-emerald-800 text-emerald-700 hidden"></div>
 
     <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
@@ -192,7 +179,6 @@
                         <!-- Normal Program Scores -->
                         <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
                             <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
-                             <!-- NEW: District Selection -->
                             <div class="mb-6">
                                 <label class="block text-slate-700 font-semibold mb-3">เลือกเขตพื้นที่บริการ</label>
                                 <div class="flex gap-4">
@@ -215,18 +201,18 @@
                     </div>
                 </section>
                 
-                <!-- Submit Button (Added disabled state and initial loading content) -->
+                <!-- Submit Button -->
                 <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
-                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg" disabled>
-                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
-                        กำลังเตรียมระบบ...
+                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                        ประเมินคะแนน
                     </button>
                 </section>
             </form>
             
             <!-- Result Section -->
             <section id="result-section" class="result-wrapper p-6 sm:p-8 mt-12 hidden">
-                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนนสอบจริง</h2>
+                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนน</h2>
                 <div id="result-cards-container" class="space-y-8"></div>
             </section>
         </main>
@@ -243,26 +229,15 @@
     
     <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
     
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- GLOBAL VARIABLES ---
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        const collectionPath = `artifacts/${appId}/public/data/pretest_estimators_v2`;
-        
-        let db, auth;
-        let userId = null;
-        let isAuthReady = false;
+    <script>
+        // --- GLOBAL VARIABLES & CONFIGURATION ---
         let resultCharts = {};
 
-        // --- CONFIGURATION DATA ---
         const subjectMap = {
             'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
             'Thai': 'ภาษาไทย', 'Social': 'สังคมศึกษา'
         };
+
         const weights = {
             Special: {
                 max_pretest: { Math: 50, Science: 30, English: 30 },
@@ -279,6 +254,7 @@
                 }
             }
         };
+
         const stats2568 = {
             EP: { max: 168.50, avg: 139.89, min: 119.17, total: 200 },
             SMTE: { max: 77.25, avg: 58.58, min: 47.75, total: 100 },
@@ -295,35 +271,23 @@
             const colors = { success: 'green', error: 'red', warning: 'yellow' };
             const icons = { success: '✅', error: '🚨', warning: '⚠️' };
             
-            const alert = document.createElement('div');
-            alert.className = `p-4 rounded-lg shadow-lg mb-2 bg-${colors[type]}-100 border-l-4 border-${colors[type]}-500 text-${colors[type]}-800 transition-all duration-300 transform translate-x-full opacity-0`;
-            alert.innerHTML = `${icons[type]} <span class="font-semibold">${message}</span>`;
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `p-4 rounded-lg shadow-lg mb-2 bg-${colors[type]}-100 border-l-4 border-${colors[type]}-500 text-${colors[type]}-800 transition-all duration-300 transform translate-x-full opacity-0`;
+            alertDiv.innerHTML = `${icons[type]} <span class="font-semibold">${message}</span>`;
             
-            messageBox.prepend(alert);
+            messageBox.prepend(alertDiv);
             setTimeout(() => {
-                alert.classList.remove('translate-x-full', 'opacity-0');
+                alertDiv.classList.remove('translate-x-full', 'opacity-0');
             }, 10);
 
             setTimeout(() => {
-                alert.classList.add('opacity-0');
-                setTimeout(() => alert.remove(), 400);
+                alertDiv.classList.add('opacity-0');
+                setTimeout(() => alertDiv.remove(), 400);
             }, 3500);
         }
 
         function toggleLoading(show) {
             document.getElementById('loading-overlay').classList.toggle('hidden', !show);
-        }
-        
-        function updateButtonState() {
-            const submitButton = document.querySelector('#submit-section button[type="submit"]');
-            if (submitButton) {
-                submitButton.disabled = !isAuthReady;
-                if (isAuthReady) {
-                    submitButton.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-2"></i> ประเมินคะแนน`;
-                } else {
-                    submitButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังเตรียมระบบ...`;
-                }
-            }
         }
 
         // --- DYNAMIC FORM LOGIC ---
@@ -413,71 +377,65 @@
         }
 
         // --- FORM SUBMISSION ---
-        document.getElementById('score-form').addEventListener('submit', async function(e) {
+        document.getElementById('score-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (!isAuthReady || !userId) {
-                showMessage("ระบบยังไม่พร้อม โปรดรอสักครู่ หรือลองรีเฟรชหน้าอีกครั้ง", 'error');
-                return;
-            }
+            toggleLoading(true);
 
             const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
             const district = document.querySelector('input[name="district_selection"]:checked')?.value;
 
-            let submissionData = {
-                userId, examType, district, timestamp: new Date().toISOString(),
-                pretestScores: { Special: {}, Normal: {} },
-                analysis: { Special: null, Normal: null }
-            };
+            let analysis = { Special: null, Normal: null };
             let isValid = true;
             
             const validateAndCollectScores = (programType) => {
                 let scores = {};
-                const inputElements = document.querySelectorAll(`[data-program="${programType}"]`);
+                const inputElements = document.querySelectorAll(`input[data-program="${programType}"]`);
                 const isProgramSelected = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) || 
                                           (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
                 if (!isProgramSelected) return scores;
 
-                inputElements.forEach(input => {
+                for (const input of inputElements) {
                     const value = input.value.trim();
                     const max = parseInt(input.max);
-                    if (value === "" || isNaN(value) || parseInt(value) < 0 || parseInt(value) > max) {
+                    const score = parseInt(value);
+                    if (value === "" || isNaN(score) || score < 0 || score > max) {
                         isValid = false;
                     }
-                    scores[input.dataset.subject] = parseInt(value);
-                });
+                    scores[input.dataset.subject] = score;
+                }
                 return scores;
             };
 
             if (examType === 'Special' || examType === 'Both') {
                 const curriculum = document.getElementById('curriculum').value;
                 if (!curriculum) isValid = false;
-                submissionData.pretestScores.Special = validateAndCollectScores('Special');
-                submissionData.analysis.Special = calculateEstimatedScore('Special', curriculum, submissionData.pretestScores.Special);
-                if (submissionData.analysis.Special) submissionData.analysis.Special.curriculum = curriculum; else isValid = false;
+                const specialScores = validateAndCollectScores('Special');
+                if (isValid) {
+                    analysis.Special = calculateEstimatedScore('Special', curriculum, specialScores);
+                    if (analysis.Special) analysis.Special.curriculum = curriculum; else isValid = false;
+                }
             }
             if (examType === 'Normal' || examType === 'Both') {
-                submissionData.pretestScores.Normal = validateAndCollectScores('Normal');
-                submissionData.analysis.Normal = calculateEstimatedScore('Normal', 'Normal', submissionData.pretestScores.Normal);
-                if (submissionData.analysis.Normal) submissionData.analysis.Normal.curriculum = 'Normal'; else isValid = false;
+                const normalScores = validateAndCollectScores('Normal');
+                 if (isValid) {
+                    analysis.Normal = calculateEstimatedScore('Normal', 'Normal', normalScores);
+                    if (analysis.Normal) analysis.Normal.curriculum = 'Normal'; else isValid = false;
+                 }
             }
 
-            if (!isValid) {
-                showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
-                return;
-            }
-            
-            try {
-                toggleLoading(true);
-                await addDoc(collection(db, collectionPath), submissionData);
-                showMessage('ประเมินและบันทึกข้อมูลสำเร็จ!', 'success');
-                displayResult(submissionData.analysis, district);
-            } catch (error) {
-                console.error("Firestore Error:", error);
-                showMessage("เกิดข้อผิดพลาดในการบันทึกข้อมูล", 'error');
-            } finally {
+            // Use a short delay to allow the loading spinner to show
+            setTimeout(() => {
+                if (!isValid) {
+                    showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
+                    toggleLoading(false);
+                    return;
+                }
+                
+                showMessage('ประเมินสำเร็จ!', 'success');
+                displayResult(analysis, district);
                 toggleLoading(false);
-            }
+            }, 250); // 250ms delay
         });
 
         // --- DISPLAY RESULTS & CHARTS ---
@@ -485,24 +443,22 @@
             const container = document.getElementById('result-cards-container');
             container.innerHTML = '';
             
-            if (analysis.Special?.total_estimated > 0) {
-                container.innerHTML += createResultCardHTML('Special', analysis.Special);
+            if (analysis.Special?.total_estimated >= 0) {
+                container.innerHTML += createResultCardHTML('Special', analysis.Special, district);
             }
-            if (analysis.Normal?.total_estimated > 0) {
+            if (analysis.Normal?.total_estimated >= 0) {
                 container.innerHTML += createResultCardHTML('Normal', analysis.Normal, district);
             }
             
-            // Render charts after HTML is in the DOM
-            if (analysis.Special?.total_estimated > 0) renderResultChart('Special', analysis.Special);
-            if (analysis.Normal?.total_estimated > 0) renderResultChart('Normal', analysis.Normal);
+            if (analysis.Special?.total_estimated >= 0) renderResultChart('Special', analysis.Special);
+            if (analysis.Normal?.total_estimated >= 0) renderResultChart('Normal', analysis.Normal);
 
             const resultSection = document.getElementById('result-section');
-            if (container.innerHTML !== '') {
+            if (container.innerHTML.trim() !== '') {
                 resultSection.classList.remove('hidden');
                 resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 resultSection.classList.add('hidden');
-                showMessage("ไม่พบข้อมูลการประเมิน (อาจเกิดจากไม่ได้กรอกคะแนน หรือคะแนนเป็น 0)", 'warning');
             }
         }
 
@@ -595,55 +551,6 @@
         
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            setLogLevel('Error');
-            
-            // 1. ตรวจสอบ Config และเริ่มต้น Firebase
-            try {
-                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-                const firebaseConfig = JSON.parse(firebaseConfigStr);
-                if (!firebaseConfig.apiKey) throw new Error("Firebase config is missing or invalid.");
-                
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-            } catch (error) {
-                console.error("Firebase Initialization Failed:", error);
-                showMessage("ไม่สามารถเริ่มต้นระบบ Firebase ได้", 'error');
-                updateButtonState(); // ทำให้ปุ่มเป็น disable อยู่เสมอ
-                return;
-            }
-
-            // 2. ตั้งค่า onAuthStateChanged Listener เพื่อจัดการสถานะการล็อกอิน
-            // นี่คือส่วนสำคัญที่แก้ไข ทำให้โค้ดรอจนกว่าจะล็อกอินเสร็จจริง
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    // หากมี user ในระบบแล้ว (ล็อกอินสำเร็จ)
-                    console.log("Authentication successful. User ID:", user.uid);
-                    userId = user.uid;
-                    isAuthReady = true;
-                    updateButtonState(); // เปิดให้ปุ่มทำงานได้
-                } else {
-                    // หากยังไม่มี user, พยายามล็อกอิน
-                    console.log("No user found. Attempting sign-in...");
-                    isAuthReady = false;
-                    updateButtonState(); // ปุ่มยังคง disable
-                    try {
-                        if (initialAuthToken) {
-                            await signInWithCustomToken(auth, initialAuthToken);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                        // เมื่อล็อกอินสำเร็จ, onAuthStateChanged จะถูกเรียกอีกครั้งโดยอัตโนมัติ
-                    } catch (error) {
-                        console.error("Firebase sign-in failed:", error);
-                        showMessage("การลงชื่อเข้าใช้ Firebase ล้มเหลว", 'error');
-                        isAuthReady = false;
-                        updateButtonState(); // ยืนยันว่าปุ่ม disable
-                    }
-                }
-            });
-
-            // 3. เริ่มต้นการแสดงผลฟอร์ม
             updateFormDisplay();
         });
     </script>
