@@ -1,380 +1,247 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เครื่องมือประเมินคะแนนสอบจริงจาก Pre-test</title>
+    <title>เครื่องมือประเมินคะแนนสอบจริงจากคะแนน Pre-test สตรีวิทยา</title>
     
-    <!-- Load Tailwind CSS -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Font Awesome for the LINE icon in the footer -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Styles -->
     <style>
-        /* --- Font and Base Styles --- */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700;800&display=swap');
-        
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
-            background-color: #f8fafc; /* Lighter background */
-            background-image: linear-gradient(to bottom right, #ffffff, #f1f5f9); 
-            color: #334155;
-            min-height: 100vh;
+            background-color: #f8fafc; /* Light gray background */
         }
-        
-        .container-wrapper {
-            background-color: #ffffff;
-            border-radius: 1.5rem; 
-            /* Subtle, clean shadow for a professional look */
-            box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08); 
-            padding: 2.5rem; 
+        .main-container {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+            border: 1px solid #e2e8f0;
+            position: relative; /* Needed for the back button */
         }
-        
-        /* --- New Typography Hierarchy (Reduced and Balanced) --- */
-        
-        /* 1. Branding/Subtitle (Now the largest element as requested) */
-        .branding-subtitle {
-            font-size: 1.75rem; /* Prominent size for mobile */
-            font-weight: 800;
-            color: #4f46e5; 
-            line-height: 1.2;
+        .header-gradient {
+            background-image: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
         }
-        @media (min-width: 640px) {
-            .branding-subtitle {
-                font-size: 2.25rem; /* text-4xl on desktop */
-            }
-        }
-        
-        /* 2. Main Functional Title (Reduced for better balance with branding line) */
-        .header-title {
-            font-family: 'Noto Sans Thai', sans-serif;
-            color: #1e3a8a; 
-            font-size: 1.5rem; /* text-2xl */
-            font-weight: 800; 
-            line-height: 1.3;
-        }
-        @media (min-width: 640px) {
-            .header-title {
-                font-size: 2rem; /* sm:text-3xl */
-            }
-        }
-        
-        /* Section Title (Step 1 Title) */
         .section-title {
-            color: #4f46e5; 
-            border-bottom: 2px solid #e0e7ff; 
-            padding-bottom: 0.5rem; 
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem; /* text-2xl */
+            color: #1e293b;
             font-weight: 700;
         }
-        
-        /* Step 2 Title (Slightly smaller for visual hierarchy) */
-        .subsection-title {
-            color: #4f46e5; 
-            border-bottom: 2px solid #e0e7ff; 
-            padding-bottom: 0.5rem; 
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 700;
-        }
-
-        /* --- Input and Selection Styles --- */
         .input-field {
-            border-radius: 0.75rem; 
-            padding: 0.8rem 1rem; 
+            border-radius: 0.75rem;
+            padding: 0.8rem 1rem;
             border: 1px solid #cbd5e1;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            background-color: #ffffff;
-            font-size: 1.125rem; /* text-lg for high readability */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #f8fafc;
         }
         .input-field:focus {
             border-color: #4f46e5;
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); 
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
             outline: none;
         }
-        .radio-label {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
+        .radio-card {
+            background-color: #fff;
+            border: 2px solid #e2e8f0;
             border-radius: 1rem;
-            padding: 1.25rem; 
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04); 
+            padding: 1.5rem 1rem;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            text-align: center;
         }
-        .radio-label:hover {
-            background-color: #eff6ff;
-            border-color: #a5b4fc; 
+        .radio-card:hover {
+            border-color: #c7d2fe;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        .radio-label input:checked + span {
-            color: #4f46e5;
-            font-weight: 700;
+        input[type="radio"]:checked + .radio-card {
+            background-color: #eef2ff;
+            border-color: #6366f1;
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
         }
-        
-        /* --- Primary Button Style (Modern Gradient) --- */
         .btn-primary {
-            background-image: linear-gradient(to right, #4f46e5, #6366f1); 
-            border-radius: 1rem;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.25); 
+            background-image: linear-gradient(to right, #4f46e5, #8b5cf6);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
         }
         .btn-primary:hover {
-            box-shadow: 0 12px 20px rgba(79, 70, 229, 0.35);
-            transform: translateY(-1px);
-            opacity: 0.98;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+            transform: translateY(-3px);
         }
-
-        /* --- Result Card Refinement --- */
+        .result-wrapper {
+            background-color: #f0fdf4;
+            border-radius: 1.25rem;
+            border: 1px solid #bbf7d0;
+        }
         .result-card {
-            background-color: #f0fdf4; 
-            border: 1px solid #dcfce7;
-            border-radius: 1.5rem;
-        }
-
-        /* --- Footer Style --- */
-        .credit-footer {
-            background-color: #1e3a8a; 
-            color: #d1d5db; 
+            background: white;
             border-radius: 1rem;
-        }
-        .credit-footer a {
-            color: #a7f3d0; 
-        }
-        .credit-footer a:hover {
-            color: #6ee7b7;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
+            border: 1px solid #e5e7eb;
         }
     </style>
 </head>
 <body class="p-4 sm:p-8">
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 hidden backdrop-blur-sm">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-        <p class="text-white ml-4 text-xl font-medium">กำลังโหลดข้อมูล...</p>
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
     </div>
 
-    <div class="max-w-4xl mx-auto container-wrapper">
+    <div class="max-w-4xl mx-auto main-container">
         
-        <!-- START: Back to Home Button -->
-        <div class="mb-6">
-            <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition duration-300 font-medium text-base">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                กลับไปยังหน้าหลัก
-            </a>
-        </div>
-        <!-- END: Back to Home Button -->
+        <a href="index.html" class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm">
+            <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
+        </a>
 
-        <div class="text-center mb-10">
-            <!-- 1. Branding (Largest as requested, with heart) -->
-            <p class="font-extrabold branding-subtitle mb-2">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
-            <!-- 2. Functional Title (Balanced size) -->
-            <h1 class="font-extrabold header-title leading-tight">
-                เครื่องมือประเมินคะแนนสอบจริง<br class="sm:hidden"> จากคะแนน Pre-test
+        <header class="text-center p-8 sm:p-12 header-gradient rounded-t-2xl">
+            <p class="text-lg text-indigo-200 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                เครื่องมือประเมินคะแนนสอบจริง
             </h1>
-            <!-- 3. Description (Reduced font size) -->
-            <p class="text-base text-gray-600 mt-2">กรุณากรอกข้อมูลเพื่อประเมินผลคะแนนสอบจริงประมาณการ</p>
-        </div>
+            <p class="text-lg text-indigo-200 mt-2">จากคะแนน Pre-test สตรีวิทยา ปี 2569</p>
+        </header>
 
-        
-        <div id="input-section" class="bg-white p-6 sm:p-8 rounded-xl mb-10 border border-gray-100 shadow-xl">
-            
-            <form id="score-form">
+        <main class="p-6 sm:p-10">
+            <form id="score-form" class="space-y-12">
+                <!-- Step 1: Select Exam Type -->
+                <section>
+                    <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">1</span>
+                        เลือกประเภทการสอบ Pre-test
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนพิเศษ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนปกติ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Both" class="sr-only" onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-layer-group text-3xl text-sky-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">สอบทั้งสองประเภท</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
                 
-                <!-- STEP 1: Exam Type Selection -->
-                <div id="step-1" class="mb-8">
-                    <h2 class="font-bold section-title">1. เลือกประเภทการสอบ Pre-test</h2>
+                <!-- Step 2: Enter Scores -->
+                <section id="score-inputs-wrapper" class="hidden">
+                     <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">2</span>
+                        กรอกคะแนน Pre-test ของคุณ
+                    </h2>
                     
-                    <label class="block text-gray-700 font-semibold text-lg mb-4">คุณสอบ Pre-test ประเภทใด?</label>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <label class="flex items-center radio-label cursor-pointer">
-                            <input type="radio" name="exam_type_selection" value="Special" class="form-radio h-5 w-5" required onclick="updateFormFields()">
-                            <span class="ml-3 text-lg font-medium text-gray-800">ห้องเรียนพิเศษ (EP, GM, SMTE)</span>
-                        </label>
-                        <label class="flex items-center radio-label cursor-pointer">
-                            <input type="radio" name="exam_type_selection" value="Normal" class="form-radio h-5 w-5" onclick="updateFormFields()">
-                            <span class="ml-3 text-lg font-medium text-gray-800">ห้องเรียนปกติ (ทั่วไป)</span>
-                        </label>
-                        <label class="flex items-center radio-label cursor-pointer">
-                            <input type="radio" name="exam_type_selection" value="Both" class="form-radio h-5 w-5" onclick="updateFormFields()">
-                            <span class="ml-3 text-lg font-medium text-gray-800">สอบทั้งสองประเภท</span>
-                        </label>
-                    </div>
-                </div>
-                <!-- END STEP 1 -->
-
-                <!-- STEP 2: Scores and Details (Hidden by default) -->
-                <div id="step-2" class="hidden pt-6 mt-6 border-t border-gray-200">
-                    <h2 class="font-bold subsection-title">2. กรอกคะแนน Pre-test และรายละเอียด</h2>
-
-                    <!-- Dynamic Input Block for Details (Curriculum, etc.) -->
-                    <div id="dynamic-input-block" class="space-y-6 mb-8">
-
-                        <!-- Special Program Inputs (Curriculum) -->
-                        <div id="special-program-details" class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-xl border-4 border-indigo-400 bg-indigo-50 hidden shadow-lg">
-                            <h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2">รายละเอียดห้องเรียนพิเศษ</h3>
-                            
-                            <div id="curriculum-container" class="col-span-1"> <!-- Curriculum Container -->
-                                <label for="curriculum" class="block text-gray-700 font-semibold mb-2 text-base">หลักสูตร (ห้องพิเศษ)</label>
-                                <select id="curriculum" class="input-field w-full text-lg" required>
-                                    <option value="">เลือกหลักสูตร</option>
-                                </select>
-                            </div>
-                            <div class="col-span-1">
-                                <p class="text-sm text-gray-500 mt-2">เลือกหลักสูตรเพื่อกรอกคะแนนที่เกี่ยวข้อง</p>
+                    <div class="space-y-8">
+                        <!-- Special Program Scores -->
+                        <div id="special-program-inputs" class="p-6 border rounded-2xl bg-indigo-50 border-indigo-200 hidden">
+                            <h3 class="text-xl font-bold text-indigo-800 mb-2">ห้องเรียนพิเศษ</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
+                                    <select id="curriculum" class="input-field w-full" required></select>
+                                </div>
+                                <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
                             </div>
                         </div>
-                        
-                        <!-- Normal Program Inputs (No input needed here, only for structure) -->
-                        <div id="normal-program-details" class="p-6 rounded-xl border-4 border-emerald-400 bg-emerald-50 hidden shadow-lg">
-                            <h3 class="text-lg font-bold text-emerald-800 mb-2">รายละเอียดห้องเรียนปกติ</h3>
-                            <p class="text-base text-gray-600">กรอกคะแนน Pre-test ห้องปกติในส่วนถัดไป</p>
+
+                        <!-- Normal Program Scores -->
+                        <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
+                            <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
+                            <div id="normal-scores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                         </div>
                     </div>
-                    <!-- END Dynamic Input Block -->
-
-                    
-                    <div id="score-inputs-wrapper">
-                        <!-- Removed initial prompt from here since step 2 is hidden -->
-                        
-                        <div id="special-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-indigo-50 hidden">
-                            <h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>
-                            <!-- Scores will be injected here with text-base labels -->
-                        </div>
-
-                        <div id="normal-score-inputs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 border rounded-xl bg-emerald-50 hidden">
-                            <h3 class="col-span-full text-lg font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>
-                            <!-- Scores will be injected here with text-base labels -->
-                        </div>
-                    </div>
-                </div>
-                <!-- END STEP 2 -->
-
-                <button type="submit" class="btn-primary w-full text-white font-bold py-4 px-6 rounded-xl text-xl sm:text-2xl shadow-lg mt-8">
-                    คำนวณและบันทึกผลคะแนนของคุณ
-                </button>
+                </section>
+                
+                <!-- Submit Button -->
+                <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
+                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                        ประเมินคะแนน
+                    </button>
+                </section>
             </form>
-        </div>
-
-        
-        <div id="result-section" class="result-card p-6 sm:p-8 hidden mb-10 shadow-xl">
-            <h2 class="font-bold section-title text-emerald-700">3. ผลการประเมินคะแนนสอบจริงประมาณการ</h2>
             
-            <div id="user-result" class="mb-4 p-6 rounded-xl bg-green-50 border border-green-200 shadow-md">
-                <h3 class="text-xl font-bold text-green-800 mb-4">คะแนนสอบจริงประมาณการ</h3>
-                <div id="calculated-scores" class="space-y-4 text-lg">
-                    <!-- Calculated scores will be displayed here -->
-                </div>
-            </div>
-
-        </div>
-
-        <!-- FOOTER: Confirmed text: "ออกแบบ และจัดทำโดย" -->
-        <footer class="credit-footer text-center py-6 mt-10">
-            <p class="font-semibold text-white text-lg">ออกแบบ และจัดทำโดย</p>
-         <p class="mt-1 text-gray-300 text-base">✌️ลุ้นสอวอไปด้วยกันนะ🫰</p>
-            <p class="mt-1 text-gray-300 text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
-            <a href="https://shorturl.asia/BlJVn" target="_blank" 
-            class="mt-3 inline-flex items-center gap-2 font-bold text-green-300 hover:text-green-200 hover:underline transition text-lg">
-            <i class="fab fa-line text-2xl"></i> LINE OPC (Open Chat)
-            </a>
-        </footer>
-        <!-- END FOOTER -->
-
-
-        <div id="message-box" class="fixed top-4 right-4 z-50 w-80"></div>
-
+            <!-- Result Section -->
+            <section id="result-section" class="result-wrapper p-6 sm:p-8 mt-12 hidden">
+                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนนสอบจริง</h2>
+                <div id="result-cards-container" class="space-y-8"></div>
+            </section>
+        </main>
     </div>
-
+    
+    <footer class="text-center py-8 text-slate-500">
+        <p class="font-semibold">วิเคราะห์และพัฒนาโดย.. ลุ้นสอวอไปด้วยกันนะ</p>
+        <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+         <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
+            <i class="fab fa-line text-xl"></i> LINE OpenChat
+        </a>
+    </footer>
+    
+    <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, addDoc, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global variables provided by the environment
+        // Firebase Configuration
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         
         let db, auth, userId = null;
-        let isAuthReady = false;
-        // Updated collection path to reflect that this is only scores
-        const collectionPath = `artifacts/${appId}/public/data/pretest_scores_only_v6`; 
+        const collectionPath = `artifacts/${appId}/public/data/pretest_estimators_v2`;
 
-        // Set Firebase Log Level (for debugging in console)
-        setLogLevel('Error'); // Change to 'Debug' for more verbose logs
+        setLogLevel('Error');
 
-        // Initializing Firebase
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
+        // Initialize Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+            userId = auth.currentUser.uid;
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+        }
         
-        // *** Subject Mapping (KEY is English for calculation, VALUE is Thai for display) ***
+        // --- DATA & CONFIGURATION ---
+        let resultCharts = {};
         const subjectMap = {
-            'Math': 'คณิตศาสตร์',
-            'Science': 'วิทยาศาสตร์',
-            'English': 'ภาษาอังกฤษ',
-            'Thai': 'ภาษาไทย',
-            'Social': 'สังคมศึกษา'
+            'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
+            'Thai': 'ภาษาไทย', 'Social': 'สังคมศึกษา'
         };
 
-
-        // --- Utility Functions ---
-
-        /** Shows a temporary toast message */
-        function showMessage(message, type = 'success') {
-            const messageBox = document.getElementById('message-box');
-            const color = type === 'error' ? 'red' : (type === 'warning' ? 'amber' : 'green');
-            const icon = type === 'error' ? '🚨' : (type === 'warning' ? '⚠️' : '✅');
-            
-            const alert = document.createElement('div');
-            alert.className = `p-4 rounded-lg shadow-xl mb-2 bg-${color}-100 border-l-4 border-${color}-500 text-${color}-800 transition-opacity duration-300 ease-out`;
-            alert.innerHTML = `${icon} <span class="font-semibold">${message}</span>`;
-            
-            messageBox.prepend(alert);
-
-            setTimeout(() => {
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 4000);
-            }, 4000);
-        }
-
-        /** Shows/hides the loading overlay */
-        function toggleLoading(show) {
-            document.getElementById('loading-overlay').classList.toggle('hidden', !show);
-        }
-
-        // --- Core Firebase Logic (Simplified Auth) ---
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                userId = user.uid;
-            } else if (initialAuthToken) {
-                try {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                    userId = auth.currentUser.uid;
-                } catch (error) {
-                    console.error("Error signing in with custom token:", error);
-                    try {
-                        await signInAnonymously(auth);
-                        userId = auth.currentUser.uid;
-                    } catch(anonError) {
-                        console.error("Error signing in anonymously:", anonError);
-                        showMessage("ไม่สามารถเข้าสู่ระบบฐานข้อมูลได้ กรุณาลองใหม่", 'error');
-                    }
-                }
-            } else {
-                try {
-                    await signInAnonymously(auth);
-                    userId = auth.currentUser.uid;
-                } catch(anonError) {
-                    console.error("Error signing in anonymously:", anonError);
-                    showMessage("ไม่สามารถเข้าสู่ระบบฐานข้อมูลได้ กรุณาลองใหม่", 'error');
-                }
-            }
-            isAuthReady = true;
-            console.log("Firebase Auth Ready. User ID:", userId);
-        });
-
-        // --- Main App Logic ---
         const weights = {
             Special: {
                 max_pretest: { Math: 50, Science: 30, English: 30 },
@@ -392,286 +259,288 @@
             }
         };
 
-        const allSubjectsSpecial = ['Math', 'Science', 'English'];
-        const allSubjectsNormal = ['Math', 'Science', 'Thai', 'Social', 'English'];
+        // --- UI HELPER FUNCTIONS ---
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('message-box');
+            const colors = { success: 'green', error: 'red', warning: 'yellow' };
+            const icons = { success: '✅', error: '🚨', warning: '⚠️' };
+            
+            const alert = document.createElement('div');
+            alert.className = `p-4 rounded-lg shadow-lg mb-2 bg-${colors[type]}-100 border-l-4 border-${colors[type]}-500 text-${colors[type]}-800 transition-all duration-300 transform translate-x-full opacity-0`;
+            alert.innerHTML = `${icons[type]} <span class="font-semibold">${message}</span>`;
+            
+            messageBox.prepend(alert);
+            setTimeout(() => {
+                alert.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
 
-        /** Manages required state of an element */
-        function toggleRequired(element, isRequired) {
-            if (isRequired) {
-                element.setAttribute('required', 'required');
-            } else {
-                element.removeAttribute('required');
-            }
+            setTimeout(() => {
+                alert.classList.add('opacity-0');
+                setTimeout(() => alert.remove(), 400);
+            }, 3500);
+        }
+
+        function toggleLoading(show) {
+            document.getElementById('loading-overlay').classList.toggle('hidden', !show);
         }
         
-        /** Dynamically updates form fields based on exam type selection */
-        window.updateFormFields = function() {
-            const examTypeSelection = document.querySelector('input[name="exam_type_selection"]:checked')?.value;
-            const specialDetailsDiv = document.getElementById('special-program-details');
-            const normalDetailsDiv = document.getElementById('normal-program-details');
-            const curriculumSelect = document.getElementById('curriculum');
-            const specialScoreInputsDiv = document.getElementById('special-score-inputs');
-            const normalScoreInputsDiv = document.getElementById('normal-score-inputs');
-            const step2Div = document.getElementById('step-2');
+        function toggleRequired(element, isRequired) {
+             if (element) element.required = isRequired;
+        }
 
-            // 1. Reset/Clear all dynamic fields (details and scores)
-            specialDetailsDiv.classList.add('hidden');
-            normalDetailsDiv.classList.add('hidden');
-            toggleRequired(curriculumSelect, false);
+        // --- DYNAMIC FORM LOGIC ---
+        window.updateFormDisplay = function() {
+            const examType = document.querySelector('input[name="exam_type_selection"]:checked')?.value;
+            if (!examType) return;
             
-            curriculumSelect.innerHTML = '<option value="">เลือกหลักสูตร</option>';
-            specialScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-lg font-bold text-indigo-800 mb-2 border-b border-indigo-200 pb-2">คะแนน Pre-test ห้องเรียนพิเศษ</h3>';
-            normalScoreInputsDiv.innerHTML = '<h3 class="col-span-full text-lg font-bold text-emerald-800 mb-2 border-b border-emerald-200 pb-2">คะแนน Pre-test ห้องเรียนปกติ</h3>';
-            specialScoreInputsDiv.classList.add('hidden');
-            normalScoreInputsDiv.classList.add('hidden');
+            const scoreWrapper = document.getElementById('score-inputs-wrapper');
+            const submitSection = document.getElementById('submit-section');
+            const specialInputsDiv = document.getElementById('special-program-inputs');
+            const normalInputsDiv = document.getElementById('normal-program-inputs');
             
-            // Show/Hide Step 2
-            if (examTypeSelection) {
-                step2Div.classList.remove('hidden');
-                // Scroll smoothly to the start of Step 2 for better UX
-                setTimeout(() => {
-                    step2Div.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            } else {
-                step2Div.classList.add('hidden');
+            scoreWrapper.classList.remove('hidden');
+            submitSection.classList.remove('hidden');
+
+            specialInputsDiv.classList.add('hidden');
+            normalInputsDiv.classList.add('hidden');
+            toggleRequired(document.getElementById('curriculum'), false);
+            
+            if (examType === 'Special' || examType === 'Both') {
+                specialInputsDiv.classList.remove('hidden');
+                populateCurriculumOptions();
+                populateScoreInputs('Special');
+                toggleRequired(document.getElementById('curriculum'), true);
             }
-
-
-            // 2. Handle Selected Type
-            if (examTypeSelection === 'Special' || examTypeSelection === 'Both') {
-                // Show Special Details
-                specialDetailsDiv.classList.remove('hidden');
-                toggleRequired(curriculumSelect, true);
-
-                // Populate Curriculums
-                Object.keys(weights.Special.curriculums).forEach(key => {
-                    const option = document.createElement('option');
-                    option.value = key;
-                    option.textContent = key;
-                    curriculumSelect.appendChild(option);
-                });
-                
-                // Generate Special Score Inputs (using Thai subject names for display)
-                allSubjectsSpecial.forEach(subjectKey => {
-                    const thaiSubject = subjectMap[subjectKey];
-                    const max = weights.Special.max_pretest[subjectKey];
-                    specialScoreInputsDiv.innerHTML += `
-                        <div>
-                            <label for="score_Special_${subjectKey}" class="block text-gray-700 text-base font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
-                            <input type="number" id="score_Special_${subjectKey}" data-program="Special" data-subject="${subjectKey}" class="input-field w-full text-lg" placeholder="0 - ${max}" min="0" max="${max}" required>
-                        </div>
-                    `;
-                });
-                specialScoreInputsDiv.classList.remove('hidden');
-            }
-
-            if (examTypeSelection === 'Normal' || examTypeSelection === 'Both') {
-                // Show Normal Details
-                normalDetailsDiv.classList.remove('hidden');
-                
-                // Generate Normal Score Inputs (using Thai subject names for display)
-                allSubjectsNormal.forEach(subjectKey => {
-                    const thaiSubject = subjectMap[subjectKey];
-                    const max = weights.Normal.max_pretest[subjectKey];
-                    normalScoreInputsDiv.innerHTML += `
-                        <div>
-                            <label for="score_Normal_${subjectKey}" class="block text-gray-700 text-base font-medium mb-1">${thaiSubject} (คะแนนเต็ม ${max})</label>
-                            <input type="number" id="score_Normal_${subjectKey}" data-program="Normal" data-subject="${subjectKey}" class="input-field w-full text-lg" placeholder="0 - ${max}" min="0" max="${max}" required>
-                        </div>
-                    `;
-                });
-                normalScoreInputsDiv.classList.remove('hidden');
-            }
-
-            // Special Case: For 'Normal' only, ensure curriculum is set internally for calculation
-            if (examTypeSelection === 'Normal') {
-                 curriculumSelect.innerHTML = '<option value="Normal" selected>ห้องเรียนปกติ</option>';
+            if (examType === 'Normal' || examType === 'Both') {
+                normalInputsDiv.classList.remove('hidden');
+                populateScoreInputs('Normal');
             }
         }
 
-        /** Calculates the estimated real exam score based on pretest scores and curriculum weights */
-        function calculateEstimatedScore(roomType, curriculum, pretestScores) {
-            const result = {
-                roomType: roomType,
-                curriculum: curriculum,
-                subjects: {},
-                total_estimated: 0,
-                max_total_estimated: 0,
-            };
+        function populateCurriculumOptions() {
+            const curriculumSelect = document.getElementById('curriculum');
+            curriculumSelect.innerHTML = '<option value="">-- กรุณาเลือกหลักสูตร --</option>';
+            Object.keys(weights.Special.curriculums).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                curriculumSelect.appendChild(option);
+            });
+        }
 
+        function populateScoreInputs(programType) {
+            const gridId = programType === 'Special' ? 'special-scores-grid' : 'normal-scores-grid';
+            const scoresGrid = document.getElementById(gridId);
+            scoresGrid.innerHTML = '';
+            
+            const subjects = Object.keys(weights[programType].max_pretest);
+            subjects.forEach(subjectKey => {
+                const thaiSubject = subjectMap[subjectKey];
+                const max = weights[programType].max_pretest[subjectKey];
+                scoresGrid.innerHTML += `
+                    <div>
+                        <label for="score_${programType}_${subjectKey}" class="block text-slate-700 text-sm font-medium mb-1">${thaiSubject}</label>
+                        <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}" required>
+                    </div>
+                `;
+            });
+        }
+
+        // --- CALCULATION LOGIC ---
+        function calculateEstimatedScore(roomType, curriculum, pretestScores) {
             const typeData = weights[roomType];
             const curriculumWeights = typeData.curriculums[curriculum];
+            if (!curriculumWeights) return null;
 
-            let totalEstimated = 0;
-            let maxTotalEstimated = 0;
-
+            let result = { subjects: {}, total_estimated: 0, max_total_estimated: 0 };
             for (const subject of curriculumWeights.subjects) {
-                const preScore = pretestScores[subject] || 0;
+                const preScore = pretestScores[subject] ?? 0;
                 const preMax = typeData.max_pretest[subject];
-                const realMax = curriculumWeights[subject] || 0;
+                const realMax = curriculumWeights[subject] ?? 0;
+                const estimatedScore = preMax > 0 ? (preScore / preMax) * realMax : 0;
                 
-                if (preMax === 0 || realMax === 0) continue; 
-
-                const estimatedScore = (preScore / preMax) * realMax;
-                
-                result.subjects[subject] = {
-                    pretest: preScore,
-                    estimated: parseFloat(estimatedScore.toFixed(2)),
-                    realMax: realMax
-                };
-                
-                totalEstimated += estimatedScore;
-                maxTotalEstimated += realMax;
+                result.subjects[subject] = { estimated: parseFloat(estimatedScore.toFixed(2)), realMax };
+                result.total_estimated += estimatedScore;
+                result.max_total_estimated += realMax;
             }
-
-            result.total_estimated = parseFloat(totalEstimated.toFixed(2));
-            result.max_total_estimated = maxTotalEstimated;
-
+            result.total_estimated = parseFloat(result.total_estimated.toFixed(2));
             return result;
         }
 
-        /** Handles form submission */
+        // --- FORM SUBMISSION ---
         document.getElementById('score-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+            if (!userId) return showMessage("ระบบยังไม่พร้อม กรุณาลองใหม่", 'error');
 
-            if (!isAuthReady) {
-                showMessage("ระบบกำลังเตรียมความพร้อมฐานข้อมูล กรุณารอสักครู่", 'error');
-                return;
-            }
-
-            const examTypeSelection = document.querySelector('input[name="exam_type_selection"]:checked').value;
-            let specialAnalysis = null;
-            let normalAnalysis = null;
-
-            // Initialize submission data based on selection
+            const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
             let submissionData = {
-                userId: userId,
-                examTypeSelection: examTypeSelection,
-                specialProgram: { curriculum: null, analysis: null },
-                normalProgram: { analysis: null },
+                userId, examType, timestamp: new Date().toISOString(),
                 pretestScores: { Special: {}, Normal: {} },
-                timestamp: new Date().toISOString(),
+                analysis: { Special: null, Normal: null }
             };
-
             let isValid = true;
-
-            // --- SPECIAL Program Data Collection ---
-            if (examTypeSelection === 'Special' || examTypeSelection === 'Both') {
-                submissionData.specialProgram.curriculum = document.getElementById('curriculum').value;
-
-                // Collect Special scores and validate
-                document.querySelectorAll('#special-score-inputs input[type="number"]').forEach(input => {
-                    const subject = input.dataset.subject;
-                    const max = parseInt(input.max);
-                    const score = parseInt(input.value);
-                    if (score > max || score < 0 || isNaN(score)) { isValid = false; }
-                    submissionData.pretestScores.Special[subject] = score;
+            
+            if (examType === 'Special' || examType === 'Both') {
+                const curriculum = document.getElementById('curriculum').value;
+                document.querySelectorAll('[data-program="Special"]').forEach(input => {
+                    if (input.value === "" || parseInt(input.value) > parseInt(input.max)) isValid = false;
+                    submissionData.pretestScores.Special[input.dataset.subject] = parseInt(input.value);
                 });
-
-                if (isValid) {
-                    specialAnalysis = calculateEstimatedScore('Special', submissionData.specialProgram.curriculum, submissionData.pretestScores.Special);
-                    submissionData.specialProgram.analysis = specialAnalysis;
-                }
+                submissionData.analysis.Special = calculateEstimatedScore('Special', curriculum, submissionData.pretestScores.Special);
+                if (submissionData.analysis.Special) submissionData.analysis.Special.curriculum = curriculum;
+                else isValid = false;
             }
             
-            // --- NORMAL Program Data Collection ---
-            if (examTypeSelection === 'Normal' || examTypeSelection === 'Both') {
-                
-                // Collect Normal scores and validate
-                document.querySelectorAll('#normal-score-inputs input[type="number"]').forEach(input => {
-                    const subject = input.dataset.subject;
-                    const max = parseInt(input.max);
-                    const score = parseInt(input.value);
-                    if (score > max || score < 0 || isNaN(score)) { isValid = false; }
-                    submissionData.pretestScores.Normal[subject] = score;
+            if (examType === 'Normal' || examType === 'Both') {
+                document.querySelectorAll('[data-program="Normal"]').forEach(input => {
+                    if (input.value === "" || parseInt(input.value) > parseInt(input.max)) isValid = false;
+                    submissionData.pretestScores.Normal[input.dataset.subject] = parseInt(input.value);
                 });
-
-                if (isValid) {
-                    normalAnalysis = calculateEstimatedScore('Normal', 'Normal', submissionData.pretestScores.Normal);
-                    submissionData.normalProgram.analysis = normalAnalysis;
-                }
+                submissionData.analysis.Normal = calculateEstimatedScore('Normal', 'Normal', submissionData.pretestScores.Normal);
+                if (submissionData.analysis.Normal) submissionData.analysis.Normal.curriculum = 'Normal';
+                else isValid = false;
             }
 
-
-            if (!isValid) {
-                showMessage("โปรดตรวจสอบคะแนน Pretest ให้ถูกต้อง", 'error');
-                return;
-            }
-
-            // 3. Save to Firestore (Public Data) - using addDoc to log submission
+            if (!isValid) return showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอก", 'error');
+            
             try {
                 toggleLoading(true);
-                const docRef = await addDoc(collection(db, collectionPath), submissionData);
-                showMessage(`บันทึกข้อมูลสำเร็จ! ID: ${docRef.id}`, 'success');
-                
-                // 4. Display Result
-                displayResult(submissionData);
-
+                await addDoc(collection(db, collectionPath), submissionData);
+                showMessage('ประเมินและบันทึกข้อมูลสำเร็จ!', 'success');
+                displayResult(submissionData.analysis);
             } catch (error) {
-                console.error("Error writing document: ", error);
                 showMessage("เกิดข้อผิดพลาดในการบันทึกข้อมูล", 'error');
             } finally {
                 toggleLoading(false);
             }
         });
 
-        /** Displays the calculated results and updates the UI */
-        function displayResult(data) {
+        // --- DISPLAY RESULTS ---
+        function displayResult(analysis) {
+            const container = document.getElementById('result-cards-container');
+            container.innerHTML = '';
+            
+            if (analysis.Special) {
+                container.innerHTML += createResultCardHTML('Special', analysis.Special);
+            }
+            if (analysis.Normal) {
+                container.innerHTML += createResultCardHTML('Normal', analysis.Normal);
+            }
+            
+            // Render charts after HTML is in the DOM
+            if (analysis.Special) {
+                renderResultChart('Special', analysis.Special);
+            }
+            if (analysis.Normal) {
+                renderResultChart('Normal', analysis.Normal);
+            }
+
             const resultSection = document.getElementById('result-section');
-            const calculatedScoresDiv = document.getElementById('calculated-scores');
-            
-            calculatedScoresDiv.innerHTML = '';
-            
-            // Adjusted font size for readability
-            let detailHtml = `
-                <p class="text-xl"><strong>ประเภทการสอบ Pre-test ที่บันทึก:</strong> ${data.examTypeSelection === 'Special' ? 'ห้องเรียนพิเศษ' : (data.examTypeSelection === 'Normal' ? 'ห้องเรียนปกติ' : 'ทั้งสองประเภท')}</p>
-            `;
-
-            if (data.specialProgram.analysis) {
-                const analysis = data.specialProgram.analysis;
-                detailHtml += `
-                    <div class="mt-6 pt-4 border-t border-indigo-200">
-                        <h4 class="text-xl font-bold text-indigo-700 mb-3">ผลประมาณการสำหรับห้องเรียนพิเศษ (${analysis.curriculum})</h4>
-                        <p class="font-bold text-2xl">คะแนนสอบจริงประมาณการรวม: <span class="text-3xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
-                        <div class="mt-3 text-lg text-gray-700">
-                            <p class="font-semibold">รายละเอียดคะแนนวิชา:</p>
-                            <ul class="list-disc ml-5 space-y-1 text-base">
-                `;
-                for (const [subjectKey, scores] of Object.entries(analysis.subjects)) {
-                    const thaiSubject = subjectMap[subjectKey];
-                    detailHtml += `<li>${thaiSubject}: (Pretest ${scores.pretest} คะแนน) <span class="font-medium text-indigo-700">-> ประมาณการ ${scores.estimated} / ${scores.realMax} คะแนน</span></li>`;
-                }
-                detailHtml += `</ul></div></div>`;
-            }
-
-            if (data.normalProgram.analysis) {
-                const analysis = data.normalProgram.analysis;
-                detailHtml += `
-                    <div class="mt-6 pt-4 border-t ${data.specialProgram.analysis ? 'border-dashed border-gray-300' : 'border-emerald-200'}">
-                        <h4 class="text-xl font-bold text-emerald-700 mb-3">ผลประมาณการสำหรับห้องเรียนปกติ</h4>
-                        <p class="font-bold text-2xl">คะแนนสอบจริงประมาณการรวม: <span class="text-3xl text-red-600">${analysis.total_estimated}</span> / ${analysis.max_total_estimated} คะแนน</p>
-                        <div class="mt-3 text-lg text-gray-700">
-                            <p class="font-semibold">รายละเอียดคะแนนวิชา:</p>
-                            <ul class="list-disc ml-5 space-y-1 text-base">
-                `;
-                for (const [subjectKey, scores] of Object.entries(analysis.subjects)) {
-                    const thaiSubject = subjectMap[subjectKey];
-                    detailHtml += `<li>${thaiSubject}: (Pretest ${scores.pretest} คะแนน) <span class="font-medium text-emerald-700">-> ประมาณการ ${scores.estimated} / ${scores.realMax} คะแนน</span></li>`;
-                }
-                detailHtml += `</ul></div></div>`;
-            }
-            
-            calculatedScoresDiv.innerHTML = detailHtml;
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        function createResultCardHTML(programType, data) {
+            const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${data.curriculum})` : 'ห้องเรียนปกติ';
+            const colors = programType === 'Special' ? 'indigo' : 'emerald';
+
+            return `
+                <div class="result-card p-6">
+                    <h3 class="text-2xl font-bold text-${colors}-700 mb-4">${title}</h3>
+                    
+                    <div class="mb-6 h-64">
+                         <canvas id="chart-${programType}"></canvas>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-${colors}-50 p-4 rounded-lg mt-6">
+                        <span class="text-lg font-bold text-${colors}-800">คะแนนรวมประมาณการ</span>
+                        <span class="text-2xl font-extrabold text-${colors}-600">${data.total_estimated} / ${data.max_total_estimated}</span>
+                    </div>
+                </div>
+            `;
+        }
         
-        // Initial setup on load
-        document.addEventListener('DOMContentLoaded', () => {
-             updateFormFields(); // Initialize form fields based on default/no selection
-        });
-        
+        function renderResultChart(programType, data) {
+            const canvasId = `chart-${programType}`;
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+
+            // Destroy previous chart instance if it exists
+            if (resultCharts[canvasId]) {
+                resultCharts[canvasId].destroy();
+            }
+
+            const labels = Object.keys(data.subjects).map(key => subjectMap[key]);
+            const estimatedScores = Object.values(data.subjects).map(s => s.estimated);
+            const maxScores = Object.values(data.subjects).map(s => s.realMax);
+            
+            const chartColors = programType === 'Special' 
+                ? { bg: 'rgba(99, 102, 241, 0.6)', border: 'rgba(99, 102, 241, 1)' } 
+                : { bg: 'rgba(16, 185, 129, 0.6)', border: 'rgba(16, 185, 129, 1)' };
+
+            resultCharts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'คะแนนประมาณการ',
+                        data: estimatedScores,
+                        backgroundColor: chartColors.bg,
+                        borderColor: chartColors.border,
+                        borderWidth: 2,
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'คะแนนเต็ม',
+                        data: maxScores,
+                        backgroundColor: 'rgba(203, 213, 225, 0.5)',
+                        borderColor: 'rgba(100, 116, 139, 1)',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                           grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
-                       
+
+                                   const subject = input.dataset.subject;
+ 
