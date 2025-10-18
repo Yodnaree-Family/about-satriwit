@@ -79,9 +79,16 @@
             padding: 1rem 1.5rem;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
         }
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
             transform: translateY(-3px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            background-image: linear-gradient(to right, #6b7280, #9ca3af);
         }
         .result-wrapper {
             background-color: #f0fdf4;
@@ -190,11 +197,11 @@
                     </div>
                 </section>
                 
-                <!-- Submit Button -->
+                <!-- Submit Button (Added disabled state and initial loading content) -->
                 <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
-                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg">
-                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
-                        ประเมินคะแนน
+                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg" disabled>
+                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                        กำลังเตรียมระบบ...
                     </button>
                 </section>
             </form>
@@ -211,8 +218,8 @@
         <p class="font-semibold">วิเคราะห์และพัฒนาโดย</p>
         <p class="font-semibold">✌️ลุ้นสอวอไปด้วยกันนะ</p>
         <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
-         <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
-             <i class="fab fa-line text-xl"></i> LINE OpenChat
+          <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
+              <i class="fab fa-line text-xl"></i> LINE OpenChat
           </a>
     </footer>
     
@@ -229,24 +236,46 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         
         let db, auth, userId = null;
+        let isAuthReady = false; // NEW: Flag เพื่อตรวจสอบความพร้อมของ Firebase Auth
         const collectionPath = `artifacts/${appId}/public/data/pretest_estimators_v2`;
 
         setLogLevel('Error');
 
-        // Initialize Firebase
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
+        // --- CORE FIREBASE INITIALIZATION AND AUTH ---
+        async function initFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
 
-            if (initialAuthToken) {
-                await signInWithCustomToken(auth, initialAuthToken);
-            } else {
-                await signInAnonymously(auth);
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser.uid;
+                isAuthReady = true; // SET READY: กำหนดให้ระบบพร้อมใช้งานแล้ว
+                console.log("Firebase Auth Ready. User ID:", userId);
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                showMessage("ระบบ Firebase มีปัญหา ไม่สามารถบันทึกข้อมูลได้", 'error');
+            } finally {
+                updateButtonState(); // UPDATE BUTTON: อัปเดตสถานะปุ่มหลังจากลองล็อกอินเสร็จ
             }
-            userId = auth.currentUser.uid;
-        } catch (error) {
-            console.error("Firebase initialization failed:", error);
+        }
+
+        function updateButtonState() {
+            const submitButton = document.querySelector('#submit-section button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = !isAuthReady;
+                
+                const icon = submitButton.querySelector('.fa-solid');
+                if (isAuthReady) {
+                    submitButton.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-2"></i> ประเมินคะแนน`;
+                } else {
+                    submitButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังเตรียมระบบ...`;
+                }
+            }
         }
         
         // --- DATA & CONFIGURATION ---
@@ -393,7 +422,11 @@
         // --- FORM SUBMISSION ---
         document.getElementById('score-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            if (!userId) return showMessage("ระบบยังไม่พร้อม กรุณาลองใหม่", 'error');
+            
+            // CHECK AUTH READY: ตรวจสอบความพร้อมของ Firebase Auth ก่อนดำเนินการ
+            if (!isAuthReady || !userId) {
+                return showMessage("ระบบยังไม่พร้อมสำหรับการประเมิน กรุณารอสักครู่", 'error');
+            }
 
             const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
             let submissionData = {
@@ -410,7 +443,7 @@
                 
                 // Check if this program type is relevant to the current selection (Special only, Normal only, or Both)
                 const isProgramSelected = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) || 
-                                          (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
+                                         (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
 
                 if (!isProgramSelected) return scores; // Skip collection/validation if not selected
 
@@ -493,8 +526,8 @@
                 resultSection.classList.remove('hidden');
                 resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                 resultSection.classList.add('hidden');
-                 showMessage("ไม่พบข้อมูลการประเมิน (อาจเกิดจากไม่ได้กรอกคะแนน หรือคะแนนเป็น 0)", 'warning');
+                resultSection.classList.add('hidden');
+                showMessage("ไม่พบข้อมูลการประเมิน (อาจเกิดจากไม่ได้กรอกคะแนน หรือคะแนนเป็น 0)", 'warning');
             }
         }
 
@@ -615,7 +648,10 @@
         }
         
         // Initial form setup when the script loads
-        document.addEventListener('DOMContentLoaded', updateFormDisplay);
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFormDisplay();
+            initFirebase(); // เริ่มต้น Firebase Authentication ทันที
+        });
     </script>
 </body>
 </html>
