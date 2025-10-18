@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -245,64 +245,24 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration
+        // --- GLOBAL VARIABLES ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let db, auth, userId = null;
-        let isAuthReady = false; // NEW: Flag เพื่อตรวจสอบความพร้อมของ Firebase Auth
         const collectionPath = `artifacts/${appId}/public/data/pretest_estimators_v2`;
-
-        setLogLevel('Error');
-
-        // --- CORE FIREBASE INITIALIZATION AND AUTH ---
-        async function initFirebase() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                userId = auth.currentUser.uid;
-                isAuthReady = true; // SET READY: กำหนดให้ระบบพร้อมใช้งานแล้ว
-                console.log("Firebase Auth Ready. User ID:", userId);
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-                showMessage("ระบบ Firebase มีปัญหา ไม่สามารถบันทึกข้อมูลได้", 'error');
-            } finally {
-                updateButtonState(); // UPDATE BUTTON: อัปเดตสถานะปุ่มหลังจากลองล็อกอินเสร็จ
-            }
-        }
-
-        function updateButtonState() {
-            const submitButton = document.querySelector('#submit-section button[type="submit"]');
-            if (submitButton) {
-                submitButton.disabled = !isAuthReady;
-                
-                const icon = submitButton.querySelector('.fa-solid');
-                if (isAuthReady) {
-                    submitButton.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-2"></i> ประเมินคะแนน`;
-                } else {
-                    submitButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังเตรียมระบบ...`;
-                }
-            }
-        }
         
-        // --- DATA & CONFIGURATION ---
+        let db, auth;
+        let userId = null;
+        let isAuthReady = false;
         let resultCharts = {};
+
+        // --- CONFIGURATION DATA ---
         const subjectMap = {
             'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
             'Thai': 'ภาษาไทย', 'Social': 'สังคมศึกษา'
         };
-
         const weights = {
             Special: {
                 max_pretest: { Math: 50, Science: 30, English: 30 },
@@ -319,8 +279,6 @@
                 }
             }
         };
-
-        // NEW: 2568 Statistics Data
         const stats2568 = {
             EP: { max: 168.50, avg: 139.89, min: 119.17, total: 200 },
             SMTE: { max: 77.25, avg: 58.58, min: 47.75, total: 100 },
@@ -356,8 +314,16 @@
             document.getElementById('loading-overlay').classList.toggle('hidden', !show);
         }
         
-        function toggleRequired(element, isRequired) {
-            if (element) element.required = isRequired;
+        function updateButtonState() {
+            const submitButton = document.querySelector('#submit-section button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = !isAuthReady;
+                if (isAuthReady) {
+                    submitButton.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-2"></i> ประเมินคะแนน`;
+                } else {
+                    submitButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังเตรียมระบบ...`;
+                }
+            }
         }
 
         // --- DYNAMIC FORM LOGIC ---
@@ -377,8 +343,7 @@
             normalInputsDiv.classList.add('hidden');
             
             const curriculumSelect = document.getElementById('curriculum');
-            toggleRequired(curriculumSelect, (examType === 'Special' || examType === 'Both'));
-
+            curriculumSelect.required = (examType === 'Special' || examType === 'Both');
 
             if (examType === 'Special' || examType === 'Both') {
                 specialInputsDiv.classList.remove('hidden');
@@ -394,7 +359,6 @@
         function populateCurriculumOptions() {
             const curriculumSelect = document.getElementById('curriculum');
             curriculumSelect.innerHTML = '<option value="">-- กรุณาเลือกหลักสูตร --</option>';
-            
             Object.keys(weights.Special.curriculums).forEach(key => {
                 const option = document.createElement('option');
                 option.value = key;
@@ -407,7 +371,6 @@
             const gridId = programType === 'Special' ? 'special-scores-grid' : 'normal-scores-grid';
             const scoresGrid = document.getElementById(gridId);
             scoresGrid.innerHTML = '';
-            
             const subjects = Object.keys(weights[programType].max_pretest);
             subjects.forEach(subjectKey => {
                 const thaiSubject = subjectMap[subjectKey];
@@ -415,7 +378,7 @@
                 scoresGrid.innerHTML += `
                     <div>
                         <label for="score_${programType}_${subjectKey}" class="block text-slate-700 text-sm font-medium mb-1">${thaiSubject}</label>
-                        <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}">
+                        <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}" required>
                     </div>
                 `;
             });
@@ -439,9 +402,8 @@
                 result.max_total_estimated += realMax;
             }
 
-            // NEW: Handle EP Interview Score
             if (roomType === 'Special' && curriculum === 'EP') {
-                result.total_estimated += 20; // Assume full interview score
+                result.total_estimated += 20;
                 result.max_total_estimated += 20;
                 result.interview_added = true;
             }
@@ -455,7 +417,8 @@
             e.preventDefault();
             
             if (!isAuthReady || !userId) {
-                return showMessage("ระบบยังไม่พร้อมสำหรับการประเมิน กรุณารอสักครู่", 'error');
+                showMessage("ระบบยังไม่พร้อม โปรดรอสักครู่ หรือลองรีเฟรชหน้าอีกครั้ง", 'error');
+                return;
             }
 
             const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
@@ -471,28 +434,17 @@
             const validateAndCollectScores = (programType) => {
                 let scores = {};
                 const inputElements = document.querySelectorAll(`[data-program="${programType}"]`);
-                
                 const isProgramSelected = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) || 
                                           (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
-
                 if (!isProgramSelected) return scores;
 
                 inputElements.forEach(input => {
                     const value = input.value.trim();
                     const max = parseInt(input.max);
-                    
-                    if (value === "" || isNaN(value)) {
+                    if (value === "" || isNaN(value) || parseInt(value) < 0 || parseInt(value) > max) {
                         isValid = false;
-                        console.log(`Validation Failed: ${programType} ${input.dataset.subject} is empty/invalid.`);
                     }
-                    
-                    const score = parseInt(value);
-                    if (score < 0 || score > max) {
-                        isValid = false;
-                        console.log(`Validation Failed: ${programType} ${input.dataset.subject} score ${score} is out of range 0-${max}.`);
-                    }
-                    
-                    scores[input.dataset.subject] = score;
+                    scores[input.dataset.subject] = parseInt(value);
                 });
                 return scores;
             };
@@ -500,21 +452,20 @@
             if (examType === 'Special' || examType === 'Both') {
                 const curriculum = document.getElementById('curriculum').value;
                 if (!curriculum) isValid = false;
-                
                 submissionData.pretestScores.Special = validateAndCollectScores('Special');
                 submissionData.analysis.Special = calculateEstimatedScore('Special', curriculum, submissionData.pretestScores.Special);
-                if (submissionData.analysis.Special) submissionData.analysis.Special.curriculum = curriculum;
-                else isValid = false;
+                if (submissionData.analysis.Special) submissionData.analysis.Special.curriculum = curriculum; else isValid = false;
             }
-            
             if (examType === 'Normal' || examType === 'Both') {
                 submissionData.pretestScores.Normal = validateAndCollectScores('Normal');
                 submissionData.analysis.Normal = calculateEstimatedScore('Normal', 'Normal', submissionData.pretestScores.Normal);
-                if (submissionData.analysis.Normal) submissionData.analysis.Normal.curriculum = 'Normal';
-                else isValid = false;
+                if (submissionData.analysis.Normal) submissionData.analysis.Normal.curriculum = 'Normal'; else isValid = false;
             }
 
-            if (!isValid) return showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
+            if (!isValid) {
+                showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
+                return;
+            }
             
             try {
                 toggleLoading(true);
@@ -529,25 +480,21 @@
             }
         });
 
-        // --- DISPLAY RESULTS ---
+        // --- DISPLAY RESULTS & CHARTS ---
         function displayResult(analysis, district) {
             const container = document.getElementById('result-cards-container');
             container.innerHTML = '';
             
-            if (analysis.Special && analysis.Special.total_estimated > 0) {
+            if (analysis.Special?.total_estimated > 0) {
                 container.innerHTML += createResultCardHTML('Special', analysis.Special);
             }
-            if (analysis.Normal && analysis.Normal.total_estimated > 0) {
+            if (analysis.Normal?.total_estimated > 0) {
                 container.innerHTML += createResultCardHTML('Normal', analysis.Normal, district);
             }
             
             // Render charts after HTML is in the DOM
-            if (analysis.Special && analysis.Special.total_estimated > 0) {
-                renderResultChart('Special', analysis.Special);
-            }
-            if (analysis.Normal && analysis.Normal.total_estimated > 0) {
-                renderResultChart('Normal', analysis.Normal);
-            }
+            if (analysis.Special?.total_estimated > 0) renderResultChart('Special', analysis.Special);
+            if (analysis.Normal?.total_estimated > 0) renderResultChart('Normal', analysis.Normal);
 
             const resultSection = document.getElementById('result-section');
             if (container.innerHTML !== '') {
@@ -559,96 +506,51 @@
             }
         }
 
-        // NEW: Function to create the statistics comparison HTML
         function createStatsComparisonHTML(programType, userScore, district) {
-            let stats;
-            if (programType === 'Normal') {
-                stats = stats2568.Normal[district];
-            } else {
-                stats = stats2568[programType];
-            }
-
+            let stats = (programType === 'Normal') ? stats2568.Normal[district] : stats2568[programType];
             if (!stats) return '';
 
             const { min, avg, max, total } = stats;
-
-            // Calculate percentages for positioning on the bar
-            const minPercent = (min / total) * 100;
-            const avgPercent = (avg / total) * 100;
-            const maxPercent = (max / total) * 100;
             const userPercent = Math.min((userScore / total) * 100, 100);
 
             return `
                 <div class="mt-8">
                     <h4 class="text-lg font-bold text-slate-700 mb-4">เทียบกับสถิติคะแนนสอบจริงปี 2568</h4>
                     <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center">
-                            <span class="text-slate-600">คะแนนของคุณ</span>
-                            <span class="font-bold text-lg text-blue-600">${userScore.toFixed(2)}</span>
-                        </div>
-                         <div class="flex justify-between items-center">
-                            <span class="text-slate-500">สูงสุด (MAX)</span>
-                            <span class="font-semibold text-red-500">${max.toFixed(2)}</span>
-                        </div>
-                         <div class="flex justify-between items-center">
-                            <span class="text-slate-500">เฉลี่ย (AVG)</span>
-                            <span class="font-semibold text-yellow-500">${avg.toFixed(2)}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-slate-500">ต่ำสุด (MIN)</span>
-                            <span class="font-semibold text-green-500">${min.toFixed(2)}</span>
-                        </div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600">คะแนนของคุณ</span><span class="font-bold text-lg text-blue-600">${userScore.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">สูงสุด (MAX)</span><span class="font-semibold text-red-500">${max.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">เฉลี่ย (AVG)</span><span class="font-semibold text-yellow-500">${avg.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">ต่ำสุด (MIN)</span><span class="font-semibold text-green-500">${min.toFixed(2)}</span></div>
                     </div>
                     <div class="relative w-full h-8 mt-6">
                         <div class="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-gray-200 rounded-full"></div>
-                        <!-- Markers -->
-                        <div class="absolute h-4 w-1 bg-green-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${minPercent}%;" title="ต่ำสุด: ${min.toFixed(2)}"></div>
-                        <div class="absolute h-4 w-1 bg-yellow-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${avgPercent}%;" title="เฉลี่ย: ${avg.toFixed(2)}"></div>
-                        <div class="absolute h-4 w-1 bg-red-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${maxPercent}%;" title="สูงสุด: ${max.toFixed(2)}"></div>
-                         <!-- User Score Marker -->
+                        <div class="absolute h-4 w-1 bg-green-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${(min/total)*100}%;" title="ต่ำสุด: ${min.toFixed(2)}"></div>
+                        <div class="absolute h-4 w-1 bg-yellow-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${(avg/total)*100}%;" title="เฉลี่ย: ${avg.toFixed(2)}"></div>
+                        <div class="absolute h-4 w-1 bg-red-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${(max/total)*100}%;" title="สูงสุด: ${max.toFixed(2)}"></div>
                         <div class="absolute h-6 w-6 bg-blue-600 border-4 border-white rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg" style="left: ${userPercent}%;" title="คะแนนของคุณ: ${userScore.toFixed(2)}"></div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
         function createResultCardHTML(programType, data, district = null) {
             const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${data.curriculum})` : 'ห้องเรียนปกติ';
             const headerColorClass = programType === 'Special' ? 'text-indigo-700' : 'text-emerald-700';
             const bgColorClass = programType === 'Special' ? 'bg-indigo-50' : 'bg-emerald-50';
-            const textColorClass = programType === 'Special' ? 'text-indigo-800' : 'text-emerald-800';
-            const totalTextColorClass = programType === 'Special' ? 'text-indigo-600' : 'text-emerald-600';
             const icon = programType === 'Special' ? 'fa-star' : 'fa-book-open';
-
-            let interviewNote = '';
-            if (data.interview_added) {
-                interviewNote = `<p class="text-sm text-slate-500 mt-2 text-center">
-                    *หมายเหตุ: คะแนนรวมนี้ได้บวกคะแนนสัมภาษณ์ 20 คะแนนเต็มตามสมมติฐาน
-                </p>`;
-            }
-
+            let interviewNote = data.interview_added ? `<p class="text-sm text-slate-500 mt-2 text-center">*หมายเหตุ: คะแนนรวมนี้ได้บวกคะแนนสัมภาษณ์ 20 คะแนนเต็มตามสมมติฐาน</p>` : '';
             const statsComparisonHTML = createStatsComparisonHTML(data.curriculum || programType, data.total_estimated, district);
-
 
             return `
                 <div class="result-card p-6">
-                    <h3 class="text-2xl font-bold ${headerColorClass} mb-4 flex items-center gap-2">
-                        <i class="fa-solid ${icon}"></i>
-                        ${title}
-                    </h3>
-                    
-                    <div class="mb-6 h-64">
-                            <canvas id="chart-${programType}"></canvas>
-                    </div>
-
+                    <h3 class="text-2xl font-bold ${headerColorClass} mb-4 flex items-center gap-2"><i class="fa-solid ${icon}"></i>${title}</h3>
+                    <div class="mb-6 h-64"><canvas id="chart-${programType}"></canvas></div>
                     <div class="flex justify-between items-center ${bgColorClass} p-4 rounded-lg mt-6">
-                        <span class="text-lg font-bold ${textColorClass}">คะแนนรวมประมาณการ</span>
-                        <span class="text-2xl font-extrabold ${totalTextColorClass}">${data.total_estimated} / ${data.max_total_estimated}</span>
+                        <span class="text-lg font-bold ${programType === 'Special' ? 'text-indigo-800' : 'text-emerald-800'}">คะแนนรวมประมาณการ</span>
+                        <span class="text-2xl font-extrabold ${programType === 'Special' ? 'text-indigo-600' : 'text-emerald-600'}">${data.total_estimated} / ${data.max_total_estimated}</span>
                     </div>
                     ${interviewNote}
                     ${statsComparisonHTML}
-                </div>
-            `;
+                </div>`;
         }
         
         function renderResultChart(programType, data) {
@@ -656,14 +558,8 @@
             const ctx = document.getElementById(canvasId)?.getContext('2d');
             if (!ctx) return;
 
-            if (resultCharts[canvasId]) {
-                resultCharts[canvasId].destroy();
-            }
+            if (resultCharts[canvasId]) resultCharts[canvasId].destroy();
 
-            const labels = Object.keys(data.subjects).map(key => subjectMap[key]);
-            const estimatedScores = Object.values(data.subjects).map(s => s.estimated);
-            const maxScores = Object.values(data.subjects).map(s => s.realMax);
-            
             const chartColors = programType === 'Special' 
                 ? { bg: 'rgba(99, 102, 241, 0.7)', border: 'rgba(99, 102, 241, 1)' } 
                 : { bg: 'rgba(16, 185, 129, 0.7)', border: 'rgba(16, 185, 129, 1)' };
@@ -671,79 +567,86 @@
             resultCharts[canvasId] = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
-                    datasets: [
-                    {
+                    labels: Object.keys(data.subjects).map(key => subjectMap[key]),
+                    datasets: [{
                         label: 'คะแนนเต็ม',
-                        data: maxScores,
+                        data: Object.values(data.subjects).map(s => s.realMax),
                         backgroundColor: 'rgba(203, 213, 225, 0.5)',
                         borderColor: 'rgba(100, 116, 139, 1)',
-                        borderWidth: 1,
-                        borderRadius: 5
-                    },
-                    {
+                        borderWidth: 1, borderRadius: 5
+                    }, {
                         label: 'คะแนนประมาณการ',
-                        data: estimatedScores,
+                        data: Object.values(data.subjects).map(s => s.estimated),
                         backgroundColor: chartColors.bg,
                         borderColor: chartColors.border,
-                        borderWidth: 2,
-                        borderRadius: 5
+                        borderWidth: 2, borderRadius: 5
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
                     scales: {
-                        x: {
-                            beginAtZero: true,
-                            grid: {
-                                display: true,
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            title: {
-                                display: true,
-                                text: 'คะแนน',
-                                font: { size: 14, weight: 'bold' }
-                            },
-                            stacked: false,
-                        },
-                        y: {
-                            grid: {
-                                display: false
-                            },
-                            stacked: false,
-                        }
+                        x: { beginAtZero: true, grid: { display: true, color: 'rgba(0, 0, 0, 0.05)' }, title: { display: true, text: 'คะแนน', font: { size: 14, weight: 'bold' } }, stacked: false },
+                        y: { grid: { display: false }, stacked: false }
                     },
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.x !== null) {
-                                        label += context.parsed.x;
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (c) => `${c.dataset.label || ''}: ${c.parsed.x}` } } }
                 }
             });
         }
         
-        // Initial form setup when the script loads
+        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
+            setLogLevel('Error');
+            
+            // 1. ตรวจสอบ Config และเริ่มต้น Firebase
+            try {
+                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+                const firebaseConfig = JSON.parse(firebaseConfigStr);
+                if (!firebaseConfig.apiKey) throw new Error("Firebase config is missing or invalid.");
+                
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+            } catch (error) {
+                console.error("Firebase Initialization Failed:", error);
+                showMessage("ไม่สามารถเริ่มต้นระบบ Firebase ได้", 'error');
+                updateButtonState(); // ทำให้ปุ่มเป็น disable อยู่เสมอ
+                return;
+            }
+
+            // 2. ตั้งค่า onAuthStateChanged Listener เพื่อจัดการสถานะการล็อกอิน
+            // นี่คือส่วนสำคัญที่แก้ไข ทำให้โค้ดรอจนกว่าจะล็อกอินเสร็จจริง
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // หากมี user ในระบบแล้ว (ล็อกอินสำเร็จ)
+                    console.log("Authentication successful. User ID:", user.uid);
+                    userId = user.uid;
+                    isAuthReady = true;
+                    updateButtonState(); // เปิดให้ปุ่มทำงานได้
+                } else {
+                    // หากยังไม่มี user, พยายามล็อกอิน
+                    console.log("No user found. Attempting sign-in...");
+                    isAuthReady = false;
+                    updateButtonState(); // ปุ่มยังคง disable
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        // เมื่อล็อกอินสำเร็จ, onAuthStateChanged จะถูกเรียกอีกครั้งโดยอัตโนมัติ
+                    } catch (error) {
+                        console.error("Firebase sign-in failed:", error);
+                        showMessage("การลงชื่อเข้าใช้ Firebase ล้มเหลว", 'error');
+                        isAuthReady = false;
+                        updateButtonState(); // ยืนยันว่าปุ่ม disable
+                    }
+                }
+            });
+
+            // 3. เริ่มต้นการแสดงผลฟอร์ม
             updateFormDisplay();
-            initFirebase(); // เริ่มต้น Firebase Authentication ทันที
         });
     </script>
 </body>
 </html>
-               
+
