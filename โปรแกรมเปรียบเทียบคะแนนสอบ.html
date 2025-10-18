@@ -379,54 +379,72 @@
         // --- FORM SUBMISSION ---
         document.getElementById('score-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             toggleLoading(true);
 
-            const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
-            const district = document.querySelector('input[name="district_selection"]:checked')?.value;
-
-            let analysis = { Special: null, Normal: null };
-            let isValid = true;
-            
-            const validateAndCollectScores = (programType) => {
-                let scores = {};
-                const inputElements = document.querySelectorAll(`input[data-program="${programType}"]`);
-                const isProgramSelected = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) || 
-                                          (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
-                if (!isProgramSelected) return scores;
-
-                for (const input of inputElements) {
-                    const value = input.value.trim();
-                    const max = parseInt(input.max);
-                    const score = parseInt(value);
-                    if (value === "" || isNaN(score) || score < 0 || score > max) {
-                        isValid = false;
-                    }
-                    scores[input.dataset.subject] = score;
-                }
-                return scores;
-            };
-
-            if (examType === 'Special' || examType === 'Both') {
-                const curriculum = document.getElementById('curriculum').value;
-                if (!curriculum) isValid = false;
-                const specialScores = validateAndCollectScores('Special');
-                if (isValid) {
-                    analysis.Special = calculateEstimatedScore('Special', curriculum, specialScores);
-                    if (analysis.Special) analysis.Special.curriculum = curriculum; else isValid = false;
-                }
-            }
-            if (examType === 'Normal' || examType === 'Both') {
-                const normalScores = validateAndCollectScores('Normal');
-                 if (isValid) {
-                    analysis.Normal = calculateEstimatedScore('Normal', 'Normal', normalScores);
-                    if (analysis.Normal) analysis.Normal.curriculum = 'Normal'; else isValid = false;
-                 }
-            }
-
-            // Use a short delay to allow the loading spinner to show
+            // ใช้ Timeout เพื่อให้ UI มีเวลาแสดง loading spinner ก่อนเริ่มคำนวณ
             setTimeout(() => {
-                if (!isValid) {
+                const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
+                const district = document.querySelector('input[name="district_selection"]:checked')?.value;
+                let analysis = { Special: null, Normal: null };
+                let isOverallValid = true;
+
+                // ฟังก์ชันสำหรับรวบรวมและตรวจสอบคะแนนเฉพาะส่วน ไม่แก้ไขตัวแปรนอก scope
+                const collectAndValidateScores = (programType) => {
+                    let scores = {};
+                    let isPartValid = true;
+                    const inputs = document.querySelectorAll(`input[data-program="${programType}"]`);
+                    
+                    if (inputs.length === 0) return { scores: null, isValid: false };
+
+                    for (const input of inputs) {
+                        const value = input.value.trim();
+                        const max = parseInt(input.max);
+                        const score = parseInt(value);
+                        if (value === "" || isNaN(score) || score < 0 || score > max) {
+                            isPartValid = false;
+                            break; 
+                        }
+                        scores[input.dataset.subject] = score;
+                    }
+                    return { scores, isValid: isPartValid };
+                };
+
+                // --- ส่วนประมวลผลหลัก ---
+
+                if (examType === 'Special' || examType === 'Both') {
+                    const curriculum = document.getElementById('curriculum').value;
+                    if (!curriculum) {
+                        isOverallValid = false;
+                    } else {
+                        const result = collectAndValidateScores('Special');
+                        if (result.isValid) {
+                            analysis.Special = calculateEstimatedScore('Special', curriculum, result.scores);
+                            if (analysis.Special) {
+                                analysis.Special.curriculum = curriculum;
+                            } else {
+                                isOverallValid = false; // Calculation failed
+                            }
+                        } else {
+                            isOverallValid = false; // Validation failed
+                        }
+                    }
+                }
+
+                if (examType === 'Normal' || examType === 'Both') {
+                    const result = collectAndValidateScores('Normal');
+                    if (result.isValid) {
+                        analysis.Normal = calculateEstimatedScore('Normal', 'Normal', result.scores);
+                        if (analysis.Normal) {
+                            analysis.Normal.curriculum = 'Normal';
+                        } else {
+                            isOverallValid = false; // Calculation failed
+                        }
+                    } else {
+                        isOverallValid = false; // Validation failed
+                    }
+                }
+
+                if (!isOverallValid) {
                     showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
                     toggleLoading(false);
                     return;
@@ -435,7 +453,7 @@
                 showMessage('ประเมินสำเร็จ!', 'success');
                 displayResult(analysis, district);
                 toggleLoading(false);
-            }, 250); // 250ms delay
+            }, 250);
         });
 
         // --- DISPLAY RESULTS & CHARTS ---
@@ -443,15 +461,15 @@
             const container = document.getElementById('result-cards-container');
             container.innerHTML = '';
             
-            if (analysis.Special?.total_estimated >= 0) {
+            if (analysis.Special) {
                 container.innerHTML += createResultCardHTML('Special', analysis.Special, district);
             }
-            if (analysis.Normal?.total_estimated >= 0) {
+            if (analysis.Normal) {
                 container.innerHTML += createResultCardHTML('Normal', analysis.Normal, district);
             }
             
-            if (analysis.Special?.total_estimated >= 0) renderResultChart('Special', analysis.Special);
-            if (analysis.Normal?.total_estimated >= 0) renderResultChart('Normal', analysis.Normal);
+            if (analysis.Special) renderResultChart('Special', analysis.Special);
+            if (analysis.Normal) renderResultChart('Normal', analysis.Normal);
 
             const resultSection = document.getElementById('result-section');
             if (container.innerHTML.trim() !== '') {
