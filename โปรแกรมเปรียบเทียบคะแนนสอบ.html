@@ -170,6 +170,591 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="md:col-span-2">
                                     <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
+                                    <select id="curriculum" class="input-field w-full" required onchange="updateSpecialScoreInputRequirements()"></select>
+                                </div>
+                                <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <!-- Inputs will be dynamically generated/hidden here -->
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-4">หมายเหตุ: คะแนน Pre-test ห้องพิเศษมี 3 วิชา (คณิตศาสตร์ 50, วิทยาศาสตร์ 30, ภาษาอังกฤษ 30) รวม 110 คะแนน</p>
+                        </div>
+
+                        <!-- Normal Program Scores -->
+                        <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
+                            <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
+                            <div class="mb-6">
+                                <label class="block text-slate-700 font-semibold mb-3">เลือกเขตพื้นที่บริการ</label>
+                                <div class="flex gap-4">
+                                    <label class="flex-1">
+                                        <input type="radio" name="district_selection" value="in_district" class="sr-only" checked>
+                                        <div class="radio-card p-3">
+                                            <span class="font-semibold text-slate-800">ในเขตพื้นที่บริการ</span>
+                                        </div>
+                                    </label>
+                                    <label class="flex-1">
+                                        <input type="radio" name="district_selection" value="out_of_district" class="sr-only">
+                                        <div class="radio-card p-3">
+                                            <span class="font-semibold text-slate-800">นอกเขตพื้นที่บริการ</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="normal-scores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Submit Button -->
+                <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
+                    <button type="submit" class="btn-primary w-full md:w-auto text-xl shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                        ประเมินคะแนน
+                    </button>
+                </section>
+            </form>
+            
+            <!-- Result Section -->
+            <section id="result-section" class="result-wrapper p-6 sm:p-8 mt-12 hidden">
+                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนน</h2>
+                <div id="result-cards-container" class="space-y-8"></div>
+            </section>
+        </main>
+    </div>
+    
+    <footer class="text-center py-8 text-slate-500">
+        <p class="font-semibold">วิเคราะห์และพัฒนาโดย</p>
+        <p class="font-semibold">✌️ลุ้นสอวอไปด้วยกันนะ</p>
+        <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+          <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
+              <i class="fab fa-line text-xl"></i> LINE OpenChat
+          </a>
+    </footer>
+    
+    <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
+    
+    <script>
+        // --- GLOBAL VARIABLES & CONFIGURATION ---
+        let resultCharts = {};
+
+        const subjectMap = {
+            'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
+            'Thai': 'ภาษาไทย', 'Social': 'สังคมศึกษา'
+        };
+
+        const weights = {
+            Special: {
+                // Fixed Max Pre-test scores for ALL Special Programs
+                max_pretest: { Math: 50, Science: 30, English: 30 },
+                // Real Exam Weights
+                curriculums: {
+                    EP: { English: 80, Science: 50, Math: 50, subjects: ['Math', 'Science', 'English'] },
+                    GM: { Science: 50, Math: 50, English: 10, subjects: ['Math', 'Science', 'English'] },
+                    SMTE: { Science: 50, Math: 50, English: 0, subjects: ['Math', 'Science'] } // English not officially tested for SMTE
+                }
+            },
+            Normal: {
+                max_pretest: { Math: 30, Science: 30, Thai: 30, Social: 30, English: 30 },
+                curriculums: {
+                    Normal: { Math: 20, Science: 20, Thai: 20, Social: 20, English: 20, subjects: ['Math', 'Science', 'Thai', 'Social', 'English'] }
+                }
+            }
+        };
+
+        const stats2568 = {
+            EP: { max: 168.50, avg: 139.89, min: 119.17, total: 200 },
+            SMTE: { max: 77.25, avg: 58.58, min: 47.75, total: 100 },
+            GM: { max: 90.00, avg: 73.30, min: 66.00, total: 110 },
+            Normal: {
+                in_district: { max: 58.50, avg: 50.33, min: 41.00, total: 100 },
+                out_of_district: { max: 65.5, avg: 51.41, min: 44.00, total: 100 }
+            }
+        };
+
+        // --- UI HELPER FUNCTIONS ---
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('message-box');
+            const colors = { success: 'green', error: 'red', warning: 'yellow' };
+            const icons = { success: '✅', error: '🚨', warning: '⚠️' };
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `p-4 rounded-lg shadow-lg mb-2 bg-${colors[type]}-100 border-l-4 border-${colors[type]}-500 text-${colors[type]}-800 transition-all duration-300 transform translate-x-full opacity-0`;
+            alertDiv.innerHTML = `${icons[type]} <span class="font-semibold">${message}</span>`;
+            
+            messageBox.prepend(alertDiv);
+            setTimeout(() => {
+                alertDiv.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0');
+                setTimeout(() => alertDiv.remove(), 400);
+            }, 3500);
+        }
+
+        function toggleLoading(show) {
+            document.getElementById('loading-overlay').classList.toggle('hidden', !show);
+        }
+
+        // --- DYNAMIC FORM LOGIC ---
+        window.updateFormDisplay = function() {
+            const examType = document.querySelector('input[name="exam_type_selection"]:checked')?.value;
+            if (!examType) return;
+            
+            const scoreWrapper = document.getElementById('score-inputs-wrapper');
+            const submitSection = document.getElementById('submit-section');
+            const specialInputsDiv = document.getElementById('special-program-inputs');
+            const normalInputsDiv = document.getElementById('normal-program-inputs');
+            
+            scoreWrapper.classList.remove('hidden');
+            submitSection.classList.remove('hidden');
+
+            specialInputsDiv.classList.add('hidden');
+            normalInputsDiv.classList.add('hidden');
+            
+            const curriculumSelect = document.getElementById('curriculum');
+            curriculumSelect.required = (examType === 'Special' || examType === 'Both');
+
+            if (examType === 'Special' || examType === 'Both') {
+                specialInputsDiv.classList.remove('hidden');
+                populateCurriculumOptions();
+                // We populate ALL possible special program inputs initially, then hide based on selection
+                populateScoreInputs('Special'); 
+                updateSpecialScoreInputRequirements(); // Apply initial hiding/required status
+            } else {
+                 // Clear/reset selection when hiding
+                curriculumSelect.value = "";
+                curriculumSelect.required = false;
+            }
+
+            if (examType === 'Normal' || examType === 'Both') {
+                normalInputsDiv.classList.remove('hidden');
+                populateScoreInputs('Normal');
+            }
+        }
+
+        function populateCurriculumOptions() {
+            const curriculumSelect = document.getElementById('curriculum');
+            // Check if options are already populated to prevent duplication on re-render
+            if (curriculumSelect.options.length > 1) return;
+
+            curriculumSelect.innerHTML = '<option value="" selected disabled>-- กรุณาเลือกหลักสูตร --</option>';
+            Object.keys(weights.Special.curriculums).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                curriculumSelect.appendChild(option);
+            });
+        }
+        
+        // This function populates ALL possible inputs for a program type (Normal or Special)
+        function populateScoreInputs(programType) {
+            const gridId = programType === 'Special' ? 'special-scores-grid' : 'normal-scores-grid';
+            const scoresGrid = document.getElementById(gridId);
+            // Only generate if the grid is empty (optimization)
+            if (scoresGrid.children.length > 0 && programType === 'Normal') return;
+            if (scoresGrid.children.length > 0 && programType === 'Special') return;
+
+            scoresGrid.innerHTML = '';
+            const subjects = Object.keys(weights[programType].max_pretest);
+            
+            subjects.forEach(subjectKey => {
+                const thaiSubject = subjectMap[subjectKey];
+                const max = weights[programType].max_pretest[subjectKey];
+                
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label for="score_${programType}_${subjectKey}" class="block text-slate-700 text-sm font-medium mb-1">${thaiSubject}</label>
+                    <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" data-required-for-curriculum="ALL" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}">
+                `;
+                // Add a class to hide inputs later based on curriculum for Special Program
+                if (programType === 'Special') {
+                     div.id = `input-container-Special-${subjectKey}`;
+                }
+                scoresGrid.appendChild(div);
+            });
+            
+             // For Special Program, initially set inputs to not required until curriculum is selected
+             if (programType === 'Special') {
+                 document.querySelectorAll('#special-scores-grid input').forEach(input => {
+                    input.required = false;
+                 });
+             }
+        }
+        
+        // NEW FUNCTION: Handles showing/hiding score inputs based on the selected curriculum
+        window.updateSpecialScoreInputRequirements = function() {
+            const curriculum = document.getElementById('curriculum').value;
+            const specialSubjects = weights.Special.max_pretest;
+            const scoreInputs = document.querySelectorAll('#special-scores-grid > div');
+            
+            scoreInputs.forEach(container => {
+                const subjectKey = container.id.replace('input-container-Special-', '');
+                const input = container.querySelector('input');
+                
+                if (curriculum && weights.Special.curriculums[curriculum].subjects.includes(subjectKey)) {
+                    // Subject required for this curriculum
+                    container.classList.remove('hidden');
+                    input.required = true;
+                } else {
+                    // Subject not required or no curriculum selected yet
+                    if (curriculum) {
+                         // Only hide if a curriculum is selected and it's not needed (e.g. English for SMTE)
+                        container.classList.add('hidden');
+                        input.required = false;
+                        input.value = ""; // Clear irrelevant score
+                    } else {
+                         // If no curriculum is selected, show all possible inputs but don't require them initially (better UX)
+                         container.classList.remove('hidden');
+                         input.required = false;
+                    }
+                }
+            });
+        }
+
+
+        // --- CALCULATION LOGIC ---
+        function calculateEstimatedScore(roomType, curriculum, pretestScores) {
+            const typeData = weights[roomType];
+            const curriculumWeights = typeData.curriculums[curriculum];
+            if (!curriculumWeights) return null;
+
+            let result = { subjects: {}, total_estimated: 0, max_total_estimated: 0, interview_added: false };
+            for (const subject of curriculumWeights.subjects) {
+                const preScore = pretestScores[subject] ?? 0;
+                const preMax = typeData.max_pretest[subject];
+                const realMax = curriculumWeights[subject] ?? 0;
+                // Scale pretest score to match real exam weight
+                const estimatedScore = preMax > 0 ? (preScore / preMax) * realMax : 0;
+                
+                result.subjects[subject] = { estimated: parseFloat(estimatedScore.toFixed(2)), realMax };
+                result.total_estimated += estimatedScore;
+                result.max_total_estimated += realMax;
+            }
+
+            // Add interview score (usually 20 points, assumed full score here)
+            if (roomType === 'Special' && (curriculum === 'EP' || curriculum === 'GM')) { // Only EP and GM have interview points included in the total score of 200/110
+                const interviewScore = 20;
+                result.total_estimated += interviewScore;
+                result.max_total_estimated += interviewScore;
+                result.interview_added = true;
+            }
+
+            result.total_estimated = parseFloat(result.total_estimated.toFixed(2));
+            return result;
+        }
+
+        // --- FORM SUBMISSION ---
+        document.getElementById('score-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            toggleLoading(true);
+
+            // Use Timeout เพื่อให้ UI มีเวลาแสดง loading spinner ก่อนเริ่มคำนวณ
+            setTimeout(() => {
+                const examType = document.querySelector('input[name="exam_type_selection"]:checked').value;
+                const district = document.querySelector('input[name="district_selection"]:checked')?.value;
+                let analysis = { Special: null, Normal: null };
+                let isOverallValid = true;
+
+                // Function to collect and validate scores for a specific program type
+                const collectAndValidateScores = (programType) => {
+                    let scores = {};
+                    let isPartValid = true;
+                    // Select only visible and required inputs for validation
+                    const inputs = programType === 'Normal' 
+                        ? document.querySelectorAll(`#normal-program-inputs input[data-program="Normal"]`)
+                        : document.querySelectorAll(`#special-program-inputs input[data-program="Special"]:not([type="radio"]):required`);
+                    
+                    if (inputs.length === 0 && programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) {
+                         // Fallback for Normal inputs if they haven't been populated yet
+                         populateScoreInputs('Normal');
+                         const newInputs = document.querySelectorAll(`#normal-program-inputs input[data-program="Normal"]`);
+                         newInputs.forEach(input => input.required = true); // Normal inputs are always required
+                    }
+                    
+                    for (const input of inputs) {
+                        const value = input.value.trim();
+                        const max = parseInt(input.max);
+                        const score = parseFloat(value);
+                        // Check if required, non-hidden input is valid
+                        if (input.required && (value === "" || isNaN(score) || score < 0 || score > max)) {
+                            isPartValid = false;
+                            break; 
+                        }
+                        scores[input.dataset.subject] = score;
+                    }
+                    return { scores, isValid: isPartValid };
+                };
+
+                // --- ส่วนประมวลผลหลัก ---
+
+                if (examType === 'Special' || examType === 'Both') {
+                    const curriculum = document.getElementById('curriculum').value;
+                    if (!curriculum) {
+                        isOverallValid = false;
+                        showMessage("โปรดเลือก 'หลักสูตร' ห้องเรียนพิเศษก่อน", 'warning');
+                    } else {
+                        const result = collectAndValidateScores('Special');
+                        if (result.isValid) {
+                            analysis.Special = calculateEstimatedScore('Special', curriculum, result.scores);
+                            if (!analysis.Special) isOverallValid = false; 
+                        } else {
+                            isOverallValid = false; 
+                        }
+                    }
+                }
+
+                if (examType === 'Normal' || examType === 'Both') {
+                    // Normal program inputs are always required for the Normal section
+                    document.querySelectorAll(`#normal-program-inputs input[data-program="Normal"]`).forEach(input => input.required = true);
+                    const result = collectAndValidateScores('Normal');
+                    if (result.isValid) {
+                        analysis.Normal = calculateEstimatedScore('Normal', 'Normal', result.scores);
+                        if (!analysis.Normal) isOverallValid = false; 
+                    } else {
+                        isOverallValid = false; 
+                    }
+                }
+                
+                // Final Check
+                if (!isOverallValid) {
+                    // Only show generic error if a more specific one wasn't shown above (like the curriculum warning)
+                    if (!document.querySelector('#message-box .bg-yellow-100')) {
+                        showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
+                    }
+                    toggleLoading(false);
+                    return;
+                }
+                
+                showMessage('ประเมินสำเร็จ! ดูผลด้านล่าง', 'success');
+                displayResult(analysis, district);
+                toggleLoading(false);
+            }, 250);
+        });
+
+        // --- DISPLAY RESULTS & CHARTS ---
+        function displayResult(analysis, district) {
+            const container = document.getElementById('result-cards-container');
+            container.innerHTML = '';
+            
+            if (analysis.Special) {
+                container.innerHTML += createResultCardHTML('Special', analysis.Special, district);
+            }
+            if (analysis.Normal) {
+                container.innerHTML += createResultCardHTML('Normal', analysis.Normal, district);
+            }
+            
+            if (analysis.Special) renderResultChart('Special', analysis.Special);
+            if (analysis.Normal) renderResultChart('Normal', analysis.Normal);
+
+            const resultSection = document.getElementById('result-section');
+            if (container.innerHTML.trim() !== '') {
+                resultSection.classList.remove('hidden');
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                resultSection.classList.add('hidden');
+            }
+        }
+
+        function createStatsComparisonHTML(programType, data, district) {
+            const curriculum = data.curriculum;
+            let stats = (programType === 'Normal') ? stats2568.Normal[district] : stats2568[curriculum];
+            if (!stats) return '';
+
+            const { min, avg, max, total } = stats;
+            // Cap user score at max total score for percentage calculation
+            const userPercent = Math.min((data.total_estimated / total) * 100, 100);
+
+            // Determine if the user's score is competitive
+            let analysisText = "";
+            let analysisClass = "";
+            if (data.total_estimated >= max) {
+                 analysisText = "คะแนนของคุณสูงมาก! โอกาสสอบติดสูงมาก";
+                 analysisClass = "bg-red-100 text-red-700 border-red-300";
+            } else if (data.total_estimated >= avg) {
+                 analysisText = "คะแนนของคุณอยู่ในเกณฑ์ดี มีโอกาสสอบติดสูง";
+                 analysisClass = "bg-yellow-100 text-yellow-700 border-yellow-300";
+            } else if (data.total_estimated >= min) {
+                 analysisText = "คะแนนของคุณผ่านเกณฑ์ต่ำสุด มีโอกาส ต้องสู้ต่อ!";
+                 analysisClass = "bg-green-100 text-green-700 border-green-300";
+            } else {
+                 analysisText = "คะแนนของคุณยังต่ำกว่าเกณฑ์ โปรดเร่งทำคะแนนเพิ่ม";
+                 analysisClass = "bg-gray-100 text-gray-700 border-gray-300";
+            }
+
+
+            return `
+                <div class="mt-8 border-t pt-6 border-slate-200">
+                    <div class="p-3 font-bold rounded-lg border text-center mb-6 ${analysisClass}">
+                        ${analysisText}
+                    </div>
+
+                    <h4 class="text-lg font-bold text-slate-700 mb-4">เทียบกับสถิติคะแนนสอบจริงปี 2568</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center"><span class="text-slate-600">คะแนนของคุณ</span><span class="font-bold text-xl text-blue-600">${data.total_estimated.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">สูงสุด (MAX)</span><span class="font-semibold text-red-500">${max.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">เฉลี่ย (AVG)</span><span class="font-semibold text-yellow-500">${avg.toFixed(2)}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500">ต่ำสุด (MIN)</span><span class="font-semibold text-green-500">${min.toFixed(2)}</span></div>
+                    </div>
+                    
+                    <div class="relative w-full h-8 mt-6">
+                        <div class="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-gray-200 rounded-full"></div>
+                        <!-- Display markers for Min, Avg, Max -->
+                        <div class="absolute h-4 w-1 bg-green-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((min/total)*100, 100)}%;" title="ต่ำสุด: ${min.toFixed(2)}"></div>
+                        <div class="absolute h-4 w-1 bg-yellow-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((avg/total)*100, 100)}%;" title="เฉลี่ย: ${avg.toFixed(2)}"></div>
+                        <div class="absolute h-4 w-1 bg-red-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((max/total)*100, 100)}%;" title="สูงสุด: ${max.toFixed(2)}"></div>
+                        <!-- User Score Marker -->
+                        <div class="absolute h-6 w-6 bg-blue-600 border-4 border-white rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-xl" style="left: ${userPercent}%;" title="คะแนนของคุณ: ${data.total_estimated.toFixed(2)}"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 text-center">สถิติอ้างอิงจากข้อมูลปีการศึกษา 2568 (คะแนนเต็ม ${total} คะแนน)</p>
+                </div>`;
+        }
+
+        function createResultCardHTML(programType, data, district = null) {
+            const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${data.curriculum})` : `ห้องเรียนปกติ (${district === 'in_district' ? 'ในเขต' : 'นอกเขต'})`;
+            const headerColorClass = programType === 'Special' ? 'text-indigo-700' : 'text-emerald-700';
+            const bgColorClass = programType === 'Special' ? 'bg-indigo-50' : 'bg-emerald-50';
+            const icon = programType === 'Special' ? 'fa-star' : 'fa-book-open';
+            let interviewNote = data.interview_added ? `<p class="text-sm text-slate-500 mt-2 text-center">*หมายเหตุ: คะแนนรวมได้รวมคะแนนสัมภาษณ์ 20 คะแนนเต็มตามสมมติฐาน</p>` : '';
+            const statsComparisonHTML = createStatsComparisonHTML(programType, data, district);
+
+            return `
+                <div class="result-card p-6">
+                    <h3 class="text-2xl font-bold ${headerColorClass} mb-4 flex items-center gap-2"><i class="fa-solid ${icon}"></i>${title}</h3>
+                    <div class="mb-6 h-64"><canvas id="chart-${programType}"></canvas></div>
+                    <div class="flex justify-between items-center ${bgColorClass} p-4 rounded-xl mt-6">
+                        <span class="text-lg font-bold ${programType === 'Special' ? 'text-indigo-800' : 'text-emerald-800'}">คะแนนรวมประมาณการ</span>
+                        <span class="text-3xl font-extrabold ${programType === 'Special' ? 'text-indigo-600' : 'text-emerald-600'}">${data.total_estimated} / ${data.max_total_estimated}</span>
+                    </div>
+                    ${interviewNote}
+                    ${statsComparisonHTML}
+                </div>`;
+        }
+        
+        function renderResultChart(programType, data) {
+            const canvasId = `chart-${programType}`;
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+
+            if (resultCharts[canvasId]) resultCharts[canvasId].destroy();
+
+            const chartColors = programType === 'Special' 
+                ? { bg: 'rgba(99, 102, 241, 0.7)', border: 'rgba(99, 102, 241, 1)' } 
+                : { bg: 'rgba(16, 185, 129, 0.7)', border: 'rgba(16, 185, 129, 1)' };
+
+            resultCharts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.subjects).map(key => subjectMap[key]),
+                    datasets: [{
+                        label: 'คะแนนเต็ม (สอบจริง)',
+                        data: Object.values(data.subjects).map(s => s.realMax),
+                        backgroundColor: 'rgba(203, 213, 225, 0.5)',
+                        borderColor: 'rgba(100, 116, 139, 1)',
+                        borderWidth: 1, borderRadius: 5
+                    }, {
+                        label: 'คะแนนประมาณการ',
+                        data: Object.values(data.subjects).map(s => s.estimated),
+                        backgroundColor: chartColors.bg,
+                        borderColor: chartColors.border,
+                        borderWidth: 2, borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                    scales: {
+                        x: { 
+                            beginAtZero: true, 
+                            grid: { display: true, color: 'rgba(0, 0, 0, 0.05)' }, 
+                            title: { display: true, text: 'คะแนน', font: { size: 14, weight: 'bold' } }, 
+                            stacked: false 
+                        },
+                        y: { grid: { display: false }, stacked: false }
+                    },
+                    plugins: { 
+                        legend: { position: 'bottom' }, 
+                        tooltip: { callbacks: { label: (c) => `${c.dataset.label || ''}: ${c.parsed.x}` } } 
+                    }
+                }
+            });
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial call to set up the default selected state ('Normal')
+            updateFormDisplay();
+        });
+    </script>
+</body>
+</html>
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto main-container">
+        
+        <a href="index.html" class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm">
+            <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
+        </a>
+
+        <header class="text-center p-8 sm:p-12 header-gradient rounded-t-2xl">
+            <p class="text-lg text-indigo-200 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                เครื่องมือประเมินคะแนนสอบจริง
+            </h1>
+            <p class="text-lg text-indigo-200 mt-2">จากคะแนน Pre-test สตรีวิทยา</p>
+        </header>
+
+        <main class="p-6 sm:p-10">
+            <form id="score-form" class="space-y-12">
+                <!-- Step 1: Select Exam Type -->
+                <section>
+                    <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">1</span>
+                        เลือกประเภทการสอบ Pre-test
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนพิเศษ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()" checked>
+                            <div class="radio-card">
+                                <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนปกติ</span>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="exam_type_selection" value="Both" class="sr-only" onchange="updateFormDisplay()">
+                            <div class="radio-card">
+                                <i class="fa-solid fa-layer-group text-3xl text-sky-500 mb-2"></i>
+                                <span class="text-lg font-semibold text-slate-800">สอบทั้งสองประเภท</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+                
+                <!-- Step 2: Enter Scores -->
+                <section id="score-inputs-wrapper" class="hidden">
+                    <h2 class="text-2xl section-title mb-6 flex items-center">
+                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">2</span>
+                        กรอกคะแนน Pre-test ของคุณ
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Special Program Scores -->
+                        <div id="special-program-inputs" class="p-6 border rounded-2xl bg-indigo-50 border-indigo-200 hidden">
+                            <h3 class="text-xl font-bold text-indigo-800 mb-2">ห้องเรียนพิเศษ</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
                                     <select id="curriculum" class="input-field w-full" required></select>
                                 </div>
                                 <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
