@@ -94,9 +94,22 @@
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
             border: 1px solid #e5e7eb;
         }
+
+        /* --- FIX: TAILWIND WHITELISTING --- */
+        /* Forces Tailwind to include dynamically generated classes */
+        .tailwind-whitelist {
+            display: none;
+            /* Indigo Classes */
+            @apply bg-indigo-50 text-indigo-800 text-indigo-700 bg-indigo-600;
+            /* Emerald Classes */
+            @apply bg-emerald-50 text-emerald-800 text-emerald-700 bg-emerald-600;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
+
+    <!-- Tailwind Whitelist container (invisible) -->
+    <div class="bg-indigo-50 text-indigo-800 text-indigo-700 bg-emerald-50 text-emerald-800 text-emerald-700 hidden"></div>
 
     <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
@@ -126,7 +139,6 @@
                     </h2>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <label>
-                            <!-- Added 'checked' for better UX (pre-selected option) -->
                             <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
                             <div class="radio-card">
                                 <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
@@ -134,7 +146,6 @@
                             </div>
                         </label>
                         <label>
-                            <!-- Added 'checked' for better UX (pre-selected option) -->
                             <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()" checked>
                             <div class="radio-card">
                                 <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
@@ -202,7 +213,7 @@
         <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
          <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
              <i class="fab fa-line text-xl"></i> LINE OpenChat
-         </a>
+          </a>
     </footer>
     
     <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
@@ -309,7 +320,9 @@
             
             // Toggle required status for curriculum select (required only for Special/Both)
             const curriculumSelect = document.getElementById('curriculum');
+            // FIX: Ensure curriculum select is toggled required based on exam type.
             toggleRequired(curriculumSelect, (examType === 'Special' || examType === 'Both'));
+
 
             if (examType === 'Special' || examType === 'Both') {
                 specialInputsDiv.classList.remove('hidden');
@@ -318,7 +331,7 @@
             }
             if (examType === 'Normal' || examType === 'Both') {
                 normalInputsDiv.classList.remove('hidden');
-                // Curriculum select is not required for Normal, even if Normal or Both is selected, only Special needs it.
+                // The curriculum select is still present but not required if Normal is the only focus.
                 populateScoreInputs('Normal');
             }
         }
@@ -349,7 +362,6 @@
                 scoresGrid.innerHTML += `
                     <div>
                         <label for="score_${programType}_${subjectKey}" class="block text-slate-700 text-sm font-medium mb-1">${thaiSubject}</label>
-                        <!-- FIX: Removed 'required' attribute here. Validation is now handled in JS submit handler, preventing native HTML validation error on hidden fields. -->
                         <input type="number" id="score_${programType}_${subjectKey}" data-program="${programType}" data-subject="${subjectKey}" class="input-field w-full" placeholder="เต็ม ${max}" min="0" max="${max}">
                     </div>
                 `;
@@ -394,20 +406,30 @@
             // Helper function for score validation and collection
             const validateAndCollectScores = (programType) => {
                 let scores = {};
-                document.querySelectorAll(`[data-program="${programType}"]`).forEach(input => {
-                    // Manual validation for empty fields since 'required' attribute was removed
-                    if (input.value === "") {
-                         // Only check inputs that are part of the currently selected exam type (or are part of 'Both' selection)
-                        if (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) isValid = false;
-                        if (programType === 'Special' && (examType === 'Special' || examType === 'Both')) isValid = false;
-                    }
+                const inputElements = document.querySelectorAll(`[data-program="${programType}"]`);
+                
+                // Check if this program type is relevant to the current selection (Special only, Normal only, or Both)
+                const isProgramSelected = (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) || 
+                                          (programType === 'Special' && (examType === 'Special' || examType === 'Both'));
 
-                    const value = parseInt(input.value);
-                    if (isNaN(value) || value < 0 || value > parseInt(input.max)) {
-                        if (programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) isValid = false;
-                        if (programType === 'Special' && (examType === 'Special' || examType === 'Both')) isValid = false;
+                if (!isProgramSelected) return scores; // Skip collection/validation if not selected
+
+                inputElements.forEach(input => {
+                    const value = input.value.trim();
+                    const max = parseInt(input.max);
+                    
+                    if (value === "" || isNaN(value)) {
+                        isValid = false;
+                        console.log(`Validation Failed: ${programType} ${input.dataset.subject} is empty/invalid.`);
                     }
-                    scores[input.dataset.subject] = value;
+                    
+                    const score = parseInt(value);
+                    if (score < 0 || score > max) {
+                        isValid = false;
+                        console.log(`Validation Failed: ${programType} ${input.dataset.subject} score ${score} is out of range 0-${max}.`);
+                    }
+                    
+                    scores[input.dataset.subject] = score;
                 });
                 return scores;
             };
@@ -429,7 +451,7 @@
                 else isValid = false;
             }
 
-            if (!isValid) return showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอก", 'error');
+            if (!isValid) return showMessage("ข้อมูลไม่ถูกต้อง โปรดตรวจสอบคะแนนที่กรอกให้ครบถ้วนและอยู่ในช่วงที่กำหนด", 'error');
             
             try {
                 toggleLoading(true);
@@ -478,23 +500,27 @@
 
         function createResultCardHTML(programType, data) {
             const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${data.curriculum})` : 'ห้องเรียนปกติ';
-            const colors = programType === 'Special' ? 'indigo' : 'emerald';
+            // FIX: Tailwind Whitelisting required us to use the full class names below
+            const headerColorClass = programType === 'Special' ? 'text-indigo-700' : 'text-emerald-700';
+            const bgColorClass = programType === 'Special' ? 'bg-indigo-50' : 'bg-emerald-50';
+            const textColorClass = programType === 'Special' ? 'text-indigo-800' : 'text-emerald-800';
+            const totalTextColorClass = programType === 'Special' ? 'text-indigo-600' : 'text-emerald-600';
             const icon = programType === 'Special' ? 'fa-star' : 'fa-book-open';
 
             return `
                 <div class="result-card p-6">
-                    <h3 class="text-2xl font-bold text-${colors}-700 mb-4 flex items-center gap-2">
+                    <h3 class="text-2xl font-bold ${headerColorClass} mb-4 flex items-center gap-2">
                         <i class="fa-solid ${icon}"></i>
                         ${title}
                     </h3>
                     
                     <div class="mb-6 h-64">
-                         <canvas id="chart-${programType}"></canvas>
+                           <canvas id="chart-${programType}"></canvas>
                     </div>
 
-                    <div class="flex justify-between items-center bg-${colors}-50 p-4 rounded-lg mt-6">
-                        <span class="text-lg font-bold text-${colors}-800">คะแนนรวมประมาณการ</span>
-                        <span class="text-2xl font-extrabold text-${colors}-600">${data.total_estimated} / ${data.max_total_estimated}</span>
+                    <div class="flex justify-between items-center ${bgColorClass} p-4 rounded-lg mt-6">
+                        <span class="text-lg font-bold ${textColorClass}">คะแนนรวมประมาณการ</span>
+                        <span class="text-2xl font-extrabold ${totalTextColorClass}">${data.total_estimated} / ${data.max_total_estimated}</span>
                     </div>
                 </div>
             `;
