@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: วิเคราะห์สถิติคะแนนสอบเข้า ม.1 สตรีวิทยา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+Thai:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#003f5c]">เจาะลึกสถิติคะแนนสอบเข้า ม.1</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#7a5195]">โรงเรียนสตรีวิทยา</h2>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">วิเคราะห์แนวโน้มและข้อมูลเชิงลึก เพื่อการวางแผนสำหรับผู้ปกครองและนักเรียน โดย...<span class="font-semibold text-[#bc5090]">ลุ้นสอวอไปด้วยกันนะ</span></p>
+        </header>
+
+        <section id="overview" class="mb-16">
+            <h3 class="text-3xl font-bold text-center mb-8 text-[#003f5c]">ภาพรวมการแข่งขันปีล่าสุด (2568)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-b-8 border-[#ffa600]">
+                    <p class="text-xl font-semibold text-gray-500">คะแนนสูงสุด (EP)</p>
+                    <p id="kpi-max-ep" class="text-5xl font-extrabold text-[#003f5c] mt-2">168.50</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-b-8 border-[#ef5675]">
+                    <p class="text-xl font-semibold text-gray-500">คะแนนสูงสุด (นอกเขต)</p>
+                    <p id="kpi-max-normal" class="text-5xl font-extrabold text-[#003f5c] mt-2">65.50</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-b-8 border-[#7a5195]">
+                    <p class="text-xl font-semibold text-gray-500">ผู้สำรวจข้อมูล (EP)</p>
+                    <p id="kpi-total-ep" class="text-5xl font-extrabold text-[#003f5c] mt-2">28 คน</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="special-programs" class="mb-16">
+            <div class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+                <h3 class="text-3xl font-bold text-center mb-2 text-[#003f5c]">เจาะลึก 'ห้องเรียนพิเศษ'</h3>
+                <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">เปรียบเทียบความเข้มข้นของแต่ละหลักสูตรและวิเคราะห์แนวโน้มคะแนนย้อนหลัง เพื่อค้นหาเส้นทางที่เหมาะสมที่สุด</p>
+                
+                <div class="text-center mb-12">
+                    <h4 class="text-2xl font-bold text-[#374c80] mb-4">ภาพรวมคะแนนเฉลี่ยแต่ละหลักสูตร (ปี 2568)</h4>
+                     <p class="text-gray-500 mb-4 max-w-xl mx-auto">กราฟเรดาร์แสดงให้เห็นถึงภาพรวมคะแนนเฉลี่ยของทั้ง 3 หลักสูตรในปีล่าสุด ช่วยให้เห็นภาพรวมการแข่งขันได้อย่างรวดเร็ว</p>
+                    <div class="chart-container">
+                        <canvas id="specialProgramsRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
+                    <div>
+                        <h4 class="text-2xl font-bold text-[#bc5090] mb-2">EP: English Program</h4>
+                        <p class="text-gray-600 mb-4">หลักสูตรที่เน้นทักษะภาษาอังกฤษควบคู่กับวิชาการที่เข้มข้น จากข้อมูลปี 2567 ที่มีรายละเอียดครบถ้วนที่สุด พบว่าคะแนนวิชาภาษาอังกฤษเป็นส่วนสำคัญอย่างยิ่งในการแข่งขัน</p>
+                        <div class="chart-container" style="height: 300px; max-height: 40vh;">
+                            <canvas id="epDonutChart"></canvas>
+                        </div>
+                    </div>
+                     <div>
+                        <h4 class="text-2xl font-bold text-[#374c80] mb-4">แนวโน้มคะแนน EP ย้อนหลัง</h4>
+                         <p class="text-gray-500 mb-4">กราฟเส้นแสดงให้เห็นถึงแนวโน้มของคะแนนสูงสุด, ต่ำสุด และค่าเฉลี่ยตลอด 4 ปีที่ผ่านมา ทำให้เห็นภาพความเปลี่ยนแปลงของระดับการแข่งขันในหลักสูตร EP</p>
+                        <div class="chart-container">
+                            <canvas id="epTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div>
+                        <h4 class="text-2xl font-bold text-[#374c80] mb-4">แนวโน้มคะแนน SMTE ย้อนหลัง</h4>
+                        <p class="text-gray-500 mb-4">วิเคราะห์แนวโน้มคะแนนของหลักสูตรที่เน้นวิทยาศาสตร์ คณิตศาสตร์ และเทคโนโลยี เพื่อเตรียมความพร้อมรับมือกับข้อสอบ</p>
+                        <div class="chart-container">
+                            <canvas id="smteTrendChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-[#374c80] mb-4">แนวโน้มคะแนน GM ย้อนหลัง</h4>
+                        <p class="text-gray-500 mb-4">สำรวจการเปลี่ยนแปลงของคะแนนในหลักสูตร Gifted Math ตลอด 5 ปี เพื่อการวางแผนและประเมินโอกาส</p>
+                        <div class="chart-container">
+                            <canvas id="gmTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="regular-programs" class="mb-16">
+            <div class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+                <h3 class="text-3xl font-bold text-center mb-2 text-[#003f5c]">เส้นทางสู่ 'ห้องเรียนปกติ'</h3>
+                <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">วิเคราะห์ความแตกต่างและแนวโน้มคะแนนระหว่างนักเรียน 'ในเขตพื้นที่บริการ' และ 'นอกเขตพื้นที่บริการ'</p>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h4 class="text-2xl font-bold text-[#374c80] mb-4">เปรียบเทียบคะแนน 'ในเขต' และ 'นอกเขต' (ปี 2568)</h4>
+                        <p class="text-gray-500 mb-4">
+                            กราฟแท่งเปรียบเทียบให้เห็นความแตกต่างของช่วงคะแนนระหว่างกลุ่มนักเรียนในเขตและนอกเขตพื้นที่บริการอย่างชัดเจน ซึ่งสะท้อนให้เห็นถึงระดับการแข่งขันที่แตกต่างกัน
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="regularCompareChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-[#374c80] mb-4">แนวโน้มคะแนนเฉลี่ยย้อนหลัง</h4>
+                        <p class="text-gray-500 mb-4">
+                            ติดตามการเปลี่ยนแปลงของคะแนนเฉลี่ยของทั้งสองกลุ่มตลอด 2 ปีที่ผ่านมา เพื่อช่วยในการประเมินและตั้งเป้าหมายคะแนนที่ควรทำได้
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="regularTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="data-explorer" class="mb-16">
+            <div class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+                <h3 class="text-3xl font-bold text-center mb-2 text-[#003f5c]">สำรวจข้อมูลคะแนนด้วยตนเอง</h3>
+                <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">สำหรับผู้ที่ต้องการดูข้อมูลดิบทั้งหมด สามารถเลือกหลักสูตรและปีที่สนใจเพื่อดูตารางคะแนนฉบับเต็มได้ที่นี่</p>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
+                    <div>
+                        <label for="explorer-main" class="block text-sm font-medium text-gray-700 mb-1">ประเภทห้องเรียน</label>
+                        <select id="explorer-main" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+                    </div>
+                     <div>
+                        <label for="explorer-sub" class="block text-sm font-medium text-gray-700 mb-1">หลักสูตร</label>
+                        <select id="explorer-sub" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+                    </div>
+                    <div>
+                        <label for="explorer-year" class="block text-sm font-medium text-gray-700 mb-1">ปีการศึกษา</label>
+                        <select id="explorer-year" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+                    </div>
+                </div>
+                 <div id="explorer-table-container"></div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-12 py-8 text-center">
+      <div class="container mx-auto px-4">
+          <p class="text-2xl font-extrabold text-white mb-1">จัดทำโดย...ลุ้นสอวอไปด้วยกันนะ</p>
+          <p class="text-lg font-semibold text-pink-300 mb-3">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
+          <p class="text-gray-400 text-sm mb-4 max-w-2xl mx-auto">
+            รวบรวมข้อมูลเพื่อความสะดวกในการวางแผนของผู้ปกครองและนักเรียน
+            <br>
+            <span class="font-semibold text-red-300">ข้อมูลนี้เป็นผลจากการสำรวจเพื่อการวิเคราะห์เบื้องต้นเท่านั้น ไม่ใช่ข้อมูลทางการของโรงเรียน</span>
+          </p>
+          <a href="https://shorturl.asia/BlJVn" target="_blank" rel="noopener noreferrer" 
+             class="inline-flex items-center gap-3 px-5 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition-transform hover:scale-105">
+              <span class="text-2xl">💬</span>
+              <span>เข้าร่วม LINE OpenChat</span>
+          </a>
+      </div>
+    </footer>
+
+    <script>
+        const examData = {
+            "ห้องเรียนพิเศษ": {
+                "EP": {
+                    "2568": { type: "EP 2568 (200 คะแนน)", stats: { max: 168.50, min: 119.17, avg: 139.89, maxScore: 200 }, ranking: [{total:168.5}, {total:163.83}, {total:163}, {total:154.83}, {total:154.83}, {total:154.5}, {total:154.17}, null, {total:149.33}, {total:148.5}, {total:148}, {total:147.67}, {total:145.83}, {total:145.67}, null, null, null, null, {total:140.83}, {total:140.33}, null, {total:139.83}, null, null, {total:136.83}, {total:136.67}, null, null, null, null, null, {total:134.33}, null, null, null, {total:130}, null, null, null, null, {total:127.67}, {total:126.5}, {total:126.33}, null, {total:125.5}, null, {total:125.17}, null, {total:124.5}, null, null, null, null, {total:122.33}, null, {total:122.17}, {total:119.83}, null, {total:119.17}] },
+                    "2567": { type: "EP 2567 (200 คะแนน)", stats: { max: 171.66, min: 110.83, avg: 127.47, maxScore: 200 }, ranking: Array(54).fill(null).map((_, i) => ({1:{total:171.66,math:47,science:38.66,english:66,interview:20},4:{total:140.5,math:42,science:29.33,english:50,interview:19.17},5:{total:139.17,math:40,science:38.5,english:41,interview:19.67},12:{total:134.33,math:35,science:30.33,english:49,interview:20},17:{total:127},19:{total:126.33,math:31,science:25.5,english:50,interview:19.83},20:{total:126.16,math:31,science:28.83,english:47,interview:19.33},23:{total:124.83,math:37,science:20.33,english:49,interview:18.5},29:{total:122.66,math:37,science:27.33,english:39,interview:19.33},34:{total:120.17,math:35,science:27.5,english:40,interview:17.67},39:{total:117.16,math:28,science:22.83,english:47,interview:19.33},48:{total:112.83,math:31,science:33.66,english:29,interview:19.17},53:{total:110.88,math:17,science:20.88,english:53,interview:20},54:{total:110.83,math:37,science:24,english:34,interview:15.83}})[i + 1] || null) },
+                    "2566": { type: "EP 2566 (200 คะแนน)", stats: { max: 160.33, min: 112.92, avg: 135.14, maxScore: 200 }, ranking: [160.33, 154.17, 153.92, null, null, null, null, null, null, null, 145, 135.17, null, null, null, null, null, null, null, null, null, null, null, null, null, 135.17].map(s => s ? {total:s} : null) },
+                    "2565": { type: "EP 2565 (200 คะแนน)", stats: { max: 134.00, min: 102.33, avg: 118.39, maxScore:200 }, ranking: [134, 131.8, 129.5, 128, 123, 119, 116.75, 114.75, 111.17, 107, 103.3, 102.3, 100.3, 96.5].map(s => s ? {total:s} : null) }
+                },
+                "SMTE": {
+                    "2568": { type: "SMTE 2568 (100 คะแนน)", stats: { max: 77.25, min: 47.75, avg: 58.58, maxScore: 100 }, ranking: [77.25, 70.75, null, null, null, null, 63, 61.25, 61.25, 60.25, null, null, null, null, 56.75, null, null, 55.5, 54.75, null, null, null, null, 51, null, 51, 51, null, null, 47.75].map(s => s ? {total:s} : null) },
+                    "2567": { type: "SMTE 2567 (100 คะแนน)", stats: { max: 81.50, min: 52.00, avg: 70.00, maxScore: 100 }, ranking: Array(40).fill(null).map((_, i) => ({3:{total:81.5,math:43,science:38.5},5:{total:80,math:43,science:37},6:{total:79.5,math:38.5,science:41},8:{total:76,math:38,science:38},9:{total:75.5,math:42.5,science:33},11:{total:73.5,math:38.5,science:35},12:{total:73.5,math:40,science:33.5},14:{total:70.5,math:29.5,science:41},15:{total:70.5,math:32.5,science:38},16:{total:70.5,math:39.5,science:31},17:{total:69.5,math:31.5,science:38},25:{total:64,math:28.5,science:35.5},27:{total:61,math:27,science:34},32:{total:57,math:20,science:37},40:{total:52,math:19.5,science:32.5}})[i+1] || null)}
+                },
+                "GM": {
+                    "2568": { type: "GM 2568 (110 คะแนน)", stats: { max: 90.00, min: 66.0, avg: 73.3, maxScore: 110 }, ranking: [90, 89, null, 83, null, 82.5, 82.5, null, null, 81.5, null, 78.5, 78.5, 77.5, 77, null, null, 75.5, null, 75.5, null, null, null, 73, null, 72.5, null, null, null, null, 71.5, null, null, 71, 71, 70.5, 70, 70, 70, 69.5, 69.5, null, 69.5, 69.5, null, 69, 69, null, null, 68.5, 68, null, 68, null, null, null, 67.5, null, 67.5, 67.5, null, null, null, null, null, null, null, null, null, 66].map(s => s ? {total:s} : null)},
+                    "2567": { type: "GM 2567 (110 คะแนน)", stats: { max: 101.50, min: 60.00, avg: 75.00, maxScore: 110 }, ranking: Array(72).fill(null).map((_,i)=>({1:{total:101.5,math:50,science:43,english:8.5},3:{total:88.5,math:37.5,science:42,english:9},5:{total:81.5,math:30,science:43,english:8.5},10:{total:77.5,math:38.5,science:33.5,english:5.5},11:{total:77,math:36,science:35.5,english:5.5},12:{total:76.5,math:30,science:40,english:6.5},14:{total:76,math:35,science:36,english:5},20:{total:74,math:29,science:38.5,english:6.5},23:{total:73.5,math:26,science:39,english:8.5},26:{total:72,math:28.5,science:39,english:4.5},30:{total:70.5,math:25.5,science:40.5,english:4.5},31:{total:70,math:26.5,science:39,english:4.5},33:{total:69,math:29.5,science:34.5,english:5},37:{total:67.5,math:21.5,science:39,english:7},39:{total:67.5,math:27.5,science:34,english:6},41:{total:66.5,math:27.5,science:33,english:6},42:{total:66.5,math:31.5,science:31.5,english:3.5},50:{total:64,math:28.5,science:30.5,english:5},51:{total:63.5,math:27,science:32.5,english:4},57:{total:62.5,math:24.5,science:32,english:6},59:{total:62.5,math:19,science:36.5,english:7},60:{total:62,math:23.5,science:32.5,english:6},62:{total:61.5,math:27.5,science:30,english:4},63:{total:61,math:29.5,science:26.5,english:5},72:{total:60,math:21.5,science:30,english:8.5}})[i+1]||null) },
+                    "2566": { type: "GM 2566 (110 คะแนน)", stats: { max: 64.00, min: 39.75, avg: 49.6, maxScore: 110 }, ranking: Array(128).fill(null).map((_,i)=>({8:{total:64,math:32,science:27,english:5},11:{total:61.5,math:32,science:27,english:2.5},15:{total:60,math:28,science:26,english:6},32:{total:50.75,math:22,science:25.75,english:3},34:{total:50.5,math:18,science:29,english:3.5},47:{total:48.5,math:18,science:26.5,english:4},65:{total:46.5,math:20,science:22,english:4.5},66:{total:46.25,math:18,science:26.75,english:1.5},73:{total:45.75,math:10,science:28.75,english:7},74:{total:45.75,math:16,science:26.75,english:3},84:{total:44.5,math:22,science:19.5,english:3},102:{total:42.75,math:18,science:22.75,english:2},128:{total:39.75,math:14,science:20.75,english:5}})[i+1]||null) },
+                    "2565": { type: "GM 2565 (110 คะแนน)", stats: { max: 84.50, min: 45.50, avg: 61.2, maxScore: 110 }, ranking: Array(130).fill(null).map((_,i)=>({1:{total:84.5,math:42,science:37.5,english:5},4:{total:79.5,math:42,science:34.5,english:3},5:{total:78,math:44,science:31.5,english:2.5},9:{total:75.5,math:44,science:27,english:4.5},14:{total:72,math:34,science:32,english:6},15:{total:72,math:28,science:36,english:8},17:{total:71,math:38,science:26.5,english:6.5},18:{total:69.5,math:38,science:28,english:3.5},22:{total:68.5,math:34,science:29,english:5.5},25:{total:67.5,math:36,science:26.5,english:5},27:{total:67,math:36,science:25.5,english:5.5},28:{total:64,math:34,science:25.5,english:4.5},33:{total:62.5,math:26,science:28,english:8.5},34:{total:62.5,math:36,science:21.5,english:5},35:{total:62.5,math:36,science:21,english:5.5},45:{total:60.5,math:26,science:29.5,english:5},49:{total:59.5,math:28,science:28,english:3.5},61:{total:57,math:26,science:26.5,english:4.5},66:{total:55.5,math:24,science:27,english:4.5},72:{total:54.5,math:26,science:23.5,english:5},82:{total:52,math:20,science:28.5,english:3.5},106:{total:47.5,math:20,science:21,english:6.5},109:{total:47,math:18,science:25,english:4},123:{total:46,math:22,science:19.5,english:4.5},130:{total:45.5,math:24,science:18,english:3.5}})[i+1]||null) },
+                    "2564": { type: "GM 2564 (110 คะแนน)", stats: { max: 67.00, min: 43.00, avg: 52.8, maxScore: 110 }, ranking: Array(159).fill(null).map((_,i)=>({8:{total:67,math:27.5,science:31.5,english:8},13:{total:64,math:31,science:27,english:6},28:{total:60,math:24.5,science:28,english:7.5},34:{total:57.5,math:23.5,science:29,english:5},37:{total:57,math:24,science:26,english:7},47:{total:54.5,math:20.5,science:28,english:6},53:{total:54,math:20.5,science:27,english:6.5},56:{total:53.5,math:20.5,science:27,english:6},64:{total:52.5,math:21.5,science:25,english:6},67:{total:52,math:19,science:27.5,english:5.5},69:{total:51.5,math:16.5,science:28.5,english:6.5},74:{total:51,math:20,science:25,english:6},93:{total:49,math:12.5,science:29.5,english:7},102:{total:48.5,math:18.5,science:25.5,english:4.5},107:{total:48,math:14,science:29,english:5},114:{total:47,math:16,science:25.5,english:5.5},127:{total:45.5,math:21.5,science:20,english:4},159:{total:43,math:24,science:17,english:2}})[i+1]||null) }
+                }
+            },
+            "ห้องเรียนปกติ": {
+                "ในเขต": {
+                    "2568": { type: "ปกติ ในเขต 2568 (100 คะแนน)", stats: { max: 58.5, min: 41, avg: 48.0, maxScore: 100 }, ranking: Array(21).fill(null).map((_,i)=>({2:58.5,3:55,4:54.5,7:47,9:46,21:41})[i+1] ? {total:({2:58.5,3:55,4:54.5,7:47,9:46,21:41})[i+1]} : null) }, 
+                    "2567": { type: "ปกติ ในเขต 2567(100 คะแนน)", stats: { max: 56.50, min: 35.00, avg: 46.06, maxScore: 100 }, ranking: Array(45).fill(null).map((_,i)=>({6:56.5,10:52,12:50.5,17:48.5,18:48,22:45.5,31:40.5,41:38,45:35})[i+1] ? {total:({6:56.5,10:52,12:50.5,17:48.5,18:48,22:45.5,31:40.5,41:38,45:35})[i+1]} : null) },
+                    "2566": { type: "ปกติ ในเขต 2566 (ไม่มีข้อมูล)", stats: { max: null, min: null, avg: null, maxScore: 100 }, ranking: [] } 
+                },
+                "นอกเขต": {
+                    "2568": { type: "ปกติ นอกเขต 2568 (100 คะแนน)", stats: { max: 65.5, min: 44.0, avg: 51.41, maxScore: 100 }, ranking: Array(265).fill(null).map((_,i)=>({4:65.5,6:63.5,7:63.5,8:62.5,13:61.5,15:61,21:60,23:59.5,24:59.5,25:59.5,26:59,28:58.5,32:58,36:57.5,41:56.5,42:56.5,48:55.5,49:55.5,50:55.5,55:41.5,58:54.5,59:54.5,63:54,64:54,75:53,76:52.5,78:52.5,79:52.5,81:52,82:52,84:52,88:52,91:52,93:51.5,94:51.5,100:51,101:51,104:51,105:51,107:50.5,108:50.5,110:50.5,111:50.5,113:50.5,115:50.5,117:50.5,120:50,122:50,123:50,124:50,125:50,128:50,129:50,134:50,136:49.5,138:49.5,145:49,146:49,149:48.5,150:48.5,153:48.5,156:48.5,162:48,163:48,164:48,165:48,166:48,168:48,170:48,175:47,185:47.5,186:47.5,194:47,195:47,202:46.5,207:46.5,210:46,211:46.5,216:45.5,217:45.5,220:45.5,224:45,228:45,249:44.5,250:44.5,259:44,263:44,264:44,265:44})[i+1] ? {total:({4:65.5,6:63.5,7:63.5,8:62.5,13:61.5,15:61,21:60,23:59.5,24:59.5,25:59.5,26:59,28:58.5,32:58,36:57.5,41:56.5,42:56.5,48:55.5,49:55.5,50:55.5,55:41.5,58:54.5,59:54.5,63:54,64:54,75:53,76:52.5,78:52.5,79:52.5,81:52,82:52,84:52,88:52,91:52,93:51.5,94:51.5,100:51,101:51,104:51,105:51,107:50.5,108:50.5,110:50.5,111:50.5,113:50.5,115:50.5,117:50.5,120:50,122:50,123:50,124:50,125:50,128:50,129:50,134:50,136:49.5,138:49.5,145:49,146:49,149:48.5,150:48.5,153:48.5,156:48.5,162:48,163:48,164:48,165:48,166:48,168:48,170:48,175:47,185:47.5,186:47.5,194:47,195:47,202:46.5,207:46.5,210:46,211:46.5,216:45.5,217:45.5,220:45.5,224:45,228:45,249:44.5,250:44.5,259:44,263:44,264:44,265:44})[i+1]} : null) },
+                    "2567": { type: "ปกติ นอกเขต 2567 (100 คะแนน)", stats: { max: 78.00, min: 49.50, avg: 57.44, maxScore: 100 }, ranking: Array(265).fill(null).map((_,i)=>({1:78,4:76,8:73,15:68,21:65.5,30:64,49:60.5,52:60,59:59.5,64:59,70:58.5,71:58.5,72:58.5,73:58.5,77:58,79:58,83:57.5,90:57,101:56.5,105:56.5,107:56,108:56,116:55.5,126:55,131:54.5,146:54,151:54,152:54,187:53,191:52.5,195:52.5,197:52.5,204:52,206:52,209:52,212:51.5,239:50.5,256:50,264:49.5,265:49.5})[i+1] ? {total:({1:78,4:76,8:73,15:68,21:65.5,30:64,49:60.5,52:60,59:59.5,64:59,70:58.5,71:58.5,72:58.5,73:58.5,77:58,79:58,83:57.5,90:57,101:56.5,105:56.5,107:56,108:56,116:55.5,126:55,131:54.5,146:54,151:54,152:54,187:53,191:52.5,195:52.5,197:52.5,204:52,206:52,209:52,212:51.5,239:50.5,256:50,264:49.5,265:49.5})[i+1]} : null) },
+                    "2566": { type: "ปกติ นอกเขต 2566 (ไม่มีข้อมูล)", stats: { max: null, min: null, avg: null, maxScore: 100 }, ranking: [] } 
+                }
+            }
+        };
+
+        const palette = {
+            blue: '#003f5c',
+            dullBlue: '#374c80',
+            purple: '#7a5195',
+            magenta: '#bc5090',
+            pink: '#ef5675',
+            orange: '#ff764a',
+            yellow: '#ffa600',
+            bgColors: ['rgba(0, 63, 92, 0.7)', 'rgba(188, 80, 144, 0.7)', 'rgba(255, 166, 0, 0.7)', 'rgba(122, 81, 149, 0.7)', 'rgba(255, 118, 74, 0.7)'],
+            borderColors: ['#003f5c', '#bc5090', '#ffa600', '#7a5195', '#ff764a']
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { font: { family: 'Noto Sans Thai, Inter' }}},
+                title: { display: true, font: { size: 16, family: 'Noto Sans Thai, Inter' }, color: '#1f2937' },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: { 
+                y: { beginAtZero: true, title: { display: true, text: 'คะแนน', font: { family: 'Noto Sans Thai, Inter' }}}, 
+                x: { ticks: { font: { family: 'Noto Sans Thai, Inter' }}} 
+            }
+        };
+        
+        const wrapLabel = (label, maxLength = 16) => {
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        function renderKPIs() {
+            const ep2568 = examData["ห้องเรียนพิเศษ"]["EP"]["2568"];
+            const normal2568 = examData["ห้องเรียนปกติ"]["นอกเขต"]["2568"];
+            document.getElementById('kpi-max-ep').textContent = ep2568.stats.max.toFixed(2);
+            document.getElementById('kpi-max-normal').textContent = normal2568.stats.max.toFixed(2);
+            const ep2568_participants = ep2568.ranking.filter(r => r !== null).length;
+            document.getElementById('kpi-total-ep').textContent = `${ep2568_participants} คน`;
+        }
+
+        function renderSpecialProgramsRadar() {
+            const ctx = document.getElementById('specialProgramsRadarChart').getContext('2d');
+            const labels = ['EP', 'SMTE', 'GM'];
+            const data2568 = labels.map(p => examData["ห้องเรียนพิเศษ"][p]["2568"].stats.avg || 0);
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'คะแนนเฉลี่ย ปี 2568',
+                        data: data2568,
+                        backgroundColor: 'rgba(0, 63, 92, 0.4)',
+                        borderColor: '#003f5c',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#003f5c'
+                    }]
+                },
+                options: { ...defaultChartOptions,
+                    plugins: { ...defaultChartOptions.plugins, title: { ...defaultChartOptions.plugins.title, text: 'เปรียบเทียบคะแนนเฉลี่ยห้องเรียนพิเศษ (2568)' } },
+                    scales: { r: { beginAtZero: true, angleLines: { color: 'rgba(0,0,0,0.1)' }, grid: { color: 'rgba(0,0,0,0.1)' }, pointLabels: { font: { size: 14 }}}}
+                }
+            });
+        }
+        
+        function renderEpDonutChart() {
+            const ctx = document.getElementById('epDonutChart').getContext('2d');
+            const rank1_2567 = examData["ห้องเรียนพิเศษ"]["EP"]["2567"].ranking[0];
+            const data = [rank1_2567.math, rank1_2567.science, rank1_2567.english, rank1_2567.interview];
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['คณิตศาสตร์', 'วิทยาศาสตร์', 'ภาษาอังกฤษ', 'สัมภาษณ์'],
+                    datasets: [{
+                        label: 'สัดส่วนคะแนน',
+                        data: data,
+                        backgroundColor: [palette.bgColors[0], palette.bgColors[1], palette.bgColors[2], palette.bgColors[3]],
+                        borderColor: ['#ffffff'],
+                        borderWidth: 2
+                    }]
+                },
+                options: { ...defaultChartOptions,
+                    plugins: { ...defaultChartOptions.plugins, title: { ...defaultChartOptions.plugins.title, text: 'สัดส่วนคะแนนอันดับ 1 EP ปี 2567' } },
+                    scales: { x: { display: false }, y: { display: false }}
+                }
+            });
+        }
+
+        function renderTrendChart(canvasId, programData, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const years = Object.keys(programData).sort();
+            const datasets = [
+                { label: 'คะแนนสูงสุด', data: years.map(y => programData[y].stats.max), borderColor: palette.borderColors[1], backgroundColor: palette.bgColors[1], tension: 0.1 },
+                { label: 'คะแนนเฉลี่ย', data: years.map(y => programData[y].stats.avg), borderColor: palette.borderColors[0], backgroundColor: palette.bgColors[0], tension: 0.1 },
+                { label: 'คะแนนต่ำสุด', data: years.map(y => programData[y].stats.min), borderColor: palette.borderColors[2], backgroundColor: palette.bgColors[2], tension: 0.1 },
+            ];
+
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: years.map(y => `พ.ศ. ${y}`), datasets: datasets },
+                options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, title: { ...defaultChartOptions.plugins.title, text: title }}}
+            });
+        }
+        
+        function renderRegularCompareChart() {
+             const ctx = document.getElementById('regularCompareChart').getContext('2d');
+             const dataIn = examData["ห้องเรียนปกติ"]["ในเขต"]["2568"].stats;
+             const dataOut = examData["ห้องเรียนปกติ"]["นอกเขต"]["2568"].stats;
+             new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['สูงสุด', 'เฉลี่ย', 'ต่ำสุด'],
+                    datasets: [
+                        { label: 'ในเขต', data: [dataIn.max, dataIn.avg, dataIn.min], backgroundColor: palette.bgColors[0], borderRadius: 4},
+                        { label: 'นอกเขต', data: [dataOut.max, dataOut.avg, dataOut.min], backgroundColor: palette.bgColors[1], borderRadius: 4},
+                    ]
+                },
+                options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, title: { ...defaultChartOptions.plugins.title, text: 'เปรียบเทียบคะแนน ในเขต vs นอกเขต (2568)' }}}
+             });
+        }
+
+        function renderRegularTrendChart() {
+            const ctx = document.getElementById('regularTrendChart').getContext('2d');
+            const dataIn = examData["ห้องเรียนปกติ"]["ในเขต"];
+            const dataOut = examData["ห้องเรียนปกติ"]["นอกเขต"];
+            const years = Object.keys(dataIn).filter(y => y !== '2566').sort();
+            
+            const datasets = [
+                 { label: 'เฉลี่ย (ในเขต)', data: years.map(y => dataIn[y].stats.avg), borderColor: palette.borderColors[0], backgroundColor: palette.bgColors[0], tension: 0.1 },
+                 { label: 'เฉลี่ย (นอกเขต)', data: years.map(y => dataOut[y].stats.avg), borderColor: palette.borderColors[1], backgroundColor: palette.bgColors[1], tension: 0.1 },
+            ];
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: years.map(y => `พ.ศ. ${y}`), datasets: datasets },
+                options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, title: { ...defaultChartOptions.plugins.title, text: 'แนวโน้มคะแนนเฉลี่ย ห้องเรียนปกติ' }}}
+            });
+        }
+        
+        function setupExplorer() {
+            const mainSelect = document.getElementById('explorer-main');
+            const subSelect = document.getElementById('explorer-sub');
+            const yearSelect = document.getElementById('explorer-year');
+
+            const updateSub = () => {
+                const main = mainSelect.value;
+                const subs = Object.keys(examData[main]);
+                subSelect.innerHTML = subs.map(s => `<option value="${s}">${s}</option>`).join('');
+                updateYear();
+            };
+
+            const updateYear = () => {
+                const main = mainSelect.value;
+                const sub = subSelect.value;
+                const years = Object.keys(examData[main][sub]).sort((a,b) => b-a);
+                yearSelect.innerHTML = years.map(y => `<option value="${y}">พ.ศ. ${y}</option>`).join('');
+                renderExplorerTable();
+            };
+
+            const renderExplorerTable = () => {
+                 const main = mainSelect.value;
+                 const sub = subSelect.value;
+                 const year = yearSelect.value;
+                 const container = document.getElementById('explorer-table-container');
+                 const data = examData[main][sub][year];
+                 const ranking = data?.ranking;
+
+                 if (!ranking || ranking.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-600 p-4 bg-yellow-50 rounded-lg">ไม่พบข้อมูลคะแนนสำหรับปีที่เลือก</p>`;
+                    return;
+                 }
+                
+                const thClass = "px-4 py-3 text-xs font-bold text-white uppercase tracking-wider text-left";
+                let subjectHeaders = '';
+                const subjectKeys = ranking[0] ? Object.keys(ranking[0]).filter(k => k !== 'total') : [];
+                if (main === "ห้องเรียนพิเศษ") {
+                    subjectHeaders = subjectKeys.map(key => `<th class="${thClass} text-right">${key}</th>`).join('');
+                }
+
+                let tableHTML = `
+                    <div class="overflow-auto shadow-xl rounded-lg border border-gray-200 max-h-[60vh]">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-[#003f5c] sticky top-0 z-10">
+                                <tr>
+                                    <th class="${thClass}">อันดับ</th>
+                                    ${subjectHeaders}
+                                    <th class="${thClass} text-right">คะแนนรวม</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">`;
+
+                const formatScore = (val) => (val !== null && val !== undefined) ? val.toFixed(2) : ' ';
+                
+                ranking.forEach((scoreData, index) => {
+                    const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                    let subjectCells = '';
+                    if (main === "ห้องเรียนพิเศษ") {
+                        subjectCells = subjectKeys.map(key => `<td class="px-4 py-2 text-right">${scoreData ? formatScore(scoreData[key]) : ' '}</td>`).join('');
+                    }
+                    
+                    tableHTML += `<tr class="${rowClass} text-sm hover:bg-blue-50">
+                                    <td class="px-4 py-2 text-left font-medium">${index + 1}</td>
+                                    ${subjectCells}
+                                    <td class="px-4 py-2 text-right font-bold text-gray-900">${scoreData ? formatScore(scoreData.total) : ' '}</td>
+                                  </tr>`;
+                });
+
+                tableHTML += `</tbody></table></div>`;
+                container.innerHTML = tableHTML;
+            };
+
+            mainSelect.innerHTML = Object.keys(examData).map(m => `<option value="${m}">${m}</option>`).join('');
+            mainSelect.addEventListener('change', updateSub);
+            subSelect.addEventListener('change', updateYear);
+            yearSelect.addEventListener('change', renderExplorerTable);
+
+            updateSub();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderKPIs();
+            renderSpecialProgramsRadar();
+            renderEpDonutChart();
+            renderTrendChart('epTrendChart', examData["ห้องเรียนพิเศษ"]["EP"], 'แนวโน้มคะแนน EP ย้อนหลัง');
+            renderTrendChart('smteTrendChart', examData["ห้องเรียนพิเศษ"]["SMTE"], 'แนวโน้มคะแนน SMTE ย้อนหลัง');
+            renderTrendChart('gmTrendChart', examData["ห้องเรียนพิเศษ"]["GM"], 'แนวโน้มคะแนน GM ย้อนหลัง');
+            renderRegularCompareChart();
+            renderRegularTrendChart();
+            setupExplorer();
+        });
+    </script>
+</body>
+</html>
