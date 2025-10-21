@@ -27,6 +27,20 @@
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
             background-color: #f8fafc;
+            position: relative;
+        }
+        body::before {
+            content: "ครอบครัวยอดนารี ❤️ สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(99, 102, 241, 0.03);
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
         }
         .main-container {
             background: white;
@@ -154,10 +168,15 @@
         <!-- ปุ่มกลับหน้าหลัก - ย้ายไปด้านล่างหัวข้อ -->
         <div class="relative">
             <header class="text-center p-8 sm:p-12 header-gradient rounded-t-2xl relative">
-                <a href="index.html" class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm">
-                    <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
-                </a>
+                <!-- เว้นระยะให้ปุ่มไม่บังหัวข้อ -->
+                <div class="absolute top-6 left-4 z-10">
+                    <a href="index.html" class="bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm inline-flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
+                    </a>
+                </div>
                 
+                <!-- เว้นบรรทัดเพิ่มเพื่อไม่ให้ปุ่มบัง -->
+                <div class="mt-8"></div>
                 <p class="text-lg text-indigo-200 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
                     เครื่องมือประเมินคะแนนสอบจริง
@@ -339,9 +358,9 @@
     <!-- Footer ที่ปรับให้เด่นขึ้น -->
     <footer class="text-center py-12 bg-gradient-to-r from-purple-600 to-indigo-700 text-white">
         <div class="max-w-4xl mx-auto px-4">
-            <p class="text-2xl font-bold mb-4">วิเคราะห์และพัฒนาโดย</p>
-            <p class="text-3xl font-bold mb-2">✌️ลุ้นสอวอไปด้วยกันนะ</p>
-            <p class="text-2xl font-bold mb-6">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+            <p class="text-2xl font-bold mb-4 text-gray-300">วิเคราะห์และพัฒนาโดย</p>
+            <p class="text-3xl font-bold mb-2 text-green-300">✌️ลุ้นสอวอไปด้วยกันนะ</p>
+            <p class="text-2xl font-bold mb-6 text-red-300">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
             <a href="https://shorturl.asia/BlJVn" target="_blank" class="inline-flex items-center gap-2 bg-white text-green-600 font-bold py-3 px-6 rounded-full hover:bg-green-50 transition-all shadow-lg">
                 <i class="fab fa-line text-xl"></i> เข้าร่วม LINE OpenChat
             </a>
@@ -710,20 +729,26 @@
                             {
                                 label: 'คะแนน Pre-test',
                                 data: specialHistory.map(record => record.totalPretest),
-                                borderColor: '#8b5cf6',
-                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                borderWidth: 2,
+                                borderColor: '#f59e0b', // สีส้มสำหรับ Pre-test
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                borderWidth: 3,
                                 tension: 0.3,
-                                fill: false
+                                fill: false,
+                                pointStyle: 'circle',
+                                pointRadius: 6,
+                                pointBorderWidth: 2
                             },
                             {
                                 label: 'คะแนนประมาณการ',
                                 data: specialHistory.map(record => record.estimatedScore),
-                                borderColor: '#6366f1',
+                                borderColor: '#6366f1', // สีม่วงสำหรับคะแนนประมาณการ
                                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                                 borderWidth: 3,
                                 tension: 0.3,
-                                fill: true
+                                fill: false,
+                                pointStyle: 'rect',
+                                pointRadius: 6,
+                                pointBorderWidth: 2
                             },
                             {
                                 label: 'ค่าเฉลี่ยหลักสูตร',
@@ -786,20 +811,26 @@
                             {
                                 label: 'คะแนน Pre-test',
                                 data: normalHistory.map(record => record.totalPretest),
-                                borderColor: '#34d399',
-                                backgroundColor: 'rgba(52, 211, 153, 0.1)',
-                                borderWidth: 2,
+                                borderColor: '#f59e0b', // สีส้มสำหรับ Pre-test
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                borderWidth: 3,
                                 tension: 0.3,
-                                fill: false
+                                fill: false,
+                                pointStyle: 'circle',
+                                pointRadius: 6,
+                                pointBorderWidth: 2
                             },
                             {
                                 label: 'คะแนนประมาณการ',
                                 data: normalHistory.map(record => record.estimatedScore),
-                                borderColor: '#10b981',
+                                borderColor: '#10b981', // สีเขียวสำหรับคะแนนประมาณการ
                                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
                                 borderWidth: 3,
                                 tension: 0.3,
-                                fill: true
+                                fill: false,
+                                pointStyle: 'rect',
+                                pointRadius: 6,
+                                pointBorderWidth: 2
                             },
                             {
                                 label: 'ค่าเฉลี่ยหลักสูตร',
@@ -871,7 +902,7 @@
             let filteredHistory = history;
             let chartLabel = 'พัฒนาการ';
             let chartColor = '#6366f1';
-            let pretestColor = '#8b5cf6';
+            let pretestColor = '#f59e0b';
             let icon = 'fa-chart-line';
             let programType = 'all';
             
@@ -879,14 +910,14 @@
                 filteredHistory = history.filter(record => record.examType === 'Special');
                 chartLabel = 'พัฒนาการห้องเรียนพิเศษ';
                 chartColor = '#6366f1';
-                pretestColor = '#8b5cf6';
+                pretestColor = '#f59e0b';
                 icon = 'fa-star';
                 programType = 'Special';
             } else if (currentHistoryTab === 'normal') {
                 filteredHistory = history.filter(record => record.examType === 'Normal');
                 chartLabel = 'พัฒนาการห้องเรียนปกติ';
                 chartColor = '#10b981';
-                pretestColor = '#34d399';
+                pretestColor = '#f59e0b';
                 icon = 'fa-book-open';
                 programType = 'Normal';
             }
@@ -922,9 +953,12 @@
                             data: recentHistory.map(record => record.totalPretest),
                             borderColor: pretestColor,
                             backgroundColor: `${pretestColor}20`,
-                            borderWidth: 2,
+                            borderWidth: 3,
                             tension: 0.3,
-                            fill: false
+                            fill: false,
+                            pointStyle: 'circle',
+                            pointRadius: 6,
+                            pointBorderWidth: 2
                         },
                         {
                             label: 'คะแนนประมาณการ',
@@ -933,7 +967,10 @@
                             backgroundColor: `${chartColor}20`,
                             borderWidth: 3,
                             tension: 0.3,
-                            fill: true
+                            fill: false,
+                            pointStyle: 'rect',
+                            pointRadius: 6,
+                            pointBorderWidth: 2
                         },
                         {
                             label: 'ค่าเฉลี่ยหลักสูตร',
