@@ -155,6 +155,19 @@
             box-shadow: 0 10px 25px rgba(107, 114, 128, 0.3);
             transform: translateY(-3px);
         }
+        .main-tab {
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        .main-tab.active {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: #4f46e5;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -185,173 +198,210 @@
             </header>
         </div>
 
-        <main class="p-6 sm:p-10">
-            <form id="score-form" class="space-y-12">
-                <!-- Step 1: Select Exam Type -->
-                <section>
-                    <h2 class="text-2xl section-title mb-6 flex items-center">
-                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">1</span>
-                        เลือกประเภทการสอบ Pre-test
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <label>
-                            <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
-                            <div class="radio-card">
-                                <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
-                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนพิเศษ</span>
-                            </div>
-                        </label>
-                        <label>
-                            <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()" checked>
-                            <div class="radio-card">
-                                <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
-                                <span class="text-lg font-semibold text-slate-800">ห้องเรียนปกติ</span>
-                            </div>
-                        </label>
-                        <label>
-                            <input type="radio" name="exam_type_selection" value="Both" class="sr-only" onchange="updateFormDisplay()">
-                            <div class="radio-card">
-                                <i class="fa-solid fa-layer-group text-3xl text-sky-500 mb-2"></i>
-                                <span class="text-lg font-semibold text-slate-800">สอบทั้งสองประเภท</span>
-                            </div>
-                        </label>
-                    </div>
-                </section>
-                
-                <!-- Step 2: Enter Scores -->
-                <section id="score-inputs-wrapper" class="hidden">
-                    <h2 class="text-2xl section-title mb-6 flex items-center">
-                        <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">2</span>
-                        กรอกคะแนน Pre-test ของคุณ
-                    </h2>
-                    
-                    <div class="space-y-8">
-                        <!-- Special Program Scores -->
-                        <div id="special-program-inputs" class="p-6 border rounded-2xl bg-indigo-50 border-indigo-200 hidden">
-                            <h3 class="text-xl font-bold text-indigo-800 mb-2">ห้องเรียนพิเศษ</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="md:col-span-2">
-                                    <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
-                                    <select id="curriculum" class="input-field w-full" required onchange="updateSpecialScoreInputRequirements()"></select>
-                                </div>
-                                <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    <!-- Inputs will be dynamically generated/hidden here -->
-                                </div>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-4">หมายเหตุ: คะแนน Pre-test ห้องพิเศษมี 3 วิชา (คณิตศาสตร์ 50, วิทยาศาสตร์ 30, ภาษาอังกฤษ 30) รวม 110 คะแนน</p>
-                        </div>
+        <!-- Main Tabs -->
+        <div class="flex gap-2 p-6 bg-slate-100 border-b">
+            <div class="main-tab active flex-1 text-center" data-tab="input">
+                <i class="fa-solid fa-pen-to-square mr-2"></i>กรอกคะแนน
+            </div>
+            <div class="main-tab flex-1 text-center" data-tab="result">
+                <i class="fa-solid fa-chart-bar mr-2"></i>ผลประเมิน
+            </div>
+            <div class="main-tab flex-1 text-center" data-tab="history">
+                <i class="fa-solid fa-chart-line mr-2"></i>พัฒนาการ
+            </div>
+        </div>
 
-                        <!-- Normal Program Scores -->
-                        <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
-                            <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
-                            <div class="mb-6">
-                                <label class="block text-slate-700 font-semibold mb-3">เลือกเขตพื้นที่บริการ</label>
-                                <div class="flex gap-4">
-                                    <label class="flex-1">
-                                        <input type="radio" name="district_selection" value="in_district" class="sr-only" checked>
-                                        <div class="radio-card p-3">
-                                            <span class="font-semibold text-slate-800">ในเขตพื้นที่บริการ</span>
-                                        </div>
-                                    </label>
-                                    <label class="flex-1">
-                                        <input type="radio" name="district_selection" value="out_of_district" class="sr-only">
-                                        <div class="radio-card p-3">
-                                            <span class="font-semibold text-slate-800">นอกเขตพื้นที่บริการ</span>
-                                        </div>
-                                    </label>
+        <main class="p-6 sm:p-10">
+            <!-- Tab 1: Input Form -->
+            <div id="input-tab" class="tab-content">
+                <form id="score-form" class="space-y-12">
+                    <!-- Step 1: Select Exam Type -->
+                    <section>
+                        <h2 class="text-2xl section-title mb-6 flex items-center">
+                            <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">1</span>
+                            เลือกประเภทการสอบ Pre-test
+                        </h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label>
+                                <input type="radio" name="exam_type_selection" value="Special" class="sr-only" required onchange="updateFormDisplay()">
+                                <div class="radio-card">
+                                    <i class="fa-solid fa-star text-3xl text-amber-400 mb-2"></i>
+                                    <span class="text-lg font-semibold text-slate-800">ห้องเรียนพิเศษ</span>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="exam_type_selection" value="Normal" class="sr-only" onchange="updateFormDisplay()" checked>
+                                <div class="radio-card">
+                                    <i class="fa-solid fa-book-open text-3xl text-emerald-500 mb-2"></i>
+                                    <span class="text-lg font-semibold text-slate-800">ห้องเรียนปกติ</span>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="exam_type_selection" value="Both" class="sr-only" onchange="updateFormDisplay()">
+                                <div class="radio-card">
+                                    <i class="fa-solid fa-layer-group text-3xl text-sky-500 mb-2"></i>
+                                    <span class="text-lg font-semibold text-slate-800">สอบทั้งสองประเภท</span>
+                                </div>
+                            </label>
+                        </div>
+                    </section>
+                    
+                    <!-- Step 2: Enter Scores -->
+                    <section id="score-inputs-wrapper" class="hidden">
+                        <h2 class="text-2xl section-title mb-6 flex items-center">
+                            <span class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-3">2</span>
+                            กรอกคะแนน Pre-test ของคุณ
+                        </h2>
+                        
+                        <div class="space-y-8">
+                            <!-- Special Program Scores -->
+                            <div id="special-program-inputs" class="p-6 border rounded-2xl bg-indigo-50 border-indigo-200 hidden">
+                                <h3 class="text-xl font-bold text-indigo-800 mb-2">ห้องเรียนพิเศษ</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="md:col-span-2">
+                                        <label for="curriculum" class="block text-slate-700 font-semibold mb-2">เลือกหลักสูตรที่ต้องการประเมิน</label>
+                                        <select id="curriculum" class="input-field w-full" required onchange="updateSpecialScoreInputRequirements()">
+                                            <option value="" selected disabled>-- กรุณาเลือกหลักสูตร --</option>
+                                            <option value="EP">EP</option>
+                                            <option value="GM">GM</option>
+                                            <option value="SMTE">SMTE</option>
+                                        </select>
+                                    </div>
+                                    <div id="special-scores-grid" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <!-- Inputs will be dynamically generated/hidden here -->
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-4">หมายเหตุ: คะแนน Pre-test ห้องพิเศษมี 3 วิชา (คณิตศาสตร์ 50, วิทยาศาสตร์ 30, ภาษาอังกฤษ 30) รวม 110 คะแนน</p>
+                            </div>
+
+                            <!-- Normal Program Scores -->
+                            <div id="normal-program-inputs" class="p-6 border rounded-2xl bg-emerald-50 border-emerald-200 hidden">
+                                <h3 class="text-xl font-bold text-emerald-800 mb-4">ห้องเรียนปกติ</h3>
+                                <div class="mb-6">
+                                    <label class="block text-slate-700 font-semibold mb-3">เลือกเขตพื้นที่บริการ</label>
+                                    <div class="flex gap-4">
+                                        <label class="flex-1">
+                                            <input type="radio" name="district_selection" value="in_district" class="sr-only" checked>
+                                            <div class="radio-card p-3">
+                                                <span class="font-semibold text-slate-800">ในเขตพื้นที่บริการ</span>
+                                            </div>
+                                        </label>
+                                        <label class="flex-1">
+                                            <input type="radio" name="district_selection" value="out_of_district" class="sr-only">
+                                            <div class="radio-card p-3">
+                                                <span class="font-semibold text-slate-800">นอกเขตพื้นที่บริการ</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="normal-scores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Submit Button -->
+                    <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <button type="submit" class="btn-primary w-full sm:w-auto text-xl shadow-lg">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                                ประเมินคะแนน
+                            </button>
+                            <button type="button" onclick="resetForm()" class="reset-btn w-full sm:w-auto text-xl shadow-lg">
+                                <i class="fa-solid fa-rotate-left mr-2"></i>
+                                รีเซ็ตคะแนน
+                            </button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+
+            <!-- Tab 2: Result Section -->
+            <div id="result-tab" class="tab-content hidden">
+                <section class="result-wrapper p-6 sm:p-8">
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนน</h2>
+                    <div id="result-cards-container" class="space-y-8">
+                        <div class="text-center py-12 text-slate-500">
+                            <i class="fa-solid fa-chart-bar text-6xl mb-4 text-slate-300"></i>
+                            <p class="text-xl">ยังไม่มีผลการประเมิน</p>
+                            <p class="text-sm">กรุณากรอกคะแนนและกดปุ่ม "ประเมินคะแนน" ในแท็บกรอกคะแนน</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab 3: History Section -->
+            <div id="history-tab" class="tab-content hidden">
+                <section class="p-6 bg-slate-50 rounded-xl">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h3 class="text-xl font-bold text-slate-700">
+                            <i class="fa-solid fa-chart-line mr-2"></i>ประวัติพัฒนาการ
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="exportToExcel()" class="export-btn text-sm">
+                                <i class="fa-solid fa-file-excel mr-2"></i>Export Excel
+                            </button>
+                            <button onclick="clearHistory()" class="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-all">
+                                <i class="fa-solid fa-trash mr-2"></i>ลบประวัติ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- History Tabs -->
+                    <div class="flex gap-2 mb-6 bg-slate-200 p-1 rounded-lg">
+                        <div class="history-tab active flex-1 text-center" data-tab="all">
+                            <i class="fa-solid fa-layer-group mr-2"></i>ทั้งหมด
+                        </div>
+                        <div class="history-tab flex-1 text-center" data-tab="special">
+                            <i class="fa-solid fa-star mr-2"></i>ห้องเรียนพิเศษ
+                        </div>
+                        <div class="history-tab flex-1 text-center" data-tab="normal">
+                            <i class="fa-solid fa-book-open mr-2"></i>ห้องเรียนปกติ
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Charts Container -->
+                    <div id="progress-charts-container">
+                        <!-- แสดง 2 กราฟเมื่อเลือกแท็บ "ทั้งหมด" -->
+                        <div id="both-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                <h4 class="text-lg font-bold text-indigo-700 mb-4 text-center">
+                                    <i class="fa-solid fa-star mr-2"></i>พัฒนาการห้องเรียนพิเศษ
+                                </h4>
+                                <div class="h-64">
+                                    <canvas id="progress-chart-special"></canvas>
                                 </div>
                             </div>
-                            <div id="normal-scores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Submit Button -->
-                <section id="submit-section" class="text-center pt-6 border-t border-slate-200 hidden">
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <button type="submit" class="btn-primary w-full sm:w-auto text-xl shadow-lg">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
-                            ประเมินคะแนน
-                        </button>
-                        <button type="button" onclick="resetForm()" class="reset-btn w-full sm:w-auto text-xl shadow-lg">
-                            <i class="fa-solid fa-rotate-left mr-2"></i>
-                            รีเซ็ตคะแนน
-                        </button>
-                    </div>
-                </section>
-            </form>
-            
-            <!-- Result Section -->
-            <section id="result-section" class="result-wrapper p-6 sm:p-8 mt-12 hidden">
-                <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนน</h2>
-                <div id="result-cards-container" class="space-y-8"></div>
-            </section>
-            
-            <!-- History Section -->
-            <section id="history-section" class="mt-12 p-6 bg-slate-50 rounded-xl hidden">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                    <h3 class="text-xl font-bold text-slate-700">
-                        <i class="fa-solid fa-chart-line mr-2"></i>ประวัติพัฒนาการ
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="exportToExcel()" class="export-btn text-sm">
-                            <i class="fa-solid fa-file-excel mr-2"></i>Export Excel
-                        </button>
-                        <button onclick="clearHistory()" class="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-all">
-                            <i class="fa-solid fa-trash mr-2"></i>ลบประวัติ
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- History Tabs -->
-                <div class="flex gap-2 mb-6 bg-slate-200 p-1 rounded-lg">
-                    <div class="history-tab active flex-1 text-center" data-tab="all">
-                        <i class="fa-solid fa-layer-group mr-2"></i>ทั้งหมด
-                    </div>
-                    <div class="history-tab flex-1 text-center" data-tab="special">
-                        <i class="fa-solid fa-star mr-2"></i>ห้องเรียนพิเศษ
-                    </div>
-                    <div class="history-tab flex-1 text-center" data-tab="normal">
-                        <i class="fa-solid fa-book-open mr-2"></i>ห้องเรียนปกติ
-                    </div>
-                </div>
-                
-                <!-- Progress Charts Container -->
-                <div id="progress-charts-container">
-                    <!-- แสดง 2 กราฟเมื่อเลือกแท็บ "ทั้งหมด" -->
-                    <div id="both-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div class="bg-white p-4 rounded-xl border border-slate-200">
-                            <h4 class="text-lg font-bold text-indigo-700 mb-4 text-center">
-                                <i class="fa-solid fa-star mr-2"></i>พัฒนาการห้องเรียนพิเศษ
-                            </h4>
-                            <div class="h-64">
-                                <canvas id="progress-chart-special"></canvas>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                <h4 class="text-lg font-bold text-emerald-700 mb-4 text-center">
+                                    <i class="fa-solid fa-book-open mr-2"></i>พัฒนาการห้องเรียนปกติ
+                                </h4>
+                                <div class="h-64">
+                                    <canvas id="progress-chart-normal"></canvas>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-white p-4 rounded-xl border border-slate-200">
-                            <h4 class="text-lg font-bold text-emerald-700 mb-4 text-center">
-                                <i class="fa-solid fa-book-open mr-2"></i>พัฒนาการห้องเรียนปกติ
+                        
+                        <!-- แสดงกราฟเดียวเมื่อเลือกแท็บอื่น -->
+                        <div id="single-chart" class="bg-white p-4 rounded-xl border border-slate-200 mb-6 hidden">
+                            <h4 class="text-lg font-bold text-center mb-4" id="single-chart-title">
+                                <i class="fa-solid fa-chart-line mr-2"></i>พัฒนาการ
                             </h4>
                             <div class="h-64">
-                                <canvas id="progress-chart-normal"></canvas>
+                                <canvas id="progress-chart-single"></canvas>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- แสดงกราฟเดียวเมื่อเลือกแท็บอื่น -->
-                    <div id="single-chart" class="bg-white p-4 rounded-xl border border-slate-200 mb-6 hidden">
-                        <h4 class="text-lg font-bold text-center mb-4" id="single-chart-title">
-                            <i class="fa-solid fa-chart-line mr-2"></i>พัฒนาการ
-                        </h4>
-                        <div class="h-64">
-                            <canvas id="progress-chart-single"></canvas>
+                    <!-- History List -->
+                    <div id="history-list" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center py-8 text-slate-500">
+                            <i class="fa-solid fa-chart-line text-4xl mb-3 text-slate-300"></i>
+                            <p>ยังไม่มีประวัติพัฒนาการ</p>
+                            <p class="text-sm">ผลการประเมินจะถูกบันทึกที่นี่</p>
                         </div>
                     </div>
-                </div>
-                
-                <!-- History List -->
-                <div id="history-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
-            </section>
+                </section>
+            </div>
         </main>
     </div>
     
@@ -378,6 +428,7 @@
             single: null
         };
         let currentHistoryTab = 'all';
+        let currentMainTab = 'input';
 
         const subjectMap = {
             'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
@@ -436,6 +487,30 @@
             document.getElementById('loading-overlay').classList.toggle('hidden', !show);
         }
 
+        // --- MAIN TAB MANAGEMENT ---
+        function switchMainTab(tabName) {
+            // ซ่อนแท็บทั้งหมด
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // ลบ active class จากแท็บทั้งหมด
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // แสดงแท็บที่เลือกและเพิ่ม active class
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            document.querySelector(`.main-tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            currentMainTab = tabName;
+            
+            // ถ้าเปลี่ยนไปแท็บประวัติ ให้โหลดข้อมูลใหม่
+            if (tabName === 'history') {
+                displayTestHistory();
+            }
+        }
+
         // --- RESET FORM FUNCTION ---
         function resetForm() {
             if (confirm('คุณแน่ใจว่าต้องการรีเซ็ตคะแนนทั้งหมด?')) {
@@ -478,7 +553,6 @@
 
             if (examType === 'Special' || examType === 'Both') {
                 specialInputsDiv.classList.remove('hidden');
-                populateCurriculumOptions();
                 populateScoreInputs('Special'); 
                 updateSpecialScoreInputRequirements();
             } else {
@@ -492,25 +566,10 @@
             }
         }
 
-        function populateCurriculumOptions() {
-            const curriculumSelect = document.getElementById('curriculum');
-            if (curriculumSelect.options.length > 1) return;
-
-            curriculumSelect.innerHTML = '<option value="" selected disabled>-- กรุณาเลือกหลักสูตร --</option>';
-            Object.keys(weights.Special.curriculums).forEach(key => {
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = key;
-                curriculumSelect.appendChild(option);
-            });
-        }
-        
         function populateScoreInputs(programType) {
             const gridId = programType === 'Special' ? 'special-scores-grid' : 'normal-scores-grid';
             const scoresGrid = document.getElementById(gridId);
-            if (scoresGrid.children.length > 0 && programType === 'Normal') return;
-            if (scoresGrid.children.length > 0 && programType === 'Special') return;
-
+            
             scoresGrid.innerHTML = '';
             const subjects = Object.keys(weights[programType].max_pretest);
             
@@ -631,15 +690,18 @@
 
         function displayTestHistory() {
             const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
-            const historySection = document.getElementById('history-section');
             const historyList = document.getElementById('history-list');
             
             if (history.length === 0) {
-                historySection.classList.add('hidden');
+                historyList.innerHTML = `
+                    <div class="text-center py-8 text-slate-500">
+                        <i class="fa-solid fa-chart-line text-4xl mb-3 text-slate-300"></i>
+                        <p>ยังไม่มีประวัติพัฒนาการ</p>
+                        <p class="text-sm">ผลการประเมินจะถูกบันทึกที่นี่</p>
+                    </div>
+                `;
                 return;
             }
-            
-            historySection.classList.remove('hidden');
             
             // กรองข้อมูลตามแท็บที่เลือก
             const filteredHistory = history.filter(record => {
@@ -731,7 +793,7 @@
                                 data: specialHistory.map(record => record.totalPretest),
                                 borderColor: '#f59e0b', // สีส้มสำหรับ Pre-test
                                 backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                borderWidth: 3,
+                                borderWidth: 4, // เส้นหนาขึ้น
                                 tension: 0.3,
                                 fill: false,
                                 pointStyle: 'circle',
@@ -743,7 +805,7 @@
                                 data: specialHistory.map(record => record.estimatedScore),
                                 borderColor: '#6366f1', // สีม่วงสำหรับคะแนนประมาณการ
                                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                                borderWidth: 3,
+                                borderWidth: 4, // เส้นหนาขึ้น
                                 tension: 0.3,
                                 fill: false,
                                 pointStyle: 'rect',
@@ -754,7 +816,7 @@
                                 label: 'ค่าเฉลี่ยหลักสูตร',
                                 data: specialHistory.map(() => specialAverages.curriculumAvg),
                                 borderColor: '#ef4444',
-                                borderWidth: 2,
+                                borderWidth: 3, // เส้นหนาขึ้น
                                 borderDash: [5, 5],
                                 fill: false,
                                 pointRadius: 0
@@ -813,7 +875,7 @@
                                 data: normalHistory.map(record => record.totalPretest),
                                 borderColor: '#f59e0b', // สีส้มสำหรับ Pre-test
                                 backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                borderWidth: 3,
+                                borderWidth: 4, // เส้นหนาขึ้น
                                 tension: 0.3,
                                 fill: false,
                                 pointStyle: 'circle',
@@ -825,7 +887,7 @@
                                 data: normalHistory.map(record => record.estimatedScore),
                                 borderColor: '#10b981', // สีเขียวสำหรับคะแนนประมาณการ
                                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                borderWidth: 3,
+                                borderWidth: 4, // เส้นหนาขึ้น
                                 tension: 0.3,
                                 fill: false,
                                 pointStyle: 'rect',
@@ -836,7 +898,7 @@
                                 label: 'ค่าเฉลี่ยหลักสูตร',
                                 data: normalHistory.map(() => normalAverages.curriculumAvg),
                                 borderColor: '#ef4444',
-                                borderWidth: 2,
+                                borderWidth: 3, // เส้นหนาขึ้น
                                 borderDash: [5, 5],
                                 fill: false,
                                 pointRadius: 0
@@ -953,7 +1015,7 @@
                             data: recentHistory.map(record => record.totalPretest),
                             borderColor: pretestColor,
                             backgroundColor: `${pretestColor}20`,
-                            borderWidth: 3,
+                            borderWidth: 4, // เส้นหนาขึ้น
                             tension: 0.3,
                             fill: false,
                             pointStyle: 'circle',
@@ -965,7 +1027,7 @@
                             data: recentHistory.map(record => record.estimatedScore),
                             borderColor: chartColor,
                             backgroundColor: `${chartColor}20`,
-                            borderWidth: 3,
+                            borderWidth: 4, // เส้นหนาขึ้น
                             tension: 0.3,
                             fill: false,
                             pointStyle: 'rect',
@@ -976,7 +1038,7 @@
                             label: 'ค่าเฉลี่ยหลักสูตร',
                             data: recentHistory.map(() => averages.curriculumAvg),
                             borderColor: '#ef4444',
-                            borderWidth: 2,
+                            borderWidth: 3, // เส้นหนาขึ้น
                             borderDash: [5, 5],
                             fill: false,
                             pointRadius: 0
@@ -1083,12 +1145,6 @@
                         ? document.querySelectorAll(`#normal-program-inputs input[data-program="Normal"]`)
                         : document.querySelectorAll(`#special-program-inputs input[data-program="Special"]:not([type="radio"]):required`);
                     
-                    if (inputs.length === 0 && programType === 'Normal' && (examType === 'Normal' || examType === 'Both')) {
-                         populateScoreInputs('Normal');
-                         const newInputs = document.querySelectorAll(`#normal-program-inputs input[data-program="Normal"]`);
-                         newInputs.forEach(input => input.required = true);
-                    }
-                    
                     for (const input of inputs) {
                         const value = input.value.trim();
                         const max = parseInt(input.max);
@@ -1150,6 +1206,9 @@
                     saveTestHistory('Normal', scores, analysis.Normal, district);
                 }
                 
+                // สลับไปแท็บผลประเมิน
+                switchMainTab('result');
+                
                 toggleLoading(false);
             }, 250);
         });
@@ -1168,14 +1227,6 @@
             
             if (analysis.Special) renderResultChart('Special', analysis.Special);
             if (analysis.Normal) renderResultChart('Normal', analysis.Normal);
-
-            const resultSection = document.getElementById('result-section');
-            if (container.innerHTML.trim() !== '') {
-                resultSection.classList.remove('hidden');
-                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                resultSection.classList.add('hidden');
-            }
         }
 
         function createStatsComparisonHTML(programType, data, district) {
@@ -1300,6 +1351,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateFormDisplay();
             displayTestHistory();
+            
+            // เพิ่ม Event Listener สำหรับแท็บหลัก
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchMainTab(this.dataset.tab);
+                });
+            });
             
             // เพิ่ม Event Listener สำหรับแท็บประวัติ
             document.querySelectorAll('.history-tab').forEach(tab => {
