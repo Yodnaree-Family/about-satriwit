@@ -117,6 +117,17 @@
             box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
             transform: translateY(-3px);
         }
+        .history-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .history-tab.active {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -125,7 +136,7 @@
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
     </div>
 
-    <div class="max-w-4xl mx-auto main-container">
+    <div class="max-w-6xl mx-auto main-container">
         
         <a href="index.html" class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-white transition-all shadow-sm">
             <i class="fa-solid fa-arrow-left mr-2"></i>กลับหน้าหลัก
@@ -237,7 +248,7 @@
             
             <!-- History Section -->
             <section id="history-section" class="mt-12 p-6 bg-slate-50 rounded-xl hidden">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-bold text-slate-700">
                         <i class="fa-solid fa-chart-line mr-2"></i>ประวัติพัฒนาการ
                     </h3>
@@ -250,10 +261,42 @@
                         </button>
                     </div>
                 </div>
-                <div class="h-64 mb-6">
-                    <canvas id="progress-chart"></canvas>
+                
+                <!-- History Tabs -->
+                <div class="flex gap-2 mb-6 bg-slate-200 p-1 rounded-lg">
+                    <div class="history-tab active flex-1 text-center" data-tab="all">
+                        <i class="fa-solid fa-layer-group mr-2"></i>ทั้งหมด
+                    </div>
+                    <div class="history-tab flex-1 text-center" data-tab="special">
+                        <i class="fa-solid fa-star mr-2"></i>ห้องเรียนพิเศษ
+                    </div>
+                    <div class="history-tab flex-1 text-center" data-tab="normal">
+                        <i class="fa-solid fa-book-open mr-2"></i>ห้องเรียนปกติ
+                    </div>
                 </div>
-                <div id="history-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+                
+                <!-- Progress Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200">
+                        <h4 class="text-lg font-bold text-indigo-700 mb-4 text-center">
+                            <i class="fa-solid fa-star mr-2"></i>พัฒนาการห้องเรียนพิเศษ
+                        </h4>
+                        <div class="h-64">
+                            <canvas id="progress-chart-special"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200">
+                        <h4 class="text-lg font-bold text-emerald-700 mb-4 text-center">
+                            <i class="fa-solid fa-book-open mr-2"></i>พัฒนาการห้องเรียนปกติ
+                        </h4>
+                        <div class="h-64">
+                            <canvas id="progress-chart-normal"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- History List -->
+                <div id="history-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
             </section>
         </main>
     </div>
@@ -272,7 +315,11 @@
     <script>
         // --- GLOBAL VARIABLES & CONFIGURATION ---
         let resultCharts = {};
-        let progressChart = null;
+        let progressCharts = {
+            special: null,
+            normal: null
+        };
+        let currentHistoryTab = 'all';
 
         const subjectMap = {
             'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
@@ -281,9 +328,7 @@
 
         const weights = {
             Special: {
-                // Fixed Max Pre-test scores for ALL Special Programs
                 max_pretest: { Math: 50, Science: 30, English: 30 },
-                // Real Exam Weights
                 curriculums: {
                     EP: { English: 80, Science: 50, Math: 50, subjects: ['Math', 'Science', 'English'] },
                     GM: { Science: 50, Math: 50, English: 10, subjects: ['Math', 'Science', 'English'] },
@@ -455,7 +500,6 @@
                 result.max_total_estimated += realMax;
             }
 
-            // [CORRECTED] Add interview score only for EP program.
             if (roomType === 'Special' && curriculum === 'EP') {
                 const interviewScore = 20;
                 result.total_estimated += interviewScore;
@@ -479,8 +523,8 @@
                 district: district
             };
             
-            history.unshift(record); // เพิ่ม record ใหม่ด้านหน้า
-            if (history.length > 50) history.pop(); // จำกัดจำนวน record
+            history.unshift(record);
+            if (history.length > 100) history.pop();
             
             localStorage.setItem('testHistory', JSON.stringify(history));
             displayTestHistory();
@@ -498,8 +542,16 @@
             
             historySection.classList.remove('hidden');
             
+            // กรองข้อมูลตามแท็บที่เลือก
+            const filteredHistory = history.filter(record => {
+                if (currentHistoryTab === 'all') return true;
+                if (currentHistoryTab === 'special') return record.examType === 'Special';
+                if (currentHistoryTab === 'normal') return record.examType === 'Normal';
+                return true;
+            });
+            
             // แสดงรายการประวัติ
-            historyList.innerHTML = history.map((record, index) => {
+            historyList.innerHTML = filteredHistory.map((record, index) => {
                 const date = new Date(record.date).toLocaleDateString('th-TH', {
                     year: 'numeric', month: 'short', day: 'numeric',
                     hour: '2-digit', minute: '2-digit'
@@ -509,85 +561,136 @@
                     ? `ห้องเรียนพิเศษ (${record.curriculum})` 
                     : `ห้องเรียนปกติ (${record.district === 'in_district' ? 'ในเขต' : 'นอกเขต'})`;
                 
+                const bgColor = record.examType === 'Special' ? 'bg-indigo-50 border-indigo-200' : 'bg-emerald-50 border-emerald-200';
+                const textColor = record.examType === 'Special' ? 'text-indigo-700' : 'text-emerald-700';
+                
                 return `
-                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center">
-                        <div>
-                            <div class="font-semibold text-slate-700">${examTypeText}</div>
+                    <div class="bg-white p-4 rounded-lg border ${bgColor} flex justify-between items-center">
+                        <div class="flex-1">
+                            <div class="font-semibold ${textColor}">${examTypeText}</div>
                             <div class="text-sm text-slate-500">${date}</div>
+                            <div class="text-xs text-slate-400 mt-1">
+                                คะแนน: คณิต ${record.scores.Math || 0} | วิทย์ ${record.scores.Science || 0} | อังกฤษ ${record.scores.English || 0}
+                                ${record.scores.Thai ? `| ไทย ${record.scores.Thai}` : ''}
+                                ${record.scores.Social ? `| สังคม ${record.scores.Social}` : ''}
+                            </div>
                         </div>
-                        <div class="text-lg font-bold text-blue-600">${record.estimatedScore.toFixed(2)}</div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold ${textColor}">${record.estimatedScore.toFixed(2)}</div>
+                            <div class="text-xs text-slate-500">คะแนนรวม</div>
+                        </div>
                     </div>
                 `;
             }).join('');
             
             // อัพเดทกราฟพัฒนาการ
-            renderProgressChart();
+            renderProgressCharts();
         }
 
-        function renderProgressChart() {
+        function renderProgressCharts() {
             const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
-            const ctx = document.getElementById('progress-chart');
             
-            if (progressChart) {
-                progressChart.destroy();
+            // กรองข้อมูลสำหรับแต่ละประเภท
+            const specialHistory = history.filter(record => record.examType === 'Special').slice(0, 10).reverse();
+            const normalHistory = history.filter(record => record.examType === 'Normal').slice(0, 10).reverse();
+            
+            // เรนเดอร์กราฟห้องเรียนพิเศษ
+            const specialCtx = document.getElementById('progress-chart-special');
+            if (progressCharts.special) {
+                progressCharts.special.destroy();
             }
             
-            if (history.length === 0) return;
-            
-            // กรองเฉพาะ 10 record ล่าสุดเพื่อให้กราฟอ่านง่าย
-            const recentHistory = history.slice(0, 10).reverse();
-            
-            progressChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: recentHistory.map(record => 
-                        new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
-                    ),
-                    datasets: [{
-                        label: 'คะแนนพัฒนาการ',
-                        data: recentHistory.map(record => record.estimatedScore),
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.3,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'พัฒนาการคะแนนสอบ 10 ครั้งล่าสุด',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        }
+            if (specialHistory.length > 0) {
+                progressCharts.special = new Chart(specialCtx, {
+                    type: 'line',
+                    data: {
+                        labels: specialHistory.map(record => 
+                            new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
+                        ),
+                        datasets: [{
+                            label: 'คะแนนพัฒนาการห้องเรียนพิเศษ',
+                            data: specialHistory.map(record => record.estimatedScore),
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
                             title: {
                                 display: true,
-                                text: 'คะแนน'
+                                text: `พัฒนาการ ${specialHistory.length} ครั้งล่าสุด`,
+                                font: { size: 12, weight: 'bold' }
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
-                            }
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                                title: { display: true, text: 'คะแนน' }
+                            },
+                            x: { grid: { display: false } }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                specialCtx.getContext('2d').clearRect(0, 0, specialCtx.width, specialCtx.height);
+                specialCtx.getContext('2d').fillText('ไม่มีข้อมูลห้องเรียนพิเศษ', 10, 50);
+            }
+            
+            // เรนเดอร์กราฟห้องเรียนปกติ
+            const normalCtx = document.getElementById('progress-chart-normal');
+            if (progressCharts.normal) {
+                progressCharts.normal.destroy();
+            }
+            
+            if (normalHistory.length > 0) {
+                progressCharts.normal = new Chart(normalCtx, {
+                    type: 'line',
+                    data: {
+                        labels: normalHistory.map(record => 
+                            new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
+                        ),
+                        datasets: [{
+                            label: 'คะแนนพัฒนาการห้องเรียนปกติ',
+                            data: normalHistory.map(record => record.estimatedScore),
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: `พัฒนาการ ${normalHistory.length} ครั้งล่าสุด`,
+                                font: { size: 12, weight: 'bold' }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                                title: { display: true, text: 'คะแนน' }
+                            },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            } else {
+                normalCtx.getContext('2d').clearRect(0, 0, normalCtx.width, normalCtx.height);
+                normalCtx.getContext('2d').fillText('ไม่มีข้อมูลห้องเรียนปกติ', 10, 50);
+            }
         }
 
         function clearHistory() {
@@ -802,11 +905,9 @@
                     
                     <div class="relative w-full h-8 mt-6">
                         <div class="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-gray-200 rounded-full"></div>
-                        <!-- Display markers for Min, Avg, Max -->
                         <div class="absolute h-4 w-1 bg-green-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((min/total)*100, 100)}%;" title="ต่ำสุด: ${min.toFixed(2)}"></div>
                         <div class="absolute h-4 w-1 bg-yellow-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((avg/total)*100, 100)}%;" title="เฉลี่ย: ${avg.toFixed(2)}"></div>
                         <div class="absolute h-4 w-1 bg-red-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((max/total)*100, 100)}%;" title="สูงสุด: ${max.toFixed(2)}"></div>
-                        <!-- User Score Marker -->
                         <div class="absolute h-6 w-6 bg-blue-600 border-4 border-white rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-xl" style="left: ${userPercent}%;" title="คะแนนของคุณ: ${data.total_estimated.toFixed(2)}"></div>
                     </div>
                     <p class="text-xs text-slate-500 mt-4 text-center">สถิติอ้างอิงจากข้อมูลปีการศึกษา 2568 (คะแนนเต็ม ${total} คะแนน)</p>
@@ -885,7 +986,21 @@
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             updateFormDisplay();
-            displayTestHistory(); // โหลดประวัติเมื่อเปิดหน้า
+            displayTestHistory();
+            
+            // เพิ่ม Event Listener สำหรับแท็บประวัติ
+            document.querySelectorAll('.history-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // ลบ active class จากทั้งหมด
+                    document.querySelectorAll('.history-tab').forEach(t => t.classList.remove('active'));
+                    // เพิ่ม active class ให้แท็บที่คลิก
+                    this.classList.add('active');
+                    // อัพเดทแท็บปัจจุบัน
+                    currentHistoryTab = this.dataset.tab;
+                    // แสดงประวัติใหม่
+                    displayTestHistory();
+                });
+            });
         });
     </script>
 </body>
