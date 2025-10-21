@@ -275,23 +275,13 @@
                     </div>
                 </div>
                 
-                <!-- Progress Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200">
-                        <h4 class="text-lg font-bold text-indigo-700 mb-4 text-center">
-                            <i class="fa-solid fa-star mr-2"></i>พัฒนาการห้องเรียนพิเศษ
-                        </h4>
-                        <div class="h-64">
-                            <canvas id="progress-chart-special"></canvas>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200">
-                        <h4 class="text-lg font-bold text-emerald-700 mb-4 text-center">
-                            <i class="fa-solid fa-book-open mr-2"></i>พัฒนาการห้องเรียนปกติ
-                        </h4>
-                        <div class="h-64">
-                            <canvas id="progress-chart-normal"></canvas>
-                        </div>
+                <!-- Progress Chart (แสดงกราฟเดียวตามแท็บที่เลือก) -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 mb-6">
+                    <h4 class="text-lg font-bold text-center mb-4" id="progress-chart-title">
+                        <i class="fa-solid fa-chart-line mr-2"></i>พัฒนาการทั้งหมด
+                    </h4>
+                    <div class="h-64">
+                        <canvas id="progress-chart"></canvas>
                     </div>
                 </div>
                 
@@ -315,10 +305,7 @@
     <script>
         // --- GLOBAL VARIABLES & CONFIGURATION ---
         let resultCharts = {};
-        let progressCharts = {
-            special: null,
-            normal: null
-        };
+        let progressChart = null;
         let currentHistoryTab = 'all';
 
         const subjectMap = {
@@ -332,7 +319,7 @@
                 curriculums: {
                     EP: { English: 80, Science: 50, Math: 50, subjects: ['Math', 'Science', 'English'] },
                     GM: { Science: 50, Math: 50, English: 10, subjects: ['Math', 'Science', 'English'] },
-                    SMTE: { Science: 50, Math: 50, subjects: ['Math', 'Science'] } 
+                    SMTE: { Science: 50, Math: 50, English: 0, subjects: ['Math', 'Science', 'English'] } // เปลี่ยนให้มี English แต่คะแนนเป็น 0
                 }
             },
             Normal: {
@@ -461,24 +448,43 @@
             const curriculum = document.getElementById('curriculum').value;
             const scoreInputs = document.querySelectorAll('#special-scores-grid > div');
             
-            scoreInputs.forEach(container => {
-                const subjectKey = container.id.replace('input-container-Special-', '');
-                const input = container.querySelector('input');
-                
-                if (curriculum && weights.Special.curriculums[curriculum].subjects.includes(subjectKey)) {
-                    container.classList.remove('hidden');
-                    input.required = true;
-                } else {
-                    if (curriculum) {
+            // สำหรับ SMTE ให้แสดงทั้ง 3 วิชา แต่ภาษาอังกฤษไม่บังคับกรอก
+            if (curriculum === 'SMTE') {
+                scoreInputs.forEach(container => {
+                    const subjectKey = container.id.replace('input-container-Special-', '');
+                    const input = container.querySelector('input');
+                    
+                    if (weights.Special.curriculums.SMTE.subjects.includes(subjectKey)) {
+                        container.classList.remove('hidden');
+                        // สำหรับ SMTE ภาษาอังกฤษไม่บังคับกรอก
+                        input.required = (subjectKey !== 'English');
+                    } else {
                         container.classList.add('hidden');
                         input.required = false;
                         input.value = "";
-                    } else {
-                         container.classList.remove('hidden');
-                         input.required = false;
                     }
-                }
-            });
+                });
+            } else {
+                // สำหรับหลักสูตรอื่นๆ ใช้ logic เดิม
+                scoreInputs.forEach(container => {
+                    const subjectKey = container.id.replace('input-container-Special-', '');
+                    const input = container.querySelector('input');
+                    
+                    if (curriculum && weights.Special.curriculums[curriculum].subjects.includes(subjectKey)) {
+                        container.classList.remove('hidden');
+                        input.required = true;
+                    } else {
+                        if (curriculum) {
+                            container.classList.add('hidden');
+                            input.required = false;
+                            input.value = "";
+                        } else {
+                             container.classList.remove('hidden');
+                             input.required = false;
+                        }
+                    }
+                });
+            }
         }
 
         // --- CALCULATION LOGIC ---
@@ -583,114 +589,86 @@
                 `;
             }).join('');
             
-            // อัพเดทกราฟพัฒนาการ
-            renderProgressCharts();
+            // อัพเดทกราฟพัฒนาการตามแท็บที่เลือก
+            renderProgressChart();
         }
 
-        function renderProgressCharts() {
+        function renderProgressChart() {
             const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            const ctx = document.getElementById('progress-chart');
+            const chartTitle = document.getElementById('progress-chart-title');
             
-            // กรองข้อมูลสำหรับแต่ละประเภท
-            const specialHistory = history.filter(record => record.examType === 'Special').slice(0, 10).reverse();
-            const normalHistory = history.filter(record => record.examType === 'Normal').slice(0, 10).reverse();
-            
-            // เรนเดอร์กราฟห้องเรียนพิเศษ
-            const specialCtx = document.getElementById('progress-chart-special');
-            if (progressCharts.special) {
-                progressCharts.special.destroy();
+            if (progressChart) {
+                progressChart.destroy();
             }
             
-            if (specialHistory.length > 0) {
-                progressCharts.special = new Chart(specialCtx, {
-                    type: 'line',
-                    data: {
-                        labels: specialHistory.map(record => 
-                            new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
-                        ),
-                        datasets: [{
-                            label: 'คะแนนพัฒนาการห้องเรียนพิเศษ',
-                            data: specialHistory.map(record => record.estimatedScore),
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.3,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: `พัฒนาการ ${specialHistory.length} ครั้งล่าสุด`,
-                                font: { size: 12, weight: 'bold' }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                                title: { display: true, text: 'คะแนน' }
-                            },
-                            x: { grid: { display: false } }
+            // กรองข้อมูลตามแท็บที่เลือก
+            let filteredHistory = history;
+            let chartLabel = 'พัฒนาการทั้งหมด';
+            let chartColor = '#6366f1';
+            
+            if (currentHistoryTab === 'special') {
+                filteredHistory = history.filter(record => record.examType === 'Special');
+                chartLabel = 'พัฒนาการห้องเรียนพิเศษ';
+                chartColor = '#6366f1';
+            } else if (currentHistoryTab === 'normal') {
+                filteredHistory = history.filter(record => record.examType === 'Normal');
+                chartLabel = 'พัฒนาการห้องเรียนปกติ';
+                chartColor = '#10b981';
+            }
+            
+            // อัพเดทหัวข้อกราฟ
+            chartTitle.innerHTML = `<i class="fa-solid fa-chart-line mr-2"></i>${chartLabel}`;
+            
+            if (filteredHistory.length === 0) {
+                // แสดงข้อความเมื่อไม่มีข้อมูล
+                ctx.getContext('2d').font = '16px Arial';
+                ctx.getContext('2d').fillStyle = '#6b7280';
+                ctx.getContext('2d').textAlign = 'center';
+                ctx.getContext('2d').fillText('ไม่มีข้อมูลสำหรับแสดงกราฟ', ctx.width / 2, ctx.height / 2);
+                return;
+            }
+            
+            // ใช้ข้อมูล 10 ครั้งล่าสุด
+            const recentHistory = filteredHistory.slice(0, 10).reverse();
+            
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: recentHistory.map(record => 
+                        new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
+                    ),
+                    datasets: [{
+                        label: chartLabel,
+                        data: recentHistory.map(record => record.estimatedScore),
+                        borderColor: chartColor,
+                        backgroundColor: `${chartColor}20`,
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: `พัฒนาการ ${recentHistory.length} ครั้งล่าสุด`,
+                            font: { size: 12, weight: 'bold' }
                         }
-                    }
-                });
-            } else {
-                specialCtx.getContext('2d').clearRect(0, 0, specialCtx.width, specialCtx.height);
-                specialCtx.getContext('2d').fillText('ไม่มีข้อมูลห้องเรียนพิเศษ', 10, 50);
-            }
-            
-            // เรนเดอร์กราฟห้องเรียนปกติ
-            const normalCtx = document.getElementById('progress-chart-normal');
-            if (progressCharts.normal) {
-                progressCharts.normal.destroy();
-            }
-            
-            if (normalHistory.length > 0) {
-                progressCharts.normal = new Chart(normalCtx, {
-                    type: 'line',
-                    data: {
-                        labels: normalHistory.map(record => 
-                            new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
-                        ),
-                        datasets: [{
-                            label: 'คะแนนพัฒนาการห้องเรียนปกติ',
-                            data: normalHistory.map(record => record.estimatedScore),
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.3,
-                            fill: true
-                        }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: `พัฒนาการ ${normalHistory.length} ครั้งล่าสุด`,
-                                font: { size: 12, weight: 'bold' }
-                            }
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            title: { display: true, text: 'คะแนน' }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                                title: { display: true, text: 'คะแนน' }
-                            },
-                            x: { grid: { display: false } }
-                        }
+                        x: { grid: { display: false } }
                     }
-                });
-            } else {
-                normalCtx.getContext('2d').clearRect(0, 0, normalCtx.width, normalCtx.height);
-                normalCtx.getContext('2d').fillText('ไม่มีข้อมูลห้องเรียนปกติ', 10, 50);
-            }
+                }
+            });
         }
 
         function clearHistory() {
