@@ -19,6 +19,9 @@
     <!-- Chart.js for Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
     <!-- Custom Styles -->
     <style>
         body {
@@ -100,6 +103,19 @@
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
             border: 1px solid #e5e7eb;
+        }
+        .export-btn {
+            background-image: linear-gradient(to right, #059669, #10b981);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+            padding: 0.75rem 1.25rem;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+        }
+        .export-btn:hover {
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -218,6 +234,27 @@
                 <h2 class="text-3xl font-bold text-emerald-800 mb-6 text-center">ผลการประเมินคะแนน</h2>
                 <div id="result-cards-container" class="space-y-8"></div>
             </section>
+            
+            <!-- History Section -->
+            <section id="history-section" class="mt-12 p-6 bg-slate-50 rounded-xl hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-slate-700">
+                        <i class="fa-solid fa-chart-line mr-2"></i>ประวัติพัฒนาการ
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="exportToExcel()" class="export-btn text-sm">
+                            <i class="fa-solid fa-file-excel mr-2"></i>Export Excel
+                        </button>
+                        <button onclick="clearHistory()" class="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-all">
+                            <i class="fa-solid fa-trash mr-2"></i>ลบประวัติ
+                        </button>
+                    </div>
+                </div>
+                <div class="h-64 mb-6">
+                    <canvas id="progress-chart"></canvas>
+                </div>
+                <div id="history-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+            </section>
         </main>
     </div>
     
@@ -225,9 +262,9 @@
         <p class="font-semibold">วิเคราะห์และพัฒนาโดย</p>
         <p class="font-semibold">✌️ลุ้นสอวอไปด้วยกันนะ</p>
         <p class="font-semibold">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
-          <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
-              <i class="fab fa-line text-xl"></i> LINE OpenChat
-          </a>
+        <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-2 inline-flex items-center gap-2 text-green-600 hover:underline">
+            <i class="fab fa-line text-xl"></i> LINE OpenChat
+        </a>
     </footer>
     
     <div id="message-box" class="fixed top-5 right-5 z-50 w-80"></div>
@@ -235,6 +272,7 @@
     <script>
         // --- GLOBAL VARIABLES & CONFIGURATION ---
         let resultCharts = {};
+        let progressChart = null;
 
         const subjectMap = {
             'Math': 'คณิตศาสตร์', 'Science': 'วิทยาศาสตร์', 'English': 'ภาษาอังกฤษ',
@@ -398,7 +436,6 @@
             });
         }
 
-
         // --- CALCULATION LOGIC ---
         function calculateEstimatedScore(roomType, curriculum, pretestScores) {
             const typeData = weights[roomType];
@@ -428,6 +465,188 @@
 
             result.total_estimated = parseFloat(result.total_estimated.toFixed(2));
             return result;
+        }
+
+        // --- HISTORY MANAGEMENT FUNCTIONS ---
+        function saveTestHistory(examType, scores, estimatedResult, district = null) {
+            const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            const record = {
+                date: new Date().toISOString(),
+                examType,
+                scores: {...scores},
+                estimatedScore: estimatedResult.total_estimated,
+                curriculum: estimatedResult.curriculum,
+                district: district
+            };
+            
+            history.unshift(record); // เพิ่ม record ใหม่ด้านหน้า
+            if (history.length > 50) history.pop(); // จำกัดจำนวน record
+            
+            localStorage.setItem('testHistory', JSON.stringify(history));
+            displayTestHistory();
+        }
+
+        function displayTestHistory() {
+            const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            const historySection = document.getElementById('history-section');
+            const historyList = document.getElementById('history-list');
+            
+            if (history.length === 0) {
+                historySection.classList.add('hidden');
+                return;
+            }
+            
+            historySection.classList.remove('hidden');
+            
+            // แสดงรายการประวัติ
+            historyList.innerHTML = history.map((record, index) => {
+                const date = new Date(record.date).toLocaleDateString('th-TH', {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                
+                const examTypeText = record.examType === 'Special' 
+                    ? `ห้องเรียนพิเศษ (${record.curriculum})` 
+                    : `ห้องเรียนปกติ (${record.district === 'in_district' ? 'ในเขต' : 'นอกเขต'})`;
+                
+                return `
+                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center">
+                        <div>
+                            <div class="font-semibold text-slate-700">${examTypeText}</div>
+                            <div class="text-sm text-slate-500">${date}</div>
+                        </div>
+                        <div class="text-lg font-bold text-blue-600">${record.estimatedScore.toFixed(2)}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // อัพเดทกราฟพัฒนาการ
+            renderProgressChart();
+        }
+
+        function renderProgressChart() {
+            const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            const ctx = document.getElementById('progress-chart');
+            
+            if (progressChart) {
+                progressChart.destroy();
+            }
+            
+            if (history.length === 0) return;
+            
+            // กรองเฉพาะ 10 record ล่าสุดเพื่อให้กราฟอ่านง่าย
+            const recentHistory = history.slice(0, 10).reverse();
+            
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: recentHistory.map(record => 
+                        new Date(record.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })
+                    ),
+                    datasets: [{
+                        label: 'คะแนนพัฒนาการ',
+                        data: recentHistory.map(record => record.estimatedScore),
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'พัฒนาการคะแนนสอบ 10 ครั้งล่าสุด',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'คะแนน'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function clearHistory() {
+            if (confirm('คุณแน่ใจว่าต้องการลบประวัติพัฒนาการทั้งหมด?')) {
+                localStorage.removeItem('testHistory');
+                displayTestHistory();
+                showMessage('ลบประวัติเรียบร้อยแล้ว', 'success');
+            }
+        }
+
+        // --- EXPORT FUNCTIONS ---
+        function exportToExcel() {
+            const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            
+            if (history.length === 0) {
+                showMessage("ไม่มีประวัติข้อมูลสำหรับ export", "warning");
+                return;
+            }
+
+            // เตรียมข้อมูลสำหรับ Excel
+            const worksheetData = [
+                ['วันที่', 'ประเภทการสอบ', 'หลักสูตร', 'เขตพื้นที่', 'คะแนนคณิตศาสตร์', 'คะแนนวิทยาศาสตร์', 'คะแนนภาษาอังกฤษ', 'คะแนนภาษาไทย', 'คะแนนสังคมศึกษา', 'คะแนนรวมประมาณการ'],
+                ...history.map(record => [
+                    new Date(record.date).toLocaleDateString('th-TH', {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    }),
+                    record.examType === 'Special' ? 'ห้องเรียนพิเศษ' : 'ห้องเรียนปกติ',
+                    record.curriculum || '-',
+                    record.district === 'in_district' ? 'ในเขต' : (record.district === 'out_of_district' ? 'นอกเขต' : '-'),
+                    record.scores.Math || 0,
+                    record.scores.Science || 0,
+                    record.scores.English || 0,
+                    record.scores.Thai || 0,
+                    record.scores.Social || 0,
+                    record.estimatedScore.toFixed(2)
+                ])
+            ];
+
+            // สร้าง Workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+            
+            // ตั้งค่าความกว้างของคอลัมน์
+            const colWidths = [
+                { wch: 20 }, { wch: 15 }, { wch: 10 }, { wch: 15 },
+                { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 },
+                { wch: 15 }, { wch: 15 }
+            ];
+            ws['!cols'] = colWidths;
+            
+            // เพิ่ม worksheet
+            XLSX.utils.book_append_sheet(wb, ws, "ประวัติพัฒนาการ");
+            
+            // Export file
+            const fileName = `พัฒนาการสอบสตรีวิทยา_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            
+            showMessage("Export ไฟล์ Excel สำเร็จ!", "success");
         }
 
         // --- FORM SUBMISSION ---
@@ -504,6 +723,17 @@
                 
                 showMessage('ประเมินสำเร็จ! ดูผลด้านล่าง', 'success');
                 displayResult(analysis, district);
+                
+                // บันทึกประวัติ
+                if (analysis.Special) {
+                    const scores = collectAndValidateScores('Special').scores;
+                    saveTestHistory('Special', scores, analysis.Special, district);
+                }
+                if (analysis.Normal) {
+                    const scores = collectAndValidateScores('Normal').scores;
+                    saveTestHistory('Normal', scores, analysis.Normal, district);
+                }
+                
                 toggleLoading(false);
             }, 250);
         });
@@ -555,7 +785,6 @@
                  analysisText = "คะแนนของคุณยังต่ำกว่าเกณฑ์ โปรดเร่งทำคะแนนเพิ่ม";
                  analysisClass = "bg-gray-100 text-gray-700 border-gray-300";
             }
-
 
             return `
                 <div class="mt-8 border-t pt-6 border-slate-200">
@@ -656,8 +885,8 @@
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             updateFormDisplay();
+            displayTestHistory(); // โหลดประวัติเมื่อเปิดหน้า
         });
     </script>
 </body>
 </html>
-
