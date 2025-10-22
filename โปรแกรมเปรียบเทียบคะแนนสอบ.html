@@ -1229,54 +1229,134 @@
             if (analysis.Normal) renderResultChart('Normal', analysis.Normal);
         }
 
-        function createStatsComparisonHTML(programType, data, district) {
-            const curriculum = data.curriculum;
-            let stats = (programType === 'Normal') ? stats2568.Normal[district] : stats2568[curriculum];
-            if (!stats) return '';
+        // ฟังก์ชันสร้างการ์ดแสดงผลการวิเคราะห์แบบใหม่ (แทนที่ฟังก์ชัน createStatsComparisonHTML)
+function createStatsComparisonHTML(programType, data, district) {
+    const curriculum = data.curriculum;
+    let stats = (programType === 'Normal') ? stats2568.Normal[district] : stats2568[curriculum];
+    if (!stats) return '';
 
-            const { min, avg, max, total } = stats;
-            const userPercent = Math.min((data.total_estimated / total) * 100, 100);
+    const { min, avg, max, total } = stats;
+    const projectedScore = data.total_estimated;
+    
+    // คำนวณคะแนนรวม Pre-test
+    const preTestTotal = Object.values(data.subjects).reduce((sum, subject) => {
+        return sum + (subject.estimated / subject.realMax * weights[programType].max_pretest[Object.keys(data.subjects).find(key => data.subjects[key] === subject)] || 0);
+    }, 0);
 
-            let analysisText = "";
-            let analysisClass = "";
-            if (data.total_estimated >= max) {
-                 analysisText = "คะแนนของคุณสูงมาก! 🚀โอกาสสอบติดคะแนนสูงสุด!🏆🔥";
-                 analysisClass = "bg-blue-100 text-blue-700 border-blue-300";
-            } else if (data.total_estimated >= avg) {
-                 analysisText = "เยี่ยมเลย! คะแนนของคุณอยู่ในเกณฑ์ดี 😄 มีโอกาสสอบติดสูงมาก!🎯✌️";
-                 analysisClass = "bg-yellow-100 text-yellow-700 border-yellow-300";
-            } else if (data.total_estimated >= min) {
-                 analysisText = "คะแนนของคุณผ่านเกณฑ์ต่ำสุด 🌱 ยังมีโอกาสนะ! สู้ต่อไป ✨✌️";
-                 analysisClass = "bg-green-100 text-green-700 border-green-300";
-            } else {
-                 analysisText = "คะแนนของคุณยังไม่ถึงเกณฑ์ 🧭 อย่าลืมทบทวนบทที่ยังไม่แม่นนะ 📚";
-                 analysisClass = "bg-gray-100 text-gray-700 border-gray-300";
+    const scorePercent = Math.min(100, (projectedScore / total * 100));
+    const minPercent = (min / total * 100);
+    const avgPercent = (avg / total * 100);
+    const maxPercent = (max / total * 100);
+    
+    // กำหนด title ตามประเภท
+    let title = programType === 'Special' ? 
+        `การวิเคราะห์คะแนนห้องเรียนพิเศษ (${curriculum})` : 
+        `การวิเคราะห์คะแนนห้องเรียนปกติ (${district === 'in_district' ? 'ในเขต' : 'นอกเขต'})`;
+
+    let analysisText = "";
+    let analysisClass = "";
+    if (data.total_estimated >= max) {
+        analysisText = "คะแนนของคุณสูงมาก! 🚀โอกาสสอบติดคะแนนสูงสุด!🏆🔥";
+        analysisClass = "bg-blue-100 text-blue-700 border-blue-300";
+    } else if (data.total_estimated >= avg) {
+        analysisText = "เยี่ยมเลย! คะแนนของคุณอยู่ในเกณฑ์ดี 😄 มีโอกาสสอบติดสูงมาก!🎯✌️";
+        analysisClass = "bg-yellow-100 text-yellow-700 border-yellow-300";
+    } else if (data.total_estimated >= min) {
+        analysisText = "คะแนนของคุณผ่านเกณฑ์ต่ำสุด 🌱 ยังมีโอกาสนะ! สู้ต่อไป ✨✌️";
+        analysisClass = "bg-green-100 text-green-700 border-green-300";
+    } else {
+        analysisText = "คะแนนของคุณยังไม่ถึงเกณฑ์ 🧭 อย่าลืมทบทวนบทที่ยังไม่แม่นนะ 📚";
+        analysisClass = "bg-gray-100 text-gray-700 border-gray-300";
+    }
+
+    return `
+        <div class="mt-8 border-t pt-6 border-slate-200">
+            <div class="p-4 font-bold rounded-lg text-center mb-6 border ${analysisClass}">
+                ${analysisText}
+            </div>
+
+            <h4 class="text-xl font-bold text-slate-800 mb-6 text-center">${title}</h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <p class="text-gray-600 font-medium">คะแนน Pre-test ของคุณ</p>
+                    <p class="text-3xl font-extrabold text-blue-600 mt-2">${preTestTotal.toFixed(2)}</p>
+                    <p class="text-sm text-gray-500 mt-1">จากเต็ม ${programType === 'Special' ? '110' : '150'} คะแนน</p>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg border border-green-200">
+                    <p class="text-gray-600 font-medium">คะแนนสอบจริงที่คาดการณ์</p>
+                    <p class="text-3xl font-extrabold text-green-600 mt-2">${projectedScore.toFixed(2)}</p>
+                    <p class="text-sm text-gray-500 mt-1">จากเต็ม ${total} คะแนน</p>
+                </div>
+            </div>
+            
+            ${curriculum === 'EP' ? 
+                `<div class="text-sm text-center bg-orange-100 text-orange-700 p-3 rounded-md mb-6 border border-orange-200">
+                    <i class="fa-solid fa-info-circle mr-2"></i>
+                    <b>หมายเหตุ:</b> คะแนนนี้คำนวณโดยสมมติว่าคุณได้คะแนนส่วนสัมภาษณ์เต็ม 20 คะแนน
+                </div>` : ''
             }
-
-            return `
-                <div class="mt-8 border-t pt-6 border-slate-200">
-                    <div class="p-3 font-bold rounded-lg border text-center mb-6 ${analysisClass}">
-                        ${analysisText}
-                    </div>
-
-                    <h4 class="text-lg font-bold text-slate-700 mb-4">เทียบกับสถิติคะแนนสอบจริงปี 2568</h4>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center"><span class="text-slate-600">คะแนนของคุณ</span><span class="font-bold text-xl text-blue-600">${data.total_estimated.toFixed(2)}</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-500">สูงสุด (MAX)</span><span class="font-semibold text-red-500">${max.toFixed(2)}</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-500">เฉลี่ย (AVG)</span><span class="font-semibold text-yellow-500">${avg.toFixed(2)}</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-500">ต่ำสุด (MIN)</span><span class="font-semibold text-green-500">${min.toFixed(2)}</span></div>
+            
+            <!-- Progress Bar with Markers -->
+            <div class="mb-8">
+                <div class="relative h-10 bg-gray-200 rounded-full mb-4 w-full overflow-hidden">
+                    <!-- Gradient Background -->
+                    <div class="absolute h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 rounded-full" style="width:100%;"></div>
+                    
+                    <!-- Min marker -->
+                    <div class="absolute top-0 h-full flex items-center" style="left: ${minPercent}%;">
+                        <div class="w-1 h-12 bg-red-600 -translate-x-1/2 shadow-lg"></div>
+                        <span class="absolute -top-8 -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">ต่ำสุด</span>
                     </div>
                     
-                    <div class="relative w-full h-8 mt-6">
-                        <div class="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-gray-200 rounded-full"></div>
-                        <div class="absolute h-4 w-1 bg-green-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((min/total)*100, 100)}%;" title="ต่ำสุด: ${min.toFixed(2)}"></div>
-                        <div class="absolute h-4 w-1 bg-yellow-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((avg/total)*100, 100)}%;" title="เฉลี่ย: ${avg.toFixed(2)}"></div>
-                        <div class="absolute h-4 w-1 bg-red-500 rounded-full top-1/2 -translate-y-1/2" style="left: ${Math.min((max/total)*100, 100)}%;" title="สูงสุด: ${max.toFixed(2)}"></div>
-                        <div class="absolute h-6 w-6 bg-blue-600 border-4 border-white rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-xl" style="left: ${userPercent}%;" title="คะแนนของคุณ: ${data.total_estimated.toFixed(2)}"></div>
+                    <!-- Avg marker -->
+                    <div class="absolute top-0 h-full flex items-center" style="left: ${avgPercent}%;">
+                        <div class="w-1 h-12 bg-yellow-600 -translate-x-1/2 shadow-lg"></div>
+                        <span class="absolute -top-8 -translate-x-1/2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">เฉลี่ย</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-4 text-center">สถิติอ้างอิงจากข้อมูลปีการศึกษา 2568 (คะแนนเต็ม ${total} คะแนน)</p>
-                </div>`;
-        }
+                    
+                    <!-- Max marker -->
+                    <div class="absolute top-0 h-full flex items-center" style="left: ${maxPercent}%;">
+                        <div class="w-1 h-12 bg-green-600 -translate-x-1/2 shadow-lg"></div>
+                        <span class="absolute -top-8 -translate-x-1/2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">สูงสุด</span>
+                    </div>
+                    
+                    <!-- User score marker -->
+                    <div class="absolute top-0 h-full flex items-center" style="left: ${scorePercent}%;">
+                        <div class="w-2 h-14 bg-indigo-600 -translate-x-1/2 shadow-xl rounded-sm"></div>
+                        <span class="absolute -top-8 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">คุณ</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-sm text-gray-600 px-1 font-medium">
+                    <span>0</span>
+                    <span>${total}</span>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <p class="font-semibold text-red-600 mb-2">ต่ำสุดปี 68</p>
+                    <p class="text-2xl font-bold text-red-700">${min.toFixed(2)}</p>
+                    <p class="text-xs text-gray-500 mt-1">คะแนน</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-semibold text-yellow-600 mb-2">เฉลี่ยปี 68</p>
+                    <p class="text-2xl font-bold text-yellow-700">${avg.toFixed(2)}</p>
+                    <p class="text-xs text-gray-500 mt-1">คะแนน</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <p class="font-semibold text-green-600 mb-2">สูงสุดปี 68</p>
+                    <p class="text-2xl font-bold text-green-700">${max.toFixed(2)}</p>
+                    <p class="text-xs text-gray-500 mt-1">คะแนน</p>
+                </div>
+            </div>
+            
+            <p class="text-xs text-slate-500 mt-6 text-center">สถิติอ้างอิงจากข้อมูลปีการศึกษา 2568 (คะแนนเต็ม ${total} คะแนน)</p>
+        </div>
+    `;
+}
 
         function createResultCardHTML(programType, data, district = null) {
             const title = programType === 'Special' ? `ห้องเรียนพิเศษ (${data.curriculum})` : `ห้องเรียนปกติ (${district === 'in_district' ? 'ในเขต' : 'นอกเขต'})`;
