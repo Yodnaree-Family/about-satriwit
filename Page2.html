@@ -29,61 +29,70 @@
             z-index: 0;
         }
 
-        /* Main Tabs - ปรับสีให้สดใสและขนาดเหมาะสม */
+        /* Main Tabs - ปรับให้มีมิติและลอยโค้งมน */
         .main-tab-btn {
-            @apply px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-full font-semibold transition-all duration-300 ease-in-out transform;
-            background: linear-gradient(135deg, #FF6B9E 0%, #FF8E53 100%);
-            color: white;
-            box-shadow: 0 4px 12px -2px rgba(255, 107, 158, 0.4);
+            @apply px-6 sm:px-8 py-4 sm:py-5 text-sm sm:text-base rounded-2xl font-semibold transition-all duration-300 ease-in-out transform;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #666;
         }
         .main-tab-btn:hover {
             @apply -translate-y-1;
-            box-shadow: 0 8px 25px -4px rgba(255, 107, 158, 0.6);
-            background: linear-gradient(135deg, #FF8E53 0%, #FF6B9E 100%);
+            box-shadow: 12px 12px 24px #d1d1d1, -12px -12px 24px #ffffff;
+            color: #333;
         }
         .main-tab-btn.active {
             @apply scale-105 font-bold;
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-            box-shadow: 0 8px 25px -4px rgba(255, 65, 108, 0.7);
+            background: linear-gradient(145deg, #f0f8ff, #e6f2ff);
+            box-shadow: inset 5px 5px 10px #d1e3ff, inset -5px -5px 10px #ffffff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
         }
         
-        /* Nested Tabs - ปรับสีให้สดใสและขนาดเหมาะสม */
+        /* Nested Tabs - ปรับให้มีมิติและลอยโค้งมน */
         .nested-tabs-container {
-            @apply bg-white/50 backdrop-blur-sm p-3 sm:p-4 rounded-full shadow-inner flex flex-wrap justify-center gap-2 sm:gap-4 mb-6;
+            @apply bg-transparent p-3 sm:p-4 flex flex-wrap justify-center gap-3 sm:gap-4 mb-6;
         }
         .nested-tab-btn {
-            @apply px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 transform;
-            background: linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%);
-            color: white;
-            box-shadow: 0 2px 8px -1px rgba(54, 209, 220, 0.4);
+            @apply px-5 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 transform;
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            box-shadow: 5px 5px 10px #e0e0e0, -5px -5px 10px #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #666;
         }
         .nested-tab-btn:hover {
             @apply scale-105;
-            box-shadow: 0 4px 15px -2px rgba(54, 209, 220, 0.6);
-            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            box-shadow: 7px 7px 14px #d6d6d6, -7px -7px 14px #ffffff;
+            color: #333;
         }
         .nested-tab-btn.active {
             @apply font-bold;
-            background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%);
-            box-shadow: 0 4px 15px -2px rgba(26, 41, 128, 0.7);
+            background: linear-gradient(145deg, #f0f8ff, #e6f2ff);
+            box-shadow: inset 3px 3px 6px #d1e3ff, inset -3px -3px 6px #ffffff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
         }
         
-        /* Sub-Nested Tabs - ปรับสีให้สดใสและขนาดเหมาะสม */
+        /* Sub-Nested Tabs - ปรับให้มีมิติและลอยโค้งมน */
         .sub-nested-tab-btn {
-            @apply px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 transform;
-            background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%);
-            color: white;
-            box-shadow: 0 2px 8px -1px rgba(255, 106, 136, 0.4);
+            @apply px-4 sm:px-5 py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 transform;
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            box-shadow: 3px 3px 6px #e8e8e8, -3px -3px 6px #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #666;
         }
         .sub-nested-tab-btn:hover {
             @apply scale-105;
-            box-shadow: 0 4px 15px -2px rgba(255, 106, 136, 0.6);
-            background: linear-gradient(135deg, #FF6A88 0%, #FF9A8B 100%);
+            box-shadow: 5px 5px 10px #e0e0e0, -5px -5px 10px #ffffff;
+            color: #333;
         }
         .sub-nested-tab-btn.active {
             @apply font-bold;
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-            box-shadow: 0 4px 15px -2px rgba(255, 65, 108, 0.7);
+            background: linear-gradient(145deg, #f0f8ff, #e6f2ff);
+            box-shadow: inset 2px 2px 4px #d1e3ff, inset -2px -2px 4px #ffffff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
         }
         
         /* Content Containers */
@@ -102,7 +111,14 @@
         /* Helper Classes */
         .list-item { @apply flex items-start space-x-3; }
         .list-icon { @apply text-pink-500 mt-1.5 flex-shrink-0 w-5 h-5; }
-        .info-card { @apply bg-white/70 p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300; }
+        .info-card { 
+            @apply bg-white/70 p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            box-shadow: 5px 5px 10px #e8e8e8, -5px -5px 10px #ffffff;
+        }
+        .info-card:hover {
+            box-shadow: 8px 8px 16px #e0e0e0, -8px -8px 16px #ffffff;
+        }
         .card-header-icon { @apply text-3xl mb-3 text-center; }
 
         /* ======= เมนูหลัก ======= */
@@ -242,9 +258,15 @@
         </header>
 
 	<nav class="flex flex-wrap justify-center gap-3 sm:gap-6 my-8" id="main-tabs">
-    <button class="main-tab-btn tab-special active" data-tab="special-programs-main">ห้องเรียนพิเศษ</button>
-    <button class="main-tab-btn tab-normal" data-tab="normal-program-main">ห้องเรียนปกติ</button>
-    <button class="main-tab-btn tab-prep" data-tab="preparation-main">การเตรียมตัว</button>
+    <button class="main-tab-btn tab-special active" data-tab="special-programs-main">
+        <i class="fas fa-star mr-2"></i>ห้องเรียนพิเศษ
+    </button>
+    <button class="main-tab-btn tab-normal" data-tab="normal-program-main">
+        <i class="fas fa-users mr-2"></i>ห้องเรียนปกติ
+    </button>
+    <button class="main-tab-btn tab-prep" data-tab="preparation-main">
+        <i class="fas fa-lightbulb mr-2"></i>การเตรียมตัว
+    </button>
 </nav>
 
 
@@ -252,17 +274,29 @@
     <div id="main-content">
         <div id="special-programs-main" class="main-tab-content content-enter">
             <div class="nested-tabs-container flex flex-wrap justify-center gap-3 sm:gap-6 my-4" id="special-nested-tabs">
-                <button class="nested-tab-btn tab-sp-exam active" data-tab="special-exam">ข้อมูลการสอบ</button>
-                <button class="nested-tab-btn tab-sp-quals" data-tab="special-quals">คุณสมบัติเฉพาะ</button>
-                <button class="nested-tab-btn tab-sp-docs" data-tab="special-docs">เอกสารสมัคร</button>
+                <button class="nested-tab-btn tab-sp-exam active" data-tab="special-exam">
+                    <i class="fas fa-file-alt mr-2"></i>ข้อมูลการสอบ
+                </button>
+                <button class="nested-tab-btn tab-sp-quals" data-tab="special-quals">
+                    <i class="fas fa-check-circle mr-2"></i>คุณสมบัติเฉพาะ
+                </button>
+                <button class="nested-tab-btn tab-sp-docs" data-tab="special-docs">
+                    <i class="fas fa-folder-open mr-2"></i>เอกสารสมัคร
+                </button>
             </div>
             <div id="special-nested-content" class="nested-content-container">
                 <div id="special-exam" class="nested-tab-content content-enter">
                     <h2 class="text-2xl font-semibold mb-4 text-pink-700 text-center">ข้อมูลการสอบ (ห้องเรียนพิเศษ)</h2>
                     <div class="flex justify-center gap-2 sm:gap-4 mb-6 border-b pb-4" id="exam-sub-nested-tabs">
-                        <button class="sub-nested-tab-btn tab-ep active" data-tab="exam-ep">EP</button>
-                        <button class="sub-nested-tab-btn tab-smte" data-tab="exam-smte">SMTE</button>
-                        <button class="sub-nested-tab-btn tab-gifted" data-tab="exam-gifted">Gifted Math</button>
+                        <button class="sub-nested-tab-btn tab-ep active" data-tab="exam-ep">
+                            <i class="fas fa-globe mr-1"></i>EP
+                        </button>
+                        <button class="sub-nested-tab-btn tab-smte" data-tab="exam-smte">
+                            <i class="fas fa-atom mr-1"></i>SMTE
+                        </button>
+                        <button class="sub-nested-tab-btn tab-gifted" data-tab="exam-gifted">
+                            <i class="fas fa-brain mr-1"></i>Gifted Math
+                        </button>
                     </div>
                     <div id="exam-sub-nested-content">
                         <div id="exam-ep" class="sub-nested-tab-content content-enter">
@@ -348,8 +382,12 @@
         </div>
         <div id="normal-program-main" class="main-tab-content hidden-content">
             <div class="nested-tabs-container flex flex-wrap justify-center gap-3 sm:gap-6 my-4" id="normal-nested-tabs">
-                <button class="nested-tab-btn tab-no-exam active" data-tab="normal-exam">ข้อมูลการสอบ</button>
-                <button class="nested-tab-btn tab-no-docs" data-tab="normal-docs">เอกสารสมัคร</button>
+                <button class="nested-tab-btn tab-no-exam active" data-tab="normal-exam">
+                    <i class="fas fa-file-alt mr-2"></i>ข้อมูลการสอบ
+                </button>
+                <button class="nested-tab-btn tab-no-docs" data-tab="normal-docs">
+                    <i class="fas fa-folder-open mr-2"></i>เอกสารสมัคร
+                </button>
             </div>
             <div id="normal-nested-content" class="nested-content-container">
                 <div id="normal-exam" class="nested-tab-content content-enter">
