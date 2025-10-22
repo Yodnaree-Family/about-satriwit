@@ -1297,48 +1297,54 @@ function createStatsComparisonHTML(programType, data, district) {
                 `<div class="mb-8"></div>`  // เพิ่มระยะห่างสำหรับหลักสูตรอื่น
             }
             
-                        <!-- Progress Bar with Markers -->
+                 <!-- Progress Bar with Markers -->
             <div class="mb-8">
-                <div class="relative h-8 bg-gray-200 rounded-full mb-6 w-full overflow-hidden">
-                    <!-- Gradient Background -->
+                <div class="relative h-8 bg-gray-200 rounded-full mb-4 w-full">
                     <div class="absolute h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 rounded-full" style="width:100%;"></div>
                     
-                    <!-- Min marker - ขนาดพอดี -->
+                    <!-- Min marker -->
                     <div class="absolute top-0 h-full flex items-center" style="left: ${minPercent}%;">
-                        <div class="w-1.5 h-8 bg-red-600 -translate-x-1/2 shadow-md"></div>
-                        <span class="absolute top-8 -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm whitespace-nowrap">
-                            ต่ำสุด ${min.toFixed(1)}
-                        </span>
+                        <div class="w-1 h-10 bg-red-600 -translate-x-1/2"></div>
+                        <span class="absolute -top-6 -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">ต่ำสุด</span>
                     </div>
                     
-                    <!-- Avg marker - ขนาดพอดี -->
+                    <!-- Avg marker -->
                     <div class="absolute top-0 h-full flex items-center" style="left: ${avgPercent}%;">
-                        <div class="w-1.5 h-8 bg-yellow-600 -translate-x-1/2 shadow-md"></div>
-                        <span class="absolute top-8 -translate-x-1/2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm whitespace-nowrap">
-                            เฉลี่ย ${avg.toFixed(1)}
-                        </span>
+                        <div class="w-1 h-10 bg-yellow-600 -translate-x-1/2"></div>
+                        <span class="absolute -top-6 -translate-x-1/2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded">เฉลี่ย</span>
                     </div>
                     
-                    <!-- Max marker - ขนาดพอดี -->
+                    <!-- Max marker -->
                     <div class="absolute top-0 h-full flex items-center" style="left: ${maxPercent}%;">
-                        <div class="w-1.5 h-8 bg-green-600 -translate-x-1/2 shadow-md"></div>
-                        <span class="absolute top-8 -translate-x-1/2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm whitespace-nowrap">
-                            สูงสุด ${max.toFixed(1)}
-                        </span>
+                        <div class="w-1 h-10 bg-green-600 -translate-x-1/2"></div>
+                        <span class="absolute -top-6 -translate-x-1/2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">สูงสุด</span>
                     </div>
                     
-                    <!-- User score marker - ขนาดพอดี -->
+                    <!-- User score marker -->
                     <div class="absolute top-0 h-full flex items-center" style="left: ${scorePercent}%;">
-                        <div class="w-2 h-10 bg-indigo-600 -translate-x-1/2 shadow-lg"></div>
-                        <span class="absolute top-10 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm whitespace-nowrap">
-                            คุณ ${projectedScore.toFixed(1)}
-                        </span>
+                        <div class="w-1 h-10 bg-indigo-600 -translate-x-1/2"></div>
+                        <span class="absolute -top-6 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded">คุณ</span>
                     </div>
                 </div>
                 
-                <div class="flex justify-between text-sm text-gray-600 px-1 font-medium">
-                    <span class="font-bold">0</span>
-                    <span class="font-bold">${total}</span>
+                <div class="flex justify-between text-xs text-gray-600 px-1">
+                    <span>0</span>
+                    <span>${total}</span>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-red-50 p-3 rounded-lg">
+                        <p class="font-semibold text-red-600">ต่ำสุดปี 68</p>
+                        <p class="text-2xl font-bold">${min.toFixed(2)}</p>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg">
+                        <p class="font-semibold text-yellow-600">เฉลี่ยปี 68</p>
+                        <p class="text-2xl font-bold">${avg.toFixed(2)}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="font-semibold text-green-600">สูงสุดปี 68</p>
+                        <p class="text-2xl font-bold">${max.toFixed(2)}</p>
+                    </div>
                 </div>
             </div>
             
