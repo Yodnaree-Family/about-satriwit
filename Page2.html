@@ -45,9 +45,10 @@
                         'strong': '0 12px 40px -6px rgba(0, 0, 0, 0.15)',
                     },
                     borderRadius: {
-                        'xl': '12px',
-                        '2xl': '16px',
-                        '3xl': '20px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '50px',
                     }
                 }
             }
@@ -79,9 +80,9 @@
             text-align: center;
         }
 
-        /* Main Tabs - ปรับให้มีมิติและมนสวย */
+        /* Main Tabs - ปรับให้ขอบมนสวยงาม */
         .main-tab-btn {
-            @apply px-6 sm:px-8 py-4 text-base sm:text-lg rounded-2xl font-semibold transition-all duration-300 ease-in-out transform;
+            @apply px-8 py-4 text-base sm:text-lg rounded-full font-semibold transition-all duration-300 ease-in-out transform;
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
@@ -98,12 +99,12 @@
             box-shadow: 0 8px 25px -4px rgba(236, 72, 153, 0.4);
         }
         
-        /* Nested Tabs - ปรับให้มีมิติและมนสวย */
+        /* Nested Tabs - ปรับให้ขอบมนสวยงาม */
         .nested-tabs-container {
             @apply bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-soft flex flex-wrap justify-center gap-3 sm:gap-4 mb-6;
         }
         .nested-tab-btn {
-            @apply px-5 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform;
+            @apply px-6 py-3 text-sm font-semibold rounded-full transition-all duration-200 transform;
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.08);
         }
@@ -118,9 +119,9 @@
             box-shadow: 0 4px 15px -2px rgba(236, 72, 153, 0.4);
         }
         
-        /* Sub-Nested Tabs - ปรับให้มีมิติและมนสวย */
+        /* Sub-Nested Tabs - ปรับให้ขอบมนสวยงาม */
         .sub-nested-tab-btn {
-            @apply px-5 py-3 text-sm font-semibold rounded-xl transition-all duration-200 transform;
+            @apply px-6 py-3 text-sm font-semibold rounded-full transition-all duration-200 transform;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.08);
         }
@@ -141,7 +142,7 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
         .nested-content-container {
-            @apply bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-medium;
+            @apply bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-medium;
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
         
@@ -154,9 +155,9 @@
         .list-item { @apply flex items-start space-x-3; }
         .list-icon { @apply text-primary-500 mt-1.5 flex-shrink-0 w-5 h-5; }
         
-        /* Info Cards - ปรับให้ทันสมัยและโดดเด่น */
+        /* Info Cards - ปรับให้ขอบมนสวยงาม */
         .info-card { 
-            @apply p-6 rounded-2xl transition-all duration-300;
+            @apply p-6 rounded-3xl transition-all duration-300;
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
@@ -166,9 +167,9 @@
             box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.15);
         }
         
-        /* Document Cards - ปรับให้โดดเด่นและทันสมัย */
+        /* Document Cards - ปรับให้ขอบมนสวยงาม */
         .doc-card {
-            @apply p-6 rounded-2xl transition-all duration-300;
+            @apply p-6 rounded-3xl transition-all duration-300;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
@@ -177,6 +178,18 @@
             transform: translateY(-5px);
             box-shadow: 0 12px 30px -6px rgba(14, 165, 233, 0.2);
             background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        }
+        
+        /* Subject Cards - ปรับให้ขอบมนสวยงาม */
+        .subject-card {
+            @apply p-4 rounded-2xl transition-all duration-300 text-center;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+        }
+        .subject-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.12);
         }
         
         .card-header-icon { @apply text-3xl mb-3 text-center; }
@@ -325,11 +338,15 @@
             }
             
             .main-tab-btn {
-                @apply px-4 py-3 text-sm;
+                @apply px-6 py-3 text-sm;
             }
             
             .nested-tab-btn, .sub-nested-tab-btn {
                 @apply px-4 py-2 text-xs;
+            }
+            
+            .info-card, .doc-card {
+                @apply p-4 rounded-2xl;
             }
         }
     </style>
@@ -423,19 +440,19 @@
                                                 <span class="font-bold text-3xl text-primary-600">200</span> 
                                                 <span class="text-gray-600">คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-language text-primary-500 mr-2"></i>ภาษาอังกฤษ (90 นาที)</span> 
                                                 <span class="font-semibold">80 คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-calculator text-primary-500 mr-2"></i>คณิตศาสตร์ (60 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-primary-50 to-pink-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-flask text-primary-500 mr-2"></i>วิทยาศาสตร์ (60 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
-                                            <div class="mt-4 p-4 bg-gradient-to-r from-amber-200 to-yellow-200 text-amber-800 rounded-xl text-center font-bold shadow-inner">
+                                            <div class="mt-4 p-4 bg-gradient-to-r from-amber-200 to-yellow-200 text-amber-800 rounded-2xl text-center font-bold shadow-inner">
                                                 <i class="fas fa-star mr-2"></i>สอบสัมภาษณ์ 20 คะแนน
                                             </div>
                                             <p class="text-lg font-semibold text-secondary-800 pt-4 text-center">ข้อสอบปรนัยและอัตนัย (โจทย์ภาษาไทย และภาษาอังกฤษ)</p>
@@ -454,11 +471,11 @@
                                                 <span class="font-bold text-3xl text-purple-600">100</span> 
                                                 <span class="text-gray-600">คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-calculator text-purple-500 mr-2"></i>คณิตศาสตร์ (120 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-vial text-purple-500 mr-2"></i>วิทยาศาสตร์ (120 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
@@ -478,15 +495,15 @@
                                                 <span class="font-bold text-3xl text-green-600">110</span> 
                                                 <span class="text-gray-600">คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-calculator text-green-500 mr-2"></i>คณิตศาสตร์ (90 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-flask text-green-500 mr-2"></i>วิทยาศาสตร์ (90 นาที)</span> 
                                                 <span class="font-semibold">50 คะแนน</span>
                                             </div>
-                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl flex justify-between items-center">
+                                            <div class="text-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-2xl flex justify-between items-center">
                                                 <span><i class="fas fa-language text-green-500 mr-2"></i>ภาษาอังกฤษ (30 นาที)</span> 
                                                 <span class="font-semibold">10 คะแนน</span>
                                             </div>
@@ -531,43 +548,43 @@
                             </div>
                         </div>
                         
-                        <!-- Special Documents Content - ปรับให้โดดเด่นและทันสมัย -->
+                        <!-- Special Documents Content - ปรับให้ขอบมนสวยงาม -->
                         <div id="special-docs" class="nested-tab-content hidden-content">
                             <h2 class="text-2xl font-semibold mb-6 text-primary-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนพิเศษ)</h2>
                             <div class="doc-card max-w-2xl mx-auto">
                                 <ol class="space-y-4 text-gray-700 divide-y divide-primary-100">
                                     <li class="list-item pt-3 first:pt-0">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-camera list-icon text-primary-600"></i>
                                         </div>
                                         <span> รูปถ่าย 1.5 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-primary-600 ml-2">จำนวน 4 รูป</span></span>
                                     </li>
                                     <li class="list-item pt-3">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-id-card list-icon text-primary-600"></i>
                                         </div>
                                         <span> สำเนาทะเบียนบ้าน (นักเรียน)</span>
                                     </li>
                                     <li class="list-item pt-3">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-users list-icon text-primary-600"></i>
                                         </div>
                                         <span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span>
                                     </li>
                                     <li class="list-item pt-3">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-graduation-cap list-icon text-primary-600"></i>
                                         </div>
                                         <span> สำเนารับรองกำลังศึกษาชั้น ป.6 (ปพ.7)</span>
                                     </li>
                                     <li class="list-item pt-3">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-file-invoice list-icon text-primary-600"></i>
                                         </div>
                                         <span> สำเนาระเบียนแสดงผลการเรียน ปพ.1 หรือ ปพ.6 (ป.4 และ ป.5)</span>
                                     </li>
                                     <li class="list-item pt-3">
-                                        <div class="bg-primary-100 p-2 rounded-lg">
+                                        <div class="bg-primary-100 p-2 rounded-xl">
                                             <i class="fas fa-file-alt list-icon text-primary-600"></i>
                                         </div>
                                         <span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span>
@@ -600,27 +617,27 @@
                                 <h3 class="font-normal text-secondary-600 text-lg mb-3">📝 การแจกข้อสอบ:ข้อสอบแบ่งเป็น 2 ชุด</h3>
                                 <h3 class="font-normal text-secondary-600 text-lg mb-3">⏱️ การเก็บ: เมื่อหมดเวลา เก็บข้อสอบชุดนั้นทันที</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
-                                    <div class="p-4 bg-gradient-to-br from-primary-50 to-pink-50 rounded-xl shadow-sm">
+                                    <div class="subject-card">
                                         <i class="fas fa-calculator text-primary-500 mb-1 text-xl"></i>
                                         <p class="font-medium">คณิตศาสตร์</p>
                                         <p class="font-bold text-primary-600">20 คะแนน</p>
                                     </div>
-                                    <div class="p-4 bg-gradient-to-br from-secondary-50 to-blue-50 rounded-xl shadow-sm">
+                                    <div class="subject-card">
                                         <i class="fas fa-book text-secondary-500 mb-1 text-xl"></i>
                                         <p class="font-medium">ภาษาไทย</p>
                                         <p class="font-bold text-secondary-600">20 คะแนน</p>
                                     </div>
-                                    <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl shadow-sm">
+                                    <div class="subject-card">
                                         <i class="fas fa-language text-green-500 mb-1 text-xl"></i>
                                         <p class="font-medium">ภาษาอังกฤษ</p>
                                         <p class="font-bold text-green-600">20 คะแนน</p>
                                     </div>
-                                    <div class="p-4 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl shadow-sm">
+                                    <div class="subject-card">
                                         <i class="fas fa-flask text-amber-500 mb-1 text-xl"></i>
                                         <p class="font-medium">วิทยาศาสตร์</p>
                                         <p class="font-bold text-amber-600">20 คะแนน</p>
                                     </div>
-                                    <div class="p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl shadow-sm">
+                                    <div class="subject-card">
                                         <i class="fas fa-landmark text-purple-500 mb-1 text-xl"></i>
                                         <p class="font-medium">สังคมศึกษา</p>
                                         <p class="font-bold text-purple-600">20 คะแนน</p>
@@ -634,50 +651,50 @@
                                     <i class="fas fa-user-check text-green-500"></i>คุณสมบัติ
                                 </h3>
                                 <p class="text-gray-600 mb-4">ไม่ได้ระบุเกรดเฉลี่ยขั้นต่ำ (พิจารณาคะแนนสอบเป็นหลัก)</p>
-                                <div class="p-4 bg-gradient-to-r from-amber-100 to-yellow-100 border-l-4 border-amber-400 text-amber-800 rounded-r-xl text-sm">
+                                <div class="p-4 bg-gradient-to-r from-amber-100 to-yellow-100 border-l-4 border-amber-400 text-amber-800 rounded-r-2xl text-sm">
                                     <h4 class="font-bold">หมายเหตุ (เขตพื้นที่บริการ)</h4>
                                     <p>ต้องมีชื่ออยู่ในทะเบียนบ้านในเขตพื้นที่บริการของโรงเรียนอย่างน้อย 2 ปี (นับถึง 16 พ.ค.)</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Normal Documents Content - ปรับให้โดดเด่นและทันสมัย -->
+                        <!-- Normal Documents Content - ปรับให้ขอบมนสวยงาม -->
                         <div id="normal-docs" class="nested-tab-content hidden-content">
                             <h2 class="text-2xl font-semibold mb-6 text-primary-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนปกติ)</h2>
                             <div class="doc-card max-w-2xl mx-auto">
                                 <ol class="space-y-4 text-gray-700">
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-camera list-icon text-secondary-600"></i>
                                         </div>
                                         <span> รูปถ่าย 1 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-primary-600 ml-2">จำนวน 4 รูป</span></span>
                                     </li>
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-id-card list-icon text-secondary-600"></i>
                                         </div>
                                         <span> สำเนาทะเบียนบ้าน (นักเรียน)</span>
                                     </li>
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-users list-icon text-secondary-600"></i>
                                         </div>
                                         <span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span>
                                     </li>
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-award list-icon text-secondary-600"></i>
                                         </div>
                                         <span> สำเนารับรองการศึกษา ป.6 (ปพ.1 หรือ ปพ.7)</span>
                                     </li>
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-chart-bar list-icon text-secondary-600"></i>
                                         </div>
                                         <span> สำเนาระเบียนแสดงผลการเรียน (ปพ.1 หรือ ปพ.6)</span>
                                     </li>
                                     <li class="list-item">
-                                        <div class="bg-secondary-100 p-2 rounded-lg">
+                                        <div class="bg-secondary-100 p-2 rounded-xl">
                                             <i class="fas fa-file-alt list-icon text-secondary-600"></i>
                                         </div>
                                         <span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span>
@@ -740,7 +757,7 @@
         <footer class="text-center mt-12 text-gray-600 pb-8">
             <p class="font-normal text-base">จัดทำโดย.. ลุ้นสอวอไปด้วยกันนะ</p>
             <p class="font-normal text-base">ครอบครัวยอดนารี❤️สตรีวิทยา</p>
-            <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-block font-semibold text-secondary-600 hover:underline text-lg bg-secondary-50 hover:bg-secondary-100 px-4 py-2 rounded-lg transition-colors duration-300">
+            <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-block font-semibold text-secondary-600 hover:underline text-lg bg-secondary-50 hover:bg-secondary-100 px-4 py-2 rounded-full transition-colors duration-300">
                 <i class="fab fa-line"></i> เข้าร่วมกลุ่ม Line OPC
             </a>
             <p class="text-gray-500 text-sm">ข้อมูลอ้างอิงตามประกาศรับสมัครปีการศึกษา 2568 (โปรดตรวจสอบประกาศจากโรงเรียนอีกครั้ง)</p>
