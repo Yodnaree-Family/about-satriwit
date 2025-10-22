@@ -3,314 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Line OPC : ครอบครัวยอดนารี❤️สตรีวิทยา</title>
+    <title>ครอบครัวยอดนารี❤️สตรีวิทยา - Line OPC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-<style>
-/* ======= ฟอนต์และพื้นหลัง ======= */
-body {
-  margin: 0;
-  font-family: "Prompt", sans-serif;
-  background-color: #f8fafc;
-  position: relative;
-  overflow-x: hidden;
-}
+        /* ======= ฟอนต์และพื้นหลัง ======= */
+        body {
+            margin: 0;
+            font-family: "Prompt", sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-/* ======= ลายน้ำ ======= */
-body::before {
-  content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-20deg);
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(255, 182, 193, 0.15);
-  white-space: nowrap;
-  z-index: 0;
-  pointer-events: none;
-}
+        /* ======= ลายน้ำ ======= */
+        body::before {
+            content: "ครอบครัวยอดนารี❤️สตรีวิทยา";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 182, 193, 0.08);
+            white-space: nowrap;
+            z-index: 0;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.2;
+        }
 
+        /* ======= เมนูหลัก ======= */
+        .dropdown-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            text-align: center;
+            padding: 0.8rem 0;
+        }
 
-/* ======= เมนูหลัก ======= */
-.dropdown-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  z-index: 1000;
-  text-align: center;
-  padding: 0.6rem 0;
-}
+        .dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
 
-.dropdown-wrapper {
-  position: relative;
-  display: inline-block;
-}
+        .dropdown-btn {
+            background: linear-gradient(135deg, #a01a1a 0%, #d72c2c 100%);
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(160, 26, 26, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropdown-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(160, 26, 26, 0.4);
+        }
 
-.dropdown-btn {
-  /* ใช้สีแดงเข้ม (Maroon) */
-  background: #a01a1a;
-  color: white;
-  font-weight: 700;
-  border: none;
-  padding: 0.7rem 1.6rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transition: all 0.25s ease;
-}
-.dropdown-btn:hover {
-  transform: scale(1.07);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
+        /* เมนูเลื่อนลง */
+        .dropdown-menu {
+            position: absolute;
+            left: 0;
+            margin-top: 0.8rem;
+            width: 300px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-15px);
+            pointer-events: none;
+            transition: all 0.4s ease;
+            border-top: 5px solid #b91c1c;
+            z-index: 1001;
+        }
+        .dropdown-menu.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
 
-/* เมนูเลื่อนลง */
-.dropdown-menu {
-  position: absolute;
-  left: 0;
-  margin-top: 0.6rem;
-  width: 270px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-15px);
-  pointer-events: none;
-  transition: all 0.35s ease;
-  border-top: 4px solid #b91c1c;
-}
-.dropdown-menu.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            color: #7f1d1d;
+            font-weight: 600;
+            text-decoration: none;
+            background: white;
+            transition: all 0.25s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        .dropdown-menu a:hover {
+            background: #fee2e2;
+            color: #7f1d1d;
+            padding-left: 22px;
+        }
 
-.dropdown-menu a {
-  display: block;
-  padding: 10px 16px;
-  color: #b91c1c;
-  font-weight: 600;
-  text-decoration: none;
-  background: white;
-  transition: all 0.25s ease;
-}
-.dropdown-menu a:hover {
-  background: #fee2e2;
-  color: #7f1d1d;
-  padding-left: 22px;
-}
+        /* การ์ดไอคอน */
+        .icon-card {
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .icon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
 
-/* มือถือ */
-@media (max-width: 768px) {
-  .dropdown-menu {
-    position: fixed;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    width: 90%;
-    border-radius: 14px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-  }
-  .dropdown-menu.show {
-    transform: translateX(-50%) translateY(0);
-  }
-  .dropdown-btn {
-    font-size: 1.1rem;
-    padding: 0.6rem 1.2rem;
-  }
-}
+        .icon-circle {
+            transition: all 0.3s ease;
+        }
+        .icon-card:hover .icon-circle {
+            transform: scale(1.1);
+        }
 
-    </style>
-    </head>
-<body class="font-sans text-gray-800 pt-[80px]">
-<!-- ✅ เมนูหลัก -->
-<div class="dropdown-container flex justify-start pl-4">
-  <div class="dropdown-wrapper relative inline-block">
-    <button id="dropdownButton" class="dropdown-btn">
-      ☰ เมนูหลัก
-    </button>
-    <div id="dropdownMenu" class="dropdown-menu hidden">
-      <a href="index.html">🏠 หน้าหลักครอบครัวยอดนารี</a>
-      <a href="Page5.html">📘 ข้อมูลการรับนักเรียน</a>
-      <a href="Page2.html">📖 การเตรียมตัวการสอบเข้า</a>
-      <a href="Page3.html">📊 วิเคราะห์คะแนนสอบเข้า</a>
-      <a href="Page4.html">📈 สถิติอัตราการแข่งขัน</a>
-      <a href="Page6.html">🧭 แผนลับหลักสูตรม.1</a>
-      <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html">🧮 โปรแกรมคำนวณเกรดเฉลี่ย</a>
-      <a href="Page7.html">🗓️ ตัวอย่างตารางเรียน ม.1</a>
-      <a href="ระบบสถิติคะแนนสอบเข้าม.1.html">📚 ระบบสถิติคะแนนสอบเข้า</a>
-      <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html">📑 โครงสร้างข้อสอบห้องเรียนปกติ</a>
-      <a href="โปรแกรมเปรียบเทียบคะแนนสอบ.html">🧮 โปรแกรมเปรียบเทียบคะแนนสอบ</a>  
-    </div>
-  </div>
-</div>
-</div>
+        /* ขั้นตอนการทำงาน */
+        .flow-step {
+            transition: all 0.3s ease;
+            min-width: 140px;
+            text-align: center;
+        }
+        .flow-step:hover {
+            transform: translateY(-5px);
+        }
 
+        /* มือถือ */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+                width: 90%;
+                max-width: 320px;
+                border-radius: 16px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            }
+            .dropdown-menu.show {
+                transform: translateX(-50%) translateY(0);
+            }
+            .dropdown-btn {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.5rem;
+            }
+            
+            body::before {
+                font-size: 2.5rem;
+                width: 90%;
+                white-space: normal;
+                text-align: center;
+            }
+            
+            .flow-step {
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Keyframes */
+        @keyframes fadeInDown { 
+            from {opacity:0; transform:translateY(-20px);} 
+            to {opacity:1; transform:translateY(0);} 
+        }
+        @keyframes bounceIn { 
+            0% {opacity:0; transform:scale(0.3);} 
+            50% {opacity:1; transform:scale(1.1);} 
+            70% {transform:scale(0.9);} 
+            100% {transform:scale(1);} 
+        }
+        @keyframes shake { 
+            0%,100%{transform:translateX(0);} 
+            25%{transform:translateX(-5px);} 
+            50%{transform:translateX(5px);} 
+            75%{transform:translateX(-5px);} 
+        }
+        @keyframes pulse { 
+            0%,100%{transform:scale(1);} 
+            50%{transform:scale(1.1);} 
+        }
+
+        /* Animation classes */
+        .animate-fadeInDown { animation: fadeInDown 0.8s ease forwards; }
+        .animate-bounceIn { animation: bounceIn 0.8s ease forwards; }
+        .animate-shake { animation: shake 0.6s ease infinite; }
+        .animate-pulse { animation: pulse 1s ease infinite; }
+
+        /* Delay */
+        .animation-delay-100 { animation-delay: 0.1s; }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-300 { animation-delay: 0.3s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-500 { animation-delay: 0.5s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
+        .animation-delay-700 { animation-delay: 0.7s; }
         
+        /* เพิ่มเติม */
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, #D72C2C 0%, #a01a1a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 pt-[80px]">
+    <!-- ✅ เมนูหลัก -->
+    <div class="dropdown-container flex justify-start pl-4">
+        <div class="dropdown-wrapper relative inline-block">
+            <button id="dropdownButton" class="dropdown-btn">
+                <i class="fas fa-bars"></i> เมนูหลัก
+            </button>
+            <div id="dropdownMenu" class="dropdown-menu hidden">
+                <a href="index.html"><i class="fas fa-home"></i> หน้าหลักครอบครัวยอดนารี</a>
+                <a href="Page5.html"><i class="fas fa-info-circle"></i> ข้อมูลการรับนักเรียน</a>
+                <a href="Page2.html"><i class="fas fa-book-reader"></i> การเตรียมตัวการสอบเข้า</a>
+                <a href="Page3.html"><i class="fas fa-chart-bar"></i> วิเคราะห์คะแนนสอบเข้า</a>
+                <a href="Page4.html"><i class="fas fa-chart-line"></i> สถิติอัตราการแข่งขัน</a>
+                <a href="Page6.html"><i class="fas fa-map"></i> แผนลับหลักสูตรม.1</a>
+                <a href="โปรแกรมคำนวณเกรดเฉลี่ย.html"><i class="fas fa-calculator"></i> โปรแกรมคำนวณเกรดเฉลี่ย</a>
+                <a href="Page7.html"><i class="fas fa-calendar-alt"></i> ตัวอย่างตารางเรียน ม.1</a>
+                <a href="ระบบสถิติคะแนนสอบเข้าม.1.html"><i class="fas fa-database"></i> ระบบสถิติคะแนนสอบเข้า</a>
+                <a href="โครงสร้างข้อสอบห้องเรียนปกติ.html"><i class="fas fa-file-alt"></i> โครงสร้างข้อสอบห้องเรียนปกติ</a>
+                <a href="โปรแกรมเปรียบเทียบคะแนนสอบ.html"><i class="fas fa-balance-scale"></i> โปรแกรมเปรียบเทียบคะแนนสอบ</a>  
+            </div>
+        </div>
+    </div>
 
-     
     <div class="container mx-auto p-4 md:p-8 max-w-5xl">
-
         <header class="relative z-[1000] text-center mb-12 pt-[20px]">
-            <h1 class="text-4xl md:text-5xl font-bold text-[#D72C2C] mb-2">❤️🤍 ยินดีต้อนรับสู่ 🤍❤️</h1>
-            <h2 class="text-2xl md:text-3xl font-bold text-[#073B4C]">ครอบครัวยอดนารี❤️สตรีวิทยา</h2>
-            <p class="text-lg text-gray-600 mt-4">กลุ่มไลน์ที่พร้อมเป็นพื้นที่แห่งการแบ่งปันและกำลังใจ<br class="hidden md:block"> สำหรับคุณพ่อคุณแม่และน้องๆ ว่าที่ลูกแดง–ขาว</p>
+            <h1 class="text-4xl md:text-5xl font-bold header-gradient mb-2">❤️🤍 ยินดีต้อนรับสู่ 🤍❤️</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#073B4C] mb-4">ครอบครัวยอดนารี❤️สตรีวิทยา</h2>
+            <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">กลุ่มไลน์ที่พร้อมเป็นพื้นที่แห่งการแบ่งปันและกำลังใจ สำหรับคุณพ่อคุณแม่และน้องๆ ว่าที่ลูกแดง–ขาว</p>
         </header>
 
         <main>
-            <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8 transition-all duration-300 hover:shadow-xl">
                 <h3 class="text-2xl font-bold text-center text-[#118AB2] mb-6">🌟 เราคือใคร?</h3>
-                <p class="text-center text-gray-700 max-w-3xl mx-auto text-base md:text-lg">
+                <p class="text-center text-gray-700 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
                     กลุ่มไลน์แห่งนี้เกิดขึ้นจาก น้ำใจและความตั้งใจของผู้ปกครองนักเรียนสตรีวิทยา ทั้งรุ่นพี่และรุ่นปัจจุบัน ที่อยากส่งต่อประสบการณ์ดี ๆ ให้กับครอบครัวใหม่ ๆ ที่กำลังเตรียมความพร้อมให้บุตรหลานก้าวเข้าสู่รั้ว โรงเรียนสตรีวิทยา อันทรงคุณค่า
                 </p>
             </section>
 
-<section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
-  <h3 class="text-2xl font-bold text-center text-[#118AB2] mb-2">🏆 สิ่งที่เราพร้อมแบ่งปัน</h3>
-  <p class="text-center text-gray-600 mb-8">เรามอบการสนับสนุนที่ครบครันในทุกมิติที่จำเป็นสำหรับการเตรียมตัวสอบ</p>
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8 transition-all duration-300 hover:shadow-xl">
+                <h3 class="text-2xl font-bold text-center text-[#118AB2] mb-2">🏆 สิ่งที่เราพร้อมแบ่งปัน</h3>
+                <p class="text-center text-gray-600 mb-8">เรามอบการสนับสนุนที่ครบครันในทุกมิติที่จำเป็นสำหรับการเตรียมตัวสอบ</p>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-    <!-- Card 1 -->
-    <div class="icon-card bg-red-50 rounded-2xl p-5 shadow-md text-center">
-      <div class="icon-circle bg-red-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
-        <p class="text-6xl -mt-2">💡</p>
-      </div>
-      <h4 class="font-bold text-[#073B4C] mb-1">คำแนะนำตรงไปตรงมา</h4>
-      <p class="text-gray-600 text-sm">จากผู้ปกครองรุ่นพี่ที่มีประสบการณ์จริง</p>
-    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                    <!-- Card 1 -->
+                    <div class="icon-card bg-red-50 rounded-2xl p-5 shadow-md text-center">
+                        <div class="icon-circle bg-red-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
+                            <i class="fas fa-lightbulb text-3xl"></i>
+                        </div>
+                        <h4 class="font-bold text-[#073B4C] mb-1">คำแนะนำตรงไปตรงมา</h4>
+                        <p class="text-gray-600 text-sm">จากผู้ปกครองรุ่นพี่ที่มีประสบการณ์จริง</p>
+                    </div>
 
-    <!-- Card 2 -->
-    <div class="icon-card bg-yellow-50 rounded-2xl p-5 shadow-md text-center">
-      <div class="icon-circle bg-yellow-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
-        <p class="text-6xl -mt-2">💬</p>
-      </div>
-      <h4 class="font-bold text-[#073B4C] mb-1">เรื่องราวการเตรียมตัวสอบ</h4>
-      <p class="text-gray-600 text-sm">เข้า ม.1 และ ม.4 จากประสบการณ์จริง</p>
-    </div>
+                    <!-- Card 2 -->
+                    <div class="icon-card bg-yellow-50 rounded-2xl p-5 shadow-md text-center">
+                        <div class="icon-circle bg-yellow-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
+                            <i class="fas fa-comments text-3xl"></i>
+                        </div>
+                        <h4 class="font-bold text-[#073B4C] mb-1">เรื่องราวการเตรียมตัวสอบ</h4>
+                        <p class="text-gray-600 text-sm">เข้า ม.1 และ ม.4 จากประสบการณ์จริง</p>
+                    </div>
 
-    <!-- Card 3 -->
-    <div class="icon-card bg-green-50 rounded-2xl p-5 shadow-md text-center">
-      <div class="icon-circle bg-green-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
-        <p class="text-6xl -mt-2">📝</p>
-      </div>
-      <h4 class="font-bold text-[#073B4C] mb-1">คลังข้อสอบและเอกสาร</h4>
-      <p class="text-gray-600 text-sm">รวบรวมข้อสอบย้อนหลังและเอกสารประกอบ</p>
-    </div>
+                    <!-- Card 3 -->
+                    <div class="icon-card bg-green-50 rounded-2xl p-5 shadow-md text-center">
+                        <div class="icon-circle bg-green-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
+                            <i class="fas fa-file-alt text-3xl"></i>
+                        </div>
+                        <h4 class="font-bold text-[#073B4C] mb-1">คลังข้อสอบและเอกสาร</h4>
+                        <p class="text-gray-600 text-sm">รวบรวมข้อสอบย้อนหลังและเอกสารประกอบ</p>
+                    </div>
 
-    <!-- Card 4 -->
-    <div class="icon-card bg-blue-50 rounded-2xl p-5 shadow-md text-center">
-      <div class="icon-circle bg-blue-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
-        <p class="text-6xl -mt-2">🤝</p>
-      </div>
-      <h4 class="font-bold text-[#073B4C] mb-1">บรรยากาศแห่งความอบอุ่น</h4>
-      <p class="text-gray-600 text-sm">เหมือนมีพี่ๆ และครอบครัวยอดนารีคอยเคียงข้าง</p>
-    </div>
-  </div>
-</section>
-
+                    <!-- Card 4 -->
+                    <div class="icon-card bg-blue-50 rounded-2xl p-5 shadow-md text-center">
+                        <div class="icon-circle bg-blue-100 text-[#D72C2C] w-20 h-20 mx-auto flex items-center justify-center rounded-full mb-4">
+                            <i class="fas fa-hands-helping text-3xl"></i>
+                        </div>
+                        <h4 class="font-bold text-[#073B4C] mb-1">บรรยากาศแห่งความอบอุ่น</h4>
+                        <p class="text-gray-600 text-sm">เหมือนมีพี่ๆ และครอบครัวยอดนารีคอยเคียงข้าง</p>
+                    </div>
+                </div>
+            </section>
             
-           <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
-  <h3 class="text-2xl font-bold text-center text-[#118AB2] mb-6 animate-fadeInDown">
-    💙 เส้นทางสู่ความสำเร็จกับเรา
-  </h3>
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8 transition-all duration-300 hover:shadow-xl">
+                <h3 class="text-2xl font-bold text-center text-[#118AB2] mb-6 animate-fadeInDown">
+                    💙 เส้นทางสู่ความสำเร็จกับเรา
+                </h3>
 
-  <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
-    <div class="flow-step bg-[#FF6B6B] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-100">
-      เข้าร่วมกลุ่ม
-    </div>
-    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-pulse animation-delay-200">→</div>
-    
-    <div class="flow-step bg-[#FFD166] text-[#073B4C] rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-300">
-      สอบถาม<br>& แบ่งปัน
-    </div>
-    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-shake animation-delay-400">→</div>
-    
-    <div class="flow-step bg-[#06D6A0] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-500">
-      รับข้อมูล<br>& กำลังใจ
-    </div>
-    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-pulse animation-delay-600">→</div>
-    
-    <div class="flow-step bg-[#118AB2] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-700">
-      ก้าวสู่รั้ว<br>สตรีวิทยา
-    </div>
-  </div>
-</section>
-
-<style>
-/* Keyframes */
-@keyframes fadeInDown { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
-@keyframes bounceIn { 0% {opacity:0; transform:scale(0.3);} 50% {opacity:1; transform:scale(1.1);} 70% {transform:scale(0.9);} 100% {transform:scale(1);} }
-@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
-@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
-
-/* Animation classes */
-.animate-fadeInDown { animation: fadeInDown 0.8s ease forwards; }
-.animate-bounceIn { animation: bounceIn 0.8s ease forwards; }
-.animate-shake { animation: shake 0.6s ease infinite; }
-.animate-pulse { animation: pulse 1s ease infinite; }
-
-/* Delay */
-.animation-delay-100 { animation-delay: 0.1s; }
-.animation-delay-200 { animation-delay: 0.2s; }
-.animation-delay-300 { animation-delay: 0.3s; }
-.animation-delay-400 { animation-delay: 0.4s; }
-.animation-delay-500 { animation-delay: 0.5s; }
-.animation-delay-600 { animation-delay: 0.6s; }
-.animation-delay-700 { animation-delay: 0.7s; }
-</style>
-
-
-            <section class="text-center p-6 md:p-8">
-                <p class="font-normal text-base">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
-                <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-flex items-center gap-2 font-semibold text-green-600 hover:underline text-lg">
-                    <i class="fab fa-line text-2xl"></i> Line OPC
-                </a>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flow-step bg-[#FF6B6B] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-100">
+                        <i class="fas fa-users mr-2"></i>เข้าร่วมกลุ่ม
+                    </div>
+                    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-pulse animation-delay-200">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="flow-step bg-[#FFD166] text-[#073B4C] rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-300">
+                        <i class="fas fa-question-circle mr-2"></i>สอบถาม & แบ่งปัน
+                    </div>
+                    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-shake animation-delay-400">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="flow-step bg-[#06D6A0] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-500">
+                        <i class="fas fa-heart mr-2"></i>รับข้อมูล & กำลังใจ
+                    </div>
+                    <div class="flow-arrow transform md:-rotate-0 rotate-90 text-2xl font-bold text-gray-500 animate-pulse animation-delay-600">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="flow-step bg-[#118AB2] text-white rounded-xl px-5 py-3 text-lg font-semibold shadow-md animate-bounceIn animation-delay-700">
+                        <i class="fas fa-graduation-cap mr-2"></i>ก้าวสู่รั้วสตรีวิทยา
+                    </div>
+                </div>
             </section>
 
+            <section class="text-center p-6 md:p-8 bg-white rounded-xl shadow-lg">
+                <p class="font-normal text-base text-gray-600 mb-2">ครอบครัวยอดนารี ❤️ สตรีวิทยา</p>
+                <a href="https://shorturl.asia/BlJVn" target="_blank" class="mt-3 mb-4 inline-flex items-center gap-2 font-semibold text-green-600 hover:text-green-700 text-lg transition-colors duration-300 bg-green-50 hover:bg-green-100 px-4 py-2 rounded-lg">
+                    <i class="fab fa-line text-2xl"></i> เข้าร่วมกลุ่ม Line OPC
+                </a>
+                <p class="text-sm text-gray-500 mt-4">คลิกที่ลิงก์ด้านบนเพื่อเข้าร่วมกลุ่มไลน์ของเรา</p>
+            </section>
         </main>
     </div>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const button = document.getElementById("dropdownButton");
-  const menu = document.getElementById("dropdownMenu");
-  let isOpen = false;
 
-  button.addEventListener("click", (e) => {
-    e.stopPropagation();
-    isOpen = !isOpen;
-    if (isOpen) {
-      button.innerHTML = "✖ ปิดเมนู";
-      menu.classList.remove("hidden");
-      setTimeout(() => menu.classList.add("show"), 10);
-    } else {
-      button.innerHTML = "☰ เมนูหลัก";
-      menu.classList.remove("show");
-      setTimeout(() => menu.classList.add("hidden"), 300);
-    }
-  });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const button = document.getElementById("dropdownButton");
+            const menu = document.getElementById("dropdownMenu");
+            let isOpen = false;
 
-  document.addEventListener("click", (e) => {
-    if (!menu.contains(e.target) && !button.contains(e.target)) {
-      if (isOpen) {
-        isOpen = false;
-        button.innerHTML = "☰ เมนูหลัก";
-        menu.classList.remove("show");
-        setTimeout(() => menu.classList.add("hidden"), 300);
-      }
-    }
-  });
-});
-</script>
+            button.addEventListener("click", (e) => {
+                e.stopPropagation();
+                isOpen = !isOpen;
+                if (isOpen) {
+                    button.innerHTML = '<i class="fas fa-times"></i> ปิดเมนู';
+                    menu.classList.remove("hidden");
+                    setTimeout(() => menu.classList.add("show"), 10);
+                } else {
+                    button.innerHTML = '<i class="fas fa-bars"></i> เมนูหลัก';
+                    menu.classList.remove("show");
+                    setTimeout(() => menu.classList.add("hidden"), 300);
+                }
+            });
 
+            document.addEventListener("click", (e) => {
+                if (!menu.contains(e.target) && !button.contains(e.target)) {
+                    if (isOpen) {
+                        isOpen = false;
+                        button.innerHTML = '<i class="fas fa-bars"></i> เมนูหลัก';
+                        menu.classList.remove("show");
+                        setTimeout(() => menu.classList.add("hidden"), 300);
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
