@@ -1291,11 +1291,10 @@ function createStatsComparisonHTML(programType, data, district) {
             </div>
             
             ${curriculum === 'EP' ? 
-                `<div class="text-sm text-center bg-orange-100 text-orange-700 p-3 rounded-md mb-6 border border-orange-200">
-                    <i class="fa-solid fa-info-circle mr-2"></i>
-                    <b>หมายเหตุ:</b> คะแนนนี้คำนวณโดยสมมติว่าคุณได้คะแนนส่วนสัมภาษณ์เต็ม 20 คะแนน
-                </div>` : ''
-            `<div class="mb-8"></div>`  // เพิ่มระยะห่างสำหรับหลักสูตรอื่น
+                `<div class="text-sm text-center bg-orange-100 text-orange-700 p-3 rounded-md mb-8 border border-orange-200">
+                    ...
+                </div>` : 
+                `<div class="mb-8"></div>`  // เพิ่มระยะห่างสำหรับหลักสูตรอื่น
             }
             
             <!-- Progress Bar with Markers -->
