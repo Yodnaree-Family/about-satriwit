@@ -276,6 +276,18 @@
                 padding: 0.6rem 1.2rem;
             }
         }
+        /* Responsive Grid for Cards */
+.card-grid {
+    display: grid;
+    gap: 1.5rem; /* 24px */
+    grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { /* sm breakpoint */
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) { /* lg breakpoint */
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
     </style>
 </head>
 <body class="font-sans text-gray-800 pt-[80px]">
@@ -383,25 +395,100 @@
                         </div>
                     </div>
                     <div id="special-quals" class="nested-tab-content hidden-content">
-                        <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">✅ คุณสมบัติเฉพาะ</h2>
-                        <div class="grid lg:grid-cols-3 gap-6">
-                            <div class="info-card text-center bg-rose-50/50">
-                                <p class="card-header-icon text-rose-500"><i class="fas fa-globe-americas"></i></p>
-                                <h3 class="font-bold text-pink-800 text-lg mb-3">English Program (EP)</h3>
-                                <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยภาษาอังกฤษ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
-                            </div>
-                            <div class="info-card text-center bg-purple-50/50">
-                                <p class="card-header-icon text-purple-500"><i class="fas fa-atom"></i></p>
-                                <h3 class="font-bold text-purple-800 text-lg mb-3">SMTE</h3>
-                                <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยคณิตศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยวิทยาศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
-                            </div>
-                            <div class="info-card text-center bg-green-50/50">
-                                <p class="card-header-icon text-green-500"><i class="fas fa-brain"></i></p>
-                                <h3 class="font-bold text-green-800 text-lg mb-3">Gifted Math</h3>
-                                <ul class="space-y-3 text-gray-700 text-left"><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยรวม <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยคณิตศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li><li class="flex"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i><span>เกรดเฉลี่ยวิทยาศาสตร์ <strong>ไม่ต่ำกว่า 3.50</strong></span></li></ul>
-                            </div>
-                        </div>
+    <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">🎯 คุณสมบัติเฉพาะโปรแกรมพิเศษ</h2>
+    
+    <div class="card-grid">
+        <!-- Card 1: English Program (EP) -->
+        <article class="rounded-3xl p-6 bg-white shadow-xl border-t-8 border-indigo-400/80 transition duration-300 transform hover:shadow-2xl hover:scale-[1.01]">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-indigo-50 border-2 border-indigo-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-language text-indigo-600 text-xl"></i>
                     </div>
+                    <h2 class="text-xl font-bold text-indigo-700 leading-tight">English Program (EP)</h2>
+                </div>
+                
+                <div class="space-y-3 pt-2">
+                    <!-- Common Criteria -->
+                    <div class="flex items-center p-3 bg-indigo-50 rounded-xl">
+                        <span class="text-indigo-600 font-semibold mr-3 flex-shrink-0">รวม:</span>
+                        <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-indigo-800">3.50</strong></p>
+                    </div>
+                    <!-- Specific Criteria (Highlight) -->
+                    <div class="flex items-center p-3 bg-indigo-100 rounded-xl">
+                        <span class="text-indigo-600 font-semibold mr-3 flex-shrink-0">เน้น:</span>
+                        <p class="text-sm text-slate-800">เกรดเฉลี่ยภาษาอังกฤษ ไม่ต่ำกว่า <strong class="text-indigo-800">3.50</strong></p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">โปรแกรมสำหรับนักเรียนที่ถนัดและสนใจการสื่อสารภาษาต่างประเทศ</p>
+            </div>
+        </article>
+
+        <!-- Card 2: SMTE (Science Math Technology Environment) -->
+        <article class="rounded-3xl p-6 bg-white shadow-xl border-t-8 border-teal-400/80 transition duration-300 transform hover:shadow-2xl hover:scale-[1.01]">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-teal-50 border-2 border-teal-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-atom text-teal-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-teal-700 leading-tight">SMTE</h2>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <!-- Common Criteria -->
+                    <div class="flex items-center p-3 bg-teal-50 rounded-xl">
+                        <span class="text-teal-600 font-semibold mr-3 flex-shrink-0">รวม:</span>
+                        <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-teal-800">3.50</strong></p>
+                    </div>
+                    <!-- Specific Criteria (Highlight) -->
+                    <div class="flex items-start p-3 bg-teal-100 rounded-xl">
+                        <span class="text-teal-600 font-semibold mr-3 flex-shrink-0">เน้น:</span>
+                        <ul class="text-sm text-slate-800 space-y-1">
+                            <li>คณิตศาสตร์ ไม่ต่ำกว่า <strong class="text-teal-800">3.50</strong></li>
+                            <li>วิทยาศาสตร์ ไม่ต่ำกว่า <strong class="text-teal-800">3.50</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">โปรแกรมบูรณาการเพื่อพัฒนาทักษะวิทยาศาสตร์ คณิตศาสตร์ เทคโนโลยี และสิ่งแวดล้อม</p>
+            </div>
+        </article>
+
+        <!-- Card 3: Gifted Math (เน้นพิเศษ) -->
+        <article class="rounded-3xl p-6 bg-white shadow-xl border-t-8 border-rose-400/80 transition duration-300 transform hover:shadow-2xl hover:scale-[1.01]">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-rose-50 border-2 border-rose-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-calculator text-rose-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-rose-700 leading-tight">Gifted Math (คณิตศาสตร์)</h2>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <!-- Common Criteria -->
+                    <div class="flex items-center p-3 bg-rose-50 rounded-xl">
+                        <span class="text-rose-600 font-semibold mr-3 flex-shrink-0">รวม:</span>
+                        <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></p>
+                    </div>
+                    <!-- Specific Criteria (Highlight) -->
+                    <div class="flex items-start p-3 bg-rose-100 rounded-xl">
+                        <span class="text-rose-600 font-semibold mr-3 flex-shrink-0">เน้น:</span>
+                        <ul class="text-sm text-slate-800 space-y-1">
+                            <li>คณิตศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong> (เน้นเป็นพิเศษ)</li>
+                            <li>วิทยาศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">โปรแกรมเน้นทักษะคณิตศาสตร์เชิงลึกสำหรับผู้ชื่นชอบในด้านตัวเลข</p>
+            </div>
+        </article>
+    </div>
+
+    <!-- Footer / notes -->
+    <footer class="mt-8 p-5 text-center text-sm text-slate-500 bg-white rounded-xl shadow-inner border border-gray-100">
+        <p class="font-medium text-slate-600">⚠ ข้อควรระวัง</p>
+        <p class="mt-1">เกณฑ์ที่แสดงเป็นข้อมูลเบื้องต้น โปรดตรวจสอบข้อมูลล่าสุดและวันรับสมัครกับทางโรงเรียนโดยตรงเสมอ</p>
+    </footer>
+</div>
                     <div id="special-docs" class="nested-tab-content hidden-content">
                         <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">📋 เอกสารสมัคร (ห้องเรียนพิเศษ)</h2>
                         <div class="grid md:grid-cols-2 gap-6 mb-8">
@@ -788,4 +875,5 @@
 </script>
 </body>
 </html>
+
 
