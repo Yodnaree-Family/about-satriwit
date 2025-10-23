@@ -28,66 +28,129 @@
             background-image: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 100%);
         }
         /* Main Tabs */
-        .main-tab-btn {
-            @apply px-5 sm:px-8 py-3 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl font-semibold transition-all duration-300 ease-in-out transform hover:-translate-y-1;
-            background-color: #FBB6CE; /* สีชมพูอ่อน */
-            color: #000000; /* ตัวหนังสือสีดำ */
-            font-weight: bold;
-        }
-        .main-tab-btn.active {
-            @apply scale-105 shadow-xl;
-            background-color: #ec4899; /* สีชมพูเข้ม */
-            color: #ffffff; /* ตัวหนังสือสีขาว */
-            font-weight: bold;
-        }
-        /* Nested Tabs Container */
-        .nested-tabs-container {
-            @apply bg-white/50 backdrop-blur-sm p-3 rounded-full shadow-inner flex flex-wrap justify-center gap-2 sm:gap-4 mb-6;
-        }
-        .nested-tab-btn {
-            @apply px-4 py-2 text-sm font-semibold rounded-full shadow-md hover:bg-gray-200 transition-all duration-200 transform hover:scale-105;
-            background-color: #A0D8EF; /* สีฟ้าอ่อน */
-            color: #000000; /* ตัวหนังสือสีดำ */
-            font-weight: bold;
-        }
-        .nested-tab-btn.active {
-            @apply shadow-lg;
-            background-color: #0ea5e9; /* สีฟ้าเข้ม */
-            color: #ffffff; /* ตัวหนังสือสีขาว */
-            font-weight: bold;
-        }
-        /* Sub-Nested Tabs */
-        .sub-nested-tab-btn {
-            @apply px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg hover:bg-gray-200 transition-colors duration-200 transform hover:scale-105;
-            background-color: #f3f4f6; /* สีเทาอ่อน */
-            color: #000000; /* ตัวหนังสือสีดำ */
-            font-weight: bold;
-        }
-        .sub-nested-tab-btn.active {
-            @apply ring-2 ring-offset-2 shadow-md;
-            background-color: #6b7280; /* สีเทาเข้ม */
-            color: #ffffff; /* ตัวหนังสือสีขาว */
-            font-weight: bold;
-            ring-color: #9ca3af;
-        }
-        /* Content Containers */
-        .main-content-container {
-            @apply bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 text-base;
-        }
-        .nested-content-container {
-            @apply bg-white/60 backdrop-blur-lg rounded-2xl p-6 shadow-lg;
-        }
-        /* Tab Content Transitions */
-        .tab-content { @apply transition-opacity duration-500 ease-in-out; }
-        .hidden-content { display: none; opacity: 0; }
-        .content-enter { display: block; opacity: 1; }
-        
-        /* Helper Classes */
-        .list-item { @apply flex items-start space-x-3; }
-        .list-icon { @apply text-pink-500 mt-1.5 flex-shrink-0 w-5 h-5; }
-        .info-card { @apply bg-white/70 p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300; }
-        .card-header-icon { @apply text-3xl mb-3 text-center; }
-        
+.main-tab-btn {
+    @apply px-12 py-6 text-lg sm:text-xl rounded-full shadow-xl hover:shadow-2xl font-bold transition-all duration-300 ease-in-out transform hover:-translate-y-2;
+    background-color: #FBB6CE; /* สีชมพูอ่อน */
+    color: #000000; /* ตัวหนังสือสีดำ */
+    font-weight: bold;
+    border-radius: 60px; /* โค้งมนมากๆ */
+    border: 4px solid #FBB6CE; /* เส้นขอบหนาขึ้น */
+    min-width: 180px; /* กว้างมากขึ้น */
+    margin: 6px; /* ระยะห่างมากขึ้น */
+}
+
+.main-tab-btn.active {
+    @apply scale-105 shadow-2xl;
+    background-color: #ec4899; /* สีชมพูเข้ม */
+    color: #ffffff; /* ตัวหนังสือสีขาว */
+    font-weight: bold;
+    border: 4px solid #ec4899; /* เส้นขอบหนาขึ้น */
+    border-radius: 60px;
+}
+
+.main-tab-btn:hover {
+    background-color: #f8a5c5; /* สีชมพูที่ต่างออกไปเมื่อ hover */
+    border: 4px solid #f8a5c5;
+}
+
+/* Nested Tabs Container */
+.nested-tabs-container {
+    @apply bg-white/50 backdrop-blur-sm p-4 rounded-full shadow-inner flex flex-wrap justify-center gap-4 sm:gap-6 mb-6;
+}
+
+.nested-tab-btn {
+    @apply px-10 py-5 text-base font-bold rounded-full shadow-lg transition-all duration-200 transform hover:scale-110;
+    background-color: #A0D8EF; /* สีฟ้าอ่อน */
+    color: #000000; /* ตัวหนังสือสีดำ */
+    font-weight: bold;
+    border-radius: 50px; /* โค้งมนมากๆ */
+    border: 3px solid #A0D8EF; /* เส้นขอบสีเดียวกับพื้นหลัง */
+    min-width: 150px; /* เพิ่มความกว้างขั้นต่ำ */
+    margin: 5px; /* เพิ่มระยะห่างรอบนอก */
+}
+
+.nested-tab-btn.active {
+    @apply shadow-xl;
+    background-color: #0ea5e9; /* สีฟ้าเข้ม */
+    color: #ffffff; /* ตัวหนังสือสีขาว */
+    font-weight: bold;
+    border: 3px solid #0ea5e9; /* เส้นขอบสีเดียวกับพื้นหลัง */
+    border-radius: 50px;
+}
+
+.nested-tab-btn:hover {
+    background-color: #8fd4f7; /* สีฟ้าที่ต่างออกไปเมื่อ hover */
+    border: 3px solid #8fd4f7;
+}
+
+/* Sub-Nested Tabs */
+.sub-nested-tab-btn {
+    @apply px-8 py-4 text-sm font-bold transition-colors duration-200 transform hover:scale-110;
+    background-color: #f3f4f6; /* สีเทาอ่อน */
+    color: #000000; /* ตัวหนังสือสีดำ */
+    font-weight: bold;
+    border-radius: 45px; /* เพิ่มความโค้งมน */
+    border: 3px solid #f3f4f6; /* เส้นขอบสีเดียวกับพื้นหลัง */
+    min-width: 120px; /* เพิ่มความกว้างขั้นต่ำ */
+    margin: 4px; /* เพิ่มระยะห่างรอบนอก */
+}
+
+.sub-nested-tab-btn.active {
+    @apply shadow-lg;
+    background-color: #6b7280; /* สีเทาเข้ม */
+    color: #ffffff; /* ตัวหนังสือสีขาว */
+    font-weight: bold;
+    border: 3px solid #6b7280; /* เส้นขอบสีเดียวกับพื้นหลัง */
+    border-radius: 45px;
+    ring-color: #9ca3af;
+    ring-width: 3px;
+}
+
+.sub-nested-tab-btn:hover {
+    background-color: #e5e7eb; /* สีเทาที่ต่างออกไปเมื่อ hover */
+    border: 3px solid #e5e7eb;
+}
+
+/* Content Containers */
+.main-content-container {
+    @apply bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 text-base;
+}
+
+.nested-content-container {
+    @apply bg-white/60 backdrop-blur-lg rounded-2xl p-6 shadow-lg;
+}
+
+/* Tab Content Transitions */
+.tab-content { 
+    @apply transition-opacity duration-500 ease-in-out; 
+}
+
+.hidden-content { 
+    display: none; 
+    opacity: 0; 
+}
+
+.content-enter { 
+    display: block; 
+    opacity: 1; 
+}
+
+/* Helper Classes */
+.list-item { 
+    @apply flex items-start space-x-3; 
+}
+
+.list-icon { 
+    @apply text-pink-500 mt-1.5 flex-shrink-0 w-5 h-5; 
+}
+
+.info-card { 
+    @apply bg-white/70 p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300; 
+}
+
+.card-header-icon { 
+    @apply text-3xl mb-3 text-center; 
+}
         /* ======= เมนูหลัก ======= */
         .dropdown-container {
             position: fixed;
@@ -499,6 +562,7 @@
 </script>
 </body>
 </html>
+
 
 
 
