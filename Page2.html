@@ -437,21 +437,128 @@
                         </div>
                     </div>
                     <div id="special-docs" class="nested-tab-content hidden-content">
-                        <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนพิเศษ)</h2>
-                        <div class="info-card max-w-2xl mx-auto">
-                            <ol class="space-y-4 text-gray-700 divide-y divide-pink-100">
-                                <li class="list-item pt-3 first:pt-0"><i class="fas fa-camera list-icon"></i><span> รูปถ่าย 1.5 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-pink-600 ml-2">จำนวน 4 รูป</span></span></li>
-                                <li class="list-item pt-3"><i class="fas fa-id-card list-icon"></i><span> สำเนาทะเบียนบ้าน (นักเรียน)</span></li>
-                                <li class="list-item pt-3"><i class="fas fa-users list-icon"></i><span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span></li>
-                                <li class="list-item pt-3"><i class="fas fa-graduation-cap list-icon"></i><span> สำเนารับรองกำลังศึกษาชั้น ป.6 (ปพ.7)</span></li>
-                                <li class="list-item pt-3"><i class="fas fa-file-invoice list-icon"></i><span> สำเนาระเบียนแสดงผลการเรียน ปพ.1 หรือ ปพ.6 (ป.4 และ ป.5)</span></li>
-                                <li class="list-item pt-3"><i class="fas fa-file-alt list-icon"></i><span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span></li>
-                            </ol>
-                            <p class="text-sm text-red-600 pl-8 pt-4 border-t border-pink-100 mt-4">*นำฉบับจริงมาแสดง และนักเรียนลงนามรับรองสำเนาทุกฉบับ</p>
+    <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">📋 เอกสารสมัคร (ห้องเรียนพิเศษ)</h2>
+    
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <!-- เอกสารหลัก -->
+        <div class="info-card">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-file-alt text-blue-600 text-lg"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">เอกสารหลักที่ต้องเตรียม</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-blue-500">
+                    <i class="fas fa-camera text-pink-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">รูปถ่าย 1.5 นิ้ว</p>
+                        <p class="text-sm text-gray-600">ไม่เกิน 6 เดือน <span class="font-bold text-pink-600">จำนวน 4 รูป</span></p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-green-500">
+                    <i class="fas fa-id-card text-green-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาทะเบียนบ้าน (นักเรียน)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-purple-500">
+                    <i class="fas fa-users text-purple-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาทะเบียนบ้าน (ผู้ปกครอง)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-yellow-500">
+                    <i class="fas fa-graduation-cap text-yellow-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนารับรองกำลังศึกษาชั้น ป.6 (ปพ.7)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-red-500">
+                    <i class="fas fa-file-invoice text-red-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาระเบียนแสดงผลการเรียน</p>
+                        <p class="text-sm text-gray-600">ปพ.1 หรือ ปพ.6 (ป.4 และ ป.5)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-gray-500">
+                    <i class="fas fa-file-alt text-gray-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">เอกสารอื่นๆ</p>
+                        <p class="text-sm text-gray-600">เช่น ใบเปลี่ยนชื่อ-สกุล (ถ้ามี)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ข้อกำหนดและหมายเหตุ -->
+        <div class="info-card">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-exclamation-circle text-orange-600 text-lg"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">ข้อกำหนดสำคัญ</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-signature text-yellow-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-yellow-800 mb-1">การลงนามรับรอง</p>
+                            <p class="text-sm text-yellow-700">นักเรียนต้องลงนามรับรองสำเนาทุกฉบับ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-file-pdf text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-blue-800 mb-1">รูปแบบไฟล์</p>
+                            <p class="text-sm text-blue-700">รูปถ่าย: JPEG 150×200 pixel</p>
+                            <p class="text-sm text-blue-700">เอกสาร: PDF</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-clock text-red-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-red-800 mb-1">ระยะเวลา</p>
+                            <p class="text-sm text-red-700">รูปถ่ายต้องถ่ายไม่เกิน 6 เดือน</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-green-800 mb-1">การแสดงฉบับจริง</p>
+                            <p class="text-sm text-green-700">ต้องนำฉบับจริงมาแสดงในวันสมัคร</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- หมายเหตุท้าย -->
+    <div class="mt-6 text-center">
+        <div class="inline-flex items-center bg-red-50 border border-red-200 rounded-full px-4 py-2">
+            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+            <p class="text-sm text-red-600 font-semibold">* นำฉบับจริงมาแสดงในวันสมัคร และนักเรียนลงนามรับรองสำเนาทุกฉบับ</p>
+        </div>
+    </div>
+</div>
             <div id="normal-program-main" class="main-tab-content hidden-content">
                 <div class="nested-tabs-container flex flex-wrap justify-center gap-3 sm:gap-6 my-4" id="normal-nested-tabs">
                     <button class="nested-tab-btn active" data-tab="normal-exam">ข้อมูลการสอบ</button>
@@ -484,28 +591,182 @@
                         </div>
                     </div>
                     <div id="normal-docs" class="nested-tab-content hidden-content">
-                        <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">🍀 เอกสารสมัคร (ห้องเรียนปกติ)</h2>
-                        <div class="info-card max-w-2xl mx-auto">
-                            <ol class="space-y-4 text-gray-700">
-                                <li class="list-item"><i class="fas fa-camera list-icon"></i><span> รูปถ่าย 1 นิ้ว (ไม่เกิน 6 เดือน) <span class="font-bold text-pink-600 ml-2">จำนวน 4 รูป</span></span></li>
-                                <li class="list-item"><i class="fas fa-id-card list-icon"></i><span> สำเนาทะเบียนบ้าน (นักเรียน)</span></li>
-                                <li class="list-item"><i class="fas fa-users list-icon"></i><span> สำเนาทะเบียนบ้าน (ผู้ปกครอง)</span></li>
-                                <li class="list-item"><i class="fas fa-award list-icon"></i><span> สำเนารับรองการศึกษา ป.6 (ปพ.1 หรือ ปพ.7)</span></li>
-                                <li class="list-item"><i class="fas fa-chart-bar list-icon"></i><span> สำเนาระเบียนแสดงผลการเรียน (ปพ.1 หรือ ปพ.6)</span></li>
-                                <li class="list-item"><i class="fas fa-file-alt list-icon"></i><span> เอกสารอื่นๆ (ถ้ามี) เช่น ใบเปลี่ยนชื่อ-สกุล</span></li>
-                            </ol>
-                            <div class="mt-6 pt-4 border-t border-pink-100">
-                                <h4 class="font-bold text-blue-700">เพิ่มเติม (นักเรียนในเขตพื้นที่บริการ)</h4>
-                                <ul class="list-disc list-inside mt-2 text-sm text-blue-900">
-                                    <li>สำเนาทะเบียนบ้านหน้า 18</li>
-                                    <li>หนังสือรับรองการอยู่อาศัยจริง</li>
-                                    <li>สำเนาบัตรประชาชนของเจ้าบ้าน</li>
-                                </ul>
-                            </div>
+    <h2 class="text-2xl font-semibold mb-6 text-pink-700 text-center">📋 เอกสารสมัคร (ห้องเรียนปกติ)</h2>
+    
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <!-- เอกสารหลัก -->
+        <div class="info-card">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-file-alt text-blue-600 text-lg"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">เอกสารหลักที่ต้องเตรียม</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-blue-500">
+                    <i class="fas fa-camera text-pink-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">รูปถ่าย 1 นิ้ว</p>
+                        <p class="text-sm text-gray-600">ไม่เกิน 6 เดือน <span class="font-bold text-pink-600">จำนวน 4 รูป</span></p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-green-500">
+                    <i class="fas fa-id-card text-green-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาทะเบียนบ้าน (นักเรียน)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-purple-500">
+                    <i class="fas fa-users text-purple-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาทะเบียนบ้าน (ผู้ปกครอง)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-yellow-500">
+                    <i class="fas fa-award text-yellow-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนารับรองการศึกษา ป.6</p>
+                        <p class="text-sm text-gray-600">ปพ.1 หรือ ปพ.7</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-red-500">
+                    <i class="fas fa-chart-bar text-red-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">สำเนาระเบียนแสดงผลการเรียน</p>
+                        <p class="text-sm text-gray-600">ปพ.1 หรือ ปพ.6</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start p-3 bg-white rounded-xl border-l-4 border-gray-500">
+                    <i class="fas fa-file-alt text-gray-500 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">เอกสารอื่นๆ</p>
+                        <p class="text-sm text-gray-600">เช่น ใบเปลี่ยนชื่อ-สกุล (ถ้ามี)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ข้อกำหนดและหมายเหตุ -->
+        <div class="info-card">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-exclamation-circle text-orange-600 text-lg"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">ข้อกำหนดสำคัญ</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-signature text-yellow-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-yellow-800 mb-1">การลงนามรับรอง</p>
+                            <p class="text-sm text-yellow-700">นักเรียนต้องลงนามรับรองสำเนาทุกฉบับ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-file-pdf text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-blue-800 mb-1">รูปแบบไฟล์</p>
+                            <p class="text-sm text-blue-700">รูปถ่าย: JPEG 150×200 pixel</p>
+                            <p class="text-sm text-blue-700">เอกสาร: PDF</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-clock text-red-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-red-800 mb-1">ระยะเวลา</p>
+                            <p class="text-sm text-red-700">รูปถ่ายต้องถ่ายไม่เกิน 6 เดือน</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mt-1 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-green-800 mb-1">การแสดงฉบับจริง</p>
+                            <p class="text-sm text-green-700">ต้องนำฉบับจริงมาแสดงในวันสมัคร</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- สำหรับนักเรียนในเขตพื้นที่บริการ -->
+    <div class="info-card max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+        <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-blue-800">สำหรับนักเรียนในเขตพื้นที่บริการ</h3>
+                <p class="text-sm text-blue-600">เพิ่มเติมจากเอกสารข้างต้น</p>
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-4 border border-blue-100">
+                <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-home mr-2 text-blue-500"></i>
+                    สำเนาทะเบียนบ้านหน้า 18
+                </h4>
+                <p class="text-sm text-gray-600">ต้องอยู่ในเขตพื้นที่บริการอย่างน้อย 2 ปี</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 border border-blue-100">
+                <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-file-contract mr-2 text-blue-500"></i>
+                    หนังสือรับรองการอยู่อาศัยจริง
+                </h4>
+                <p class="text-sm text-gray-600">ตามแบบฟอร์มของโรงเรียน</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 border border-blue-100">
+                <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-user-check mr-2 text-blue-500"></i>
+                    สำเนาบัตรประชาชนของเจ้าบ้าน
+                </h4>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 border border-blue-100">
+                <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                    <i class="fas fa-check-circle mr-2 text-blue-500"></i>
+                    การลงนามรับรอง
+                </h4>
+                <p class="text-sm text-gray-600">เจ้าบ้านต้องลงนามรับรอง</p>
+            </div>
+        </div>
+        
+        <div class="mt-4 p-3 bg-blue-100 border border-blue-300 rounded-xl">
+            <p class="text-sm text-blue-800 font-semibold flex items-center">
+                <i class="fas fa-info-circle mr-2"></i>
+                เขตพื้นที่บริการ: แขวงศาลาธรรม, แขวงบ้านพานถม, แขวงบวรนิเวศ, แขวงศาลเจ้าพ่อเสือ
+            </p>
+        </div>
+    </div>
+
+    <!-- หมายเหตุท้าย -->
+    <div class="mt-6 text-center">
+        <div class="inline-flex items-center bg-red-50 border border-red-200 rounded-full px-4 py-2">
+            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+            <p class="text-sm text-red-600 font-semibold">* นำฉบับจริงมาแสดงในวันสมัคร และนักเรียนลงนามรับรองสำเนาทุกฉบับ</p>
+        </div>
+    </div>
+</div>
             <div id="preparation-main" class="main-tab-content hidden-content">
                 <div class="nested-content-container">
                     <h2 class="text-2xl font-semibold mb-6 text-pink-700">🚀 เทคนิคเตรียมตัวสอบเข้าสตรีวิทยา</h2>
@@ -629,6 +890,7 @@
 </script>
 </body>
 </html>
+
 
 
 
