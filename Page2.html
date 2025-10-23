@@ -145,82 +145,45 @@
     @apply text-pink-500 mt-1.5 flex-shrink-0 w-5 h-5; 
 }
 
-/* Info Cards - Squircle โค้งมนมาก */
+/* Info Cards - โค้งมนเล็กน้อย */
 .info-card {
-    @apply p-10 rounded-5xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-3;
-    background: linear-gradient(145deg, #fef7ed, #fde4c3); /* สีครีมเข้ม */
-    border: 4px solid #fdba74; /* เส้นขอบสีครีมเข้ม */
-    margin: 20px;
-    min-height: 240px;
-    border-radius: 60px; /* โค้งมนมาก */
+    @apply p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+    background: linear-gradient(145deg, #fef7ed, #fde9d5); /* สีครีม */
+    border: 2px solid #fed7aa; /* เส้นขอบสีครีม */
+    margin: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
-    overflow: hidden;
-}
-
-.info-card::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(145deg, #fffbeb, #fed7aa);
-    border-radius: 70px;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    overflow: visible;
 }
 
 .info-card:hover {
-    border-radius: 65px;
-    background: linear-gradient(145deg, #fde4c3, #fcd5a5);
-    border: 4px solid #fb923c;
-    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(145deg, #fde9d5, #fcd5a5);
+    border: 2px solid #fb923c;
 }
 
-.info-card:hover::before {
-    opacity: 0.1;
-}
-
-/* สำหรับ info-card ใน grid ให้ปรับ margin น้อยลง */
+/* สำหรับ info-card ใน grid */
 .grid .info-card {
-    margin: 16px;
-    min-height: 220px;
+    margin: 12px;
 }
 
 /* สำหรับ info-card ขนาดใหญ่ (max-w-md, max-w-2xl) */
 .info-card.max-w-md,
 .info-card.max-w-2xl {
-    @apply p-12 rounded-6xl;
-    border-radius: 80px; /* โค้งมนมากที่สุดสำหรับการ์ดใหญ่ */
-    margin: 24px auto;
-    min-height: 280px;
-}
-
-.info-card.max-w-md:hover,
-.info-card.max-w-2xl:hover {
-    border-radius: 85px;
-    transform: translateY(-5px) scale(1.03);
+    @apply p-10;
+    margin: 20px auto;
+    padding: 2.5rem 2rem;
 }
 
 /* สำหรับ info-card ในคุณสมบัติเฉพาะ */
 .bg-rose-50\/50.info-card,
 .bg-purple-50\/50.info-card,
 .bg-green-50\/50.info-card {
-    background: linear-gradient(145deg, #fef7ed, #fde4c3) !important;
-    border: 4px solid #fdba74 !important;
-    border-radius: 60px !important;
-}
-
-.bg-rose-50\/50.info-card:hover,
-.bg-purple-50\/50.info-card:hover,
-.bg-green-50\/50.info-card:hover {
-    background: linear-gradient(145deg, #fde4c3, #fcd5a5) !important;
-    border: 4px solid #fb923c !important;
-    border-radius: 65px !important;
+    background: linear-gradient(145deg, #fef7ed, #fde9d5) !important;
+    border: 2px solid #fed7aa !important;
+    border-radius: 24px !important;
+    padding: 1.5rem !important;
 }
 
 /* ปรับการ์ดในส่วนวิชาที่สอบ */
@@ -229,52 +192,27 @@
 .bg-green-50,
 .bg-yellow-50,
 .bg-purple-50 {
-    @apply p-8 rounded-4xl shadow-xl transition-all duration-300 transform hover:scale-110;
+    @apply p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105;
     background: linear-gradient(145deg, #fef7ed, #fde9d5) !important;
-    border: 3px solid #fed7aa;
-    margin: 8px;
-    border-radius: 50px; /* โค้งมนสำหรับการ์ดเล็ก */
-    min-height: 120px;
+    border: 2px solid #fed7aa;
+    margin: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.bg-rose-50:hover,
-.bg-blue-50:hover,
-.bg-green-50:hover,
-.bg-yellow-50:hover,
-.bg-purple-50:hover {
-    border-radius: 55px;
-    background: linear-gradient(145deg, #fde9d5, #fcd5a5) !important;
-    border: 3px solid #fb923c;
-}
-
-/* ปรับการ์ดในส่วนเตรียมตัวสอบ */
-.flex.items-start.space-x-4 .info-card {
-    margin: 12px;
-    min-height: 180px;
-    border-radius: 55px;
-}
-
-.flex.items-start.space-x-4 .info-card:hover {
-    border-radius: 60px;
-}
-
-/* เอฟเฟกต์แสงเงาแบบนุ่มนวลเพิ่มเติม */
+/* เอฟเฟกต์แสงเงาแบบเบา */
 .info-card {
     box-shadow: 
-        15px 15px 30px rgba(0, 0, 0, 0.1),
-        -15px -15px 30px rgba(255, 255, 255, 0.8),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+        8px 8px 16px rgba(0, 0, 0, 0.08),
+        -8px -8px 16px rgba(255, 255, 255, 0.8);
 }
 
 .info-card:hover {
     box-shadow: 
-        20px 20px 40px rgba(0, 0, 0, 0.15),
-        -20px -20px 40px rgba(255, 255, 255, 0.9),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        12px 12px 20px rgba(0, 0, 0, 0.1),
+        -12px -12px 20px rgba(255, 255, 255, 0.9);
 }
 
 .card-header-icon { 
@@ -691,6 +629,7 @@
 </script>
 </body>
 </html>
+
 
 
 
