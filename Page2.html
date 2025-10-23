@@ -254,10 +254,10 @@
             padding-left: 22px;
         }
         footer {
-    background-color: #d1d5db; /* gray-300 */
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-}
+            background-color: #d1d5db; /* gray-300 */
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
         @media (max-width: 768px) {
             .dropdown-menu {
                 position: fixed;
@@ -277,17 +277,17 @@
             }
         }
         /* Responsive Grid for Cards */
-.card-grid {
-    display: grid;
-    gap: 1.5rem; /* 24px */
-    grid-template-columns: 1fr;
-}
-@media (min-width: 640px) { /* sm breakpoint */
-    .card-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1024px) { /* lg breakpoint */
-    .card-grid { grid-template-columns: repeat(3, 1fr); }
-}
+        .card-grid {
+            display: grid;
+            gap: 1.5rem; /* 24px */
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .card-grid { grid-template-columns: repeat(3, 1fr); }
+        }
     </style>
 </head>
 <body class="font-sans text-gray-800 pt-[80px]">
@@ -297,7 +297,7 @@
     <button id="dropdownButton" class="dropdown-btn">
       ☰ เมนูหลัก
     </button>
-    <div id="dropdownMenu" class="dropdown-menu hidden">
+    <div id="dropdownMenu" class="dropdown-menu">
       <a href="index.html">🏠 หน้าหลักครอบครัวยอดนารี</a>
       <a href="Page5.html">📘 ข้อมูลการรับนักเรียน</a>
       <a href="Page2.html">📖 การเตรียมตัวการสอบเข้า</a>
@@ -411,12 +411,10 @@
                 <div class="space-y-3 pt-2">
                     <!-- Common Criteria -->
                     <div class="flex items-center p-3 bg-indigo-50 rounded-xl">
-                        
                         <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-indigo-800">3.50</strong></p>
                     </div>
                     <!-- Specific Criteria (Highlight) -->
                     <div class="flex items-center p-3 bg-indigo-100 rounded-xl">
-                        
                         <p class="text-sm text-slate-800">เกรดเฉลี่ยวิชาภาษาอังกฤษ ไม่ต่ำกว่า <strong class="text-indigo-800">3.50</strong></p>
                     </div>
                 </div>
@@ -437,7 +435,6 @@
                 <div class="space-y-3 pt-2">
                     <!-- Common Criteria -->
                     <div class="flex items-center p-3 bg-teal-50 rounded-xl">
-                        
                         <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-teal-800">3.50</strong></p>
                     </div>
                     <!-- Specific Criteria (Highlight) -->
@@ -452,34 +449,32 @@
             </div>
         </article>
 
- <!-- Card 3: Gifted Math (เน้นพิเศษ) -->
-<article class="rounded-3xl p-6 bg-white shadow-xl border-t-8 border-rose-400/80 transition duration-300 transform hover:shadow-2xl hover:scale-[1.01]">
-    <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-full bg-rose-50 border-2 border-rose-200 flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-calculator text-rose-600 text-xl"></i>
-            </div>
-            <h2 class="text-xl font-bold text-rose-700 leading-tight">Gifted Math</h2>
-        </div>
+        <!-- Card 3: Gifted Math (เน้นพิเศษ) -->
+        <article class="rounded-3xl p-6 bg-white shadow-xl border-t-8 border-rose-400/80 transition duration-300 transform hover:shadow-2xl hover:scale-[1.01]">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-rose-50 border-2 border-rose-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-calculator text-rose-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-rose-700 leading-tight">Gifted Math</h2>
+                </div>
 
-        <div class="space-y-3 pt-2">
-            <!-- Common Criteria -->
-            <div class="flex items-center p-3 bg-rose-50 rounded-xl">
-                
-                <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></p>
+                <div class="space-y-3 pt-2">
+                    <!-- Common Criteria -->
+                    <div class="flex items-center p-3 bg-rose-50 rounded-xl">
+                        <p class="text-sm text-slate-700">เกรดเฉลี่ยรวมทุกวิชา ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></p>
+                    </div>
+                    <!-- Specific Criteria (Highlight) -->
+                    <div class="flex items-start p-3 bg-rose-100 rounded-xl">
+                        <ul class="text-sm text-slate-800 space-y-1">
+                            <li>เกรดเฉลี่ยวิชาคณิตศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></li>
+                            <li>เกรดเฉลี่ยวิชาวิทยาศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">โปรแกรมเน้นทักษะคณิตศาสตร์เชิงลึกสำหรับผู้ชื่นชอบในด้านตัวเลข</p>
             </div>
-            <!-- Specific Criteria (Highlight) -->
-            <div class="flex items-start p-3 bg-rose-100 rounded-xl">
-                
-                <ul class="text-sm text-slate-800 space-y-1">
-                    <li>เกรดเฉลี่ยวิชาคณิตศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></li>
-                    <li>เกรดเฉลี่ยวิชาวิทยาศาสตร์ ไม่ต่ำกว่า <strong class="text-rose-800">3.50</strong></li>
-                </ul>
-            </div>
-        </div>
-        <p class="text-xs text-slate-400 mt-2">โปรแกรมเน้นทักษะคณิตศาสตร์เชิงลึกสำหรับผู้ชื่นชอบในด้านตัวเลข</p>
-    </div>
-</article>
+        </article>
     </div>
 
     <!-- Footer / notes -->
@@ -790,12 +785,12 @@
     if (dropdownButton && dropdownMenu) {
         dropdownButton.addEventListener('click', (event) => {
             event.stopPropagation();
-            dropdownMenu.classList.toggle('hidden');
+            dropdownMenu.classList.toggle('show');
         });
 
         document.addEventListener('click', (event) => {
             if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
+                dropdownMenu.classList.remove('show');
             }
         });
     }
@@ -874,10 +869,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
