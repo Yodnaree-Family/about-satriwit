@@ -10,12 +10,52 @@
     <style>
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
-            background: linear-gradient(135deg, #fef0f2 0%, #f5f0ff 100%);
+            background: linear-gradient(135deg, #fef7ff 0%, #f0f4ff 100%);
             min-height: 100vh;
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .tab-button.active::after {
+            width: 100%;
+        }
+        
+        .special-tab.active {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .special-tab.active::after {
+            background-color: #dc2626;
+        }
+        
+        .normal-tab.active {
+            background-color: #faf5ff;
+            color: #7c3aed;
+        }
+        
+        .normal-tab.active::after {
+            background-color: #7c3aed;
         }
         
         .timeline-container {
             position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .timeline-container::before {
@@ -27,7 +67,7 @@
             width: 4px;
             background: linear-gradient(to bottom, #ef4444, #9333ea);
             transform: translateX(-50%);
-            z-index: 0;
+            z-index: 1;
         }
         
         @media (max-width: 768px) {
@@ -36,161 +76,205 @@
             }
         }
         
-        .stage-group {
+        .timeline-item {
             position: relative;
             margin-bottom: 4rem;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
         }
         
-        .stage-label {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .timeline-item:nth-child(even) {
+            justify-content: flex-end;
         }
         
         @media (max-width: 768px) {
-            .stage-label {
-                left: 0;
-                transform: none;
-                padding: 0.5rem 1.5rem;
-            }
-        }
-        
-        .events-row {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            padding-top: 4rem;
-        }
-        
-        @media (max-width: 768px) {
-            .events-row {
-                flex-direction: column;
-                padding-top: 3rem;
+            .timeline-item, .timeline-item:nth-child(even) {
+                justify-content: flex-start;
                 padding-left: 60px;
             }
         }
         
-        .event-step {
-            flex: 1;
-            margin: 0 0.5rem;
+        .timeline-content {
+            width: 45%;
+            background: white;
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             position: relative;
             transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            z-index: 5;
+            z-index: 2;
         }
         
-        .event-step:hover {
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: auto;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-content {
+                width: 100%;
+            }
+        }
+        
+        .timeline-content:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
         }
         
-        .event-step::before {
+        .timeline-item::before {
             content: '';
             position: absolute;
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            top: -40px;
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
         }
         
         @media (max-width: 768px) {
-            .event-step::before {
-                left: -45px;
-                top: 50%;
-                transform: translateY(-50%);
+            .timeline-item::before {
+                left: 20px;
             }
         }
         
-        .special .event-step::before {
+        .special .timeline-item::before {
             background-color: #ef4444;
             box-shadow: 0 0 0 4px white, 0 0 0 6px #ef4444;
         }
         
-        .normal .event-step::before {
+        .normal .timeline-item::before {
             background-color: #9333ea;
             box-shadow: 0 0 0 4px white, 0 0 0 6px #9333ea;
         }
         
-        .event-icon {
-            width: 60px;
-            height: 60px;
+        .timeline-icon {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            position: absolute;
+            top: -25px;
+            right: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .special .event-icon {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
+        .special .timeline-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
         }
         
-        .normal .event-icon {
-            background: rgba(147, 51, 234, 0.1);
-            color: #9333ea;
+        .normal .timeline-icon {
+            background: linear-gradient(135deg, #9333ea, #7c3aed);
+            color: white;
         }
         
         .date-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.4rem 1rem;
             border-radius: 20px;
             font-weight: 600;
             margin-top: 0.5rem;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
         .special .date-badge {
             color: #ef4444;
+            border: 1px solid #fecaca;
         }
         
         .normal .date-badge {
             color: #9333ea;
+            border: 1px solid #ddd6fe;
         }
         
         .note-box {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 8px;
-            padding: 0.5rem;
-            margin-top: 0.75rem;
-            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
             width: 100%;
+            border-left: 3px solid;
+        }
+        
+        .special .note-box {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .normal .note-box {
+            border-left-color: #9333ea;
+            background: #faf5ff;
         }
         
         .header-owl {
             background: linear-gradient(135deg, #f8f4ff 0%, #e8f4ff 100%);
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
             display: flex;
             align-items: center;
             gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
         .owl-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #4f46e5;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+        }
+        
+        .special .step-number {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .normal .step-number {
+            background: linear-gradient(135deg, #9333ea, #7c3aed);
         }
     </style>
 </head>
@@ -218,122 +302,157 @@
             </div>
         </header>
 
-        <!-- Timeline Container -->
-        <div class="timeline-container">
+        <!-- Tab Navigation -->
+        <div class="flex mb-8 bg-white rounded-xl shadow-lg p-1">
+            <button id="special-tab-btn" class="tab-button special-tab active flex-1 py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300">
+                <i class="fas fa-star mr-2"></i>ห้องเรียนพิเศษ
+            </button>
+            <button id="normal-tab-btn" class="tab-button normal-tab flex-1 py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300">
+                <i class="fas fa-users mr-2"></i>ห้องเรียนปกติ
+            </button>
+        </div>
 
-            <!-- 1. ห้องเรียนพิเศษ (Special Program) -->
-            <div class="stage-group special">
-                <div class="stage-label text-red-600 border-2 border-red-500">
-                    <i class="fas fa-star"></i>
-                    ห้องเรียนพิเศษ
-                </div>
-                <div class="events-row">
-                    
-                    <!-- Step 1: รับสมัคร -->
-                    <div class="event-step bg-white border-l-4 border-red-500">
-                        <div class="event-icon">
+        <!-- Special Program Tab Content -->
+        <div id="special-content" class="tab-content active">
+            <div class="timeline-container special">
+                <!-- Step 1: รับสมัคร -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">1</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-file-signature"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">รับสมัคร</h3>
-                        <p class="text-gray-600">ม.1 และ ม.4</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">รับสมัคร</h3>
+                        <p class="text-gray-600 mb-3">นักเรียนชั้น ม.1 และ ม.4</p>
                         <span class="date-badge">8-12 ก.พ. 2569</span>
                     </div>
+                </div>
 
-                    <!-- Step 2: สอบ -->
-                    <div class="event-step bg-white border-l-4 border-red-500">
-                        <div class="event-icon">
+                <!-- Step 2: สอบ -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">2</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">สอบ</h3>
-                        <p class="text-gray-600">ม.1: 21 ก.พ. 2569</p>
-                        <p class="text-gray-600">ม.4: 22 ก.พ. 2569</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">สอบคัดเลือก</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-700"><i class="fas fa-graduation-cap mr-2 text-red-500"></i>ม.1: 21 ก.พ. 2569</p>
+                            <p class="text-gray-700"><i class="fas fa-graduation-cap mr-2 text-red-500"></i>ม.4: 22 ก.พ. 2569</p>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Step 3: ประกาศผลและรายงานตัว -->
-                    <div class="event-step bg-white border-l-4 border-red-500">
-                        <div class="event-icon">
+                <!-- Step 3: ประกาศผลและรายงานตัว -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">3</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-bullhorn"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">ประกาศผลและรายงานตัว</h3>
-                        <p class="text-gray-600">ม.1: 26 ก.พ. 2569</p>
-                        <p class="text-gray-600">ม.4: 27 ก.พ. 2569</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">ประกาศผลและรายงานตัว</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-700"><i class="fas fa-user-check mr-2 text-red-500"></i>ม.1: 26 ก.พ. 2569</p>
+                            <p class="text-gray-700"><i class="fas fa-user-check mr-2 text-red-500"></i>ม.4: 27 ก.พ. 2569</p>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Step 4: มอบตัว -->
-                    <div class="event-step bg-gradient-to-r from-red-500 to-red-600 text-white">
-                        <div class="event-icon bg-white/20 text-white">
+                <!-- Step 4: มอบตัว -->
+                <div class="timeline-item">
+                    <div class="timeline-content bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-200">
+                        <div class="step-number">4</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-user-check"></i>
                         </div>
-                        <h3 class="text-lg font-bold">มอบตัว</h3>
-                        <p>ม.1: 28 ก.พ. 2569</p>
-                        <p>ม.4: 1 มี.ค. 2569</p>
+                        <h3 class="text-xl font-bold text-red-700 mb-2">มอบตัวนักเรียน</h3>
+                        <div class="space-y-2">
+                            <p class="text-red-600 font-medium"><i class="fas fa-user-graduate mr-2"></i>ม.1: 28 ก.พ. 2569</p>
+                            <p class="text-red-600 font-medium"><i class="fas fa-user-graduate mr-2"></i>ม.4: 1 มี.ค. 2569</p>
+                        </div>
+                        <div class="note-box mt-3">
+                            <i class="fas fa-info-circle mr-2 text-red-500"></i>
+                            นักเรียนต้องนำเอกสารหลักฐานตามที่โรงเรียนกำหนด
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 2. ห้องเรียนปกติ (Normal Program) -->
-            <div class="stage-group normal">
-                <div class="stage-label text-purple-700 border-2 border-purple-600">
-                    <i class="fas fa-users"></i>
-                    ห้องเรียนปกติ
-                </div>
-                <div class="events-row">
-                    
-                    <!-- Step 1: รับสมัคร -->
-                    <div class="event-step bg-white border-l-4 border-purple-600">
-                        <div class="event-icon">
+        <!-- Normal Program Tab Content -->
+        <div id="normal-content" class="tab-content">
+            <div class="timeline-container normal">
+                <!-- Step 1: รับสมัคร -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">1</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-file-signature"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">รับสมัคร</h3>
-                        <p class="text-gray-600">ม.1 และ ม.4</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">รับสมัคร</h3>
+                        <p class="text-gray-600 mb-3">นักเรียนชั้น ม.1 และ ม.4</p>
                         <span class="date-badge">19-23 มี.ค. 2569</span>
                     </div>
+                </div>
 
-                    <!-- Step 2: สอบ -->
-                    <div class="event-step bg-white border-l-4 border-purple-600">
-                        <div class="event-icon">
+                <!-- Step 2: สอบ -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">2</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">สอบ</h3>
-                        <p class="text-gray-600">ม.1: 28 มี.ค. 2569</p>
-                        <p class="text-gray-600">ม.4: 29 มี.ค. 2569</p>
-                        <div class="note-box">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            ความสามารถพิเศษ 26 มี.ค. 2569
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">สอบคัดเลือก</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-700"><i class="fas fa-graduation-cap mr-2 text-purple-500"></i>ม.1: 28 มี.ค. 2569</p>
+                            <p class="text-gray-700"><i class="fas fa-graduation-cap mr-2 text-purple-500"></i>ม.4: 29 มี.ค. 2569</p>
+                        </div>
+                        <div class="note-box mt-3">
+                            <i class="fas fa-music mr-2 text-purple-500"></i>
+                            ความสามารถพิเศษ: 26 มี.ค. 2569
                         </div>
                     </div>
+                </div>
 
-                    <!-- Step 3: ประกาศผลและรายงานตัว -->
-                    <div class="event-step bg-white border-l-4 border-purple-600">
-                        <div class="event-icon">
+                <!-- Step 3: ประกาศผลและรายงานตัว -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="step-number">3</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-bullhorn"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-800">ประกาศผลและรายงานตัว</h3>
-                        <p class="text-gray-600">ม.1: 1 เม.ย. 2569</p>
-                        <p class="text-gray-600">ม.4: 2 เม.ย. 2569</p>
-                        <div class="note-box">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            ความสามารถพิเศษ สอบ/คัดเลือก 24 มี.ค. 2569<br>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">ประกาศผลและรายงานตัว</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-700"><i class="fas fa-user-check mr-2 text-purple-500"></i>ม.1: 1 เม.ย. 2569</p>
+                            <p class="text-gray-700"><i class="fas fa-user-check mr-2 text-purple-500"></i>ม.4: 2 เม.ย. 2569</p>
+                        </div>
+                        <div class="note-box mt-3">
+                            <i class="fas fa-info-circle mr-2 text-purple-500"></i>
+                            ความสามารถพิเศษ: สอบ/คัดเลือก 24 มี.ค. 2569<br>
                             กำหนดตัว 26 มี.ค. 2569
                         </div>
                     </div>
+                </div>
 
-                    <!-- Step 4: มอบตัว -->
-                    <div class="event-step bg-gradient-to-r from-purple-600 to-purple-700 text-white">
-                        <div class="event-icon bg-white/20 text-white">
+                <!-- Step 4: มอบตัว -->
+                <div class="timeline-item">
+                    <div class="timeline-content bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200">
+                        <div class="step-number">4</div>
+                        <div class="timeline-icon">
                             <i class="fas fa-user-check"></i>
                         </div>
-                        <h3 class="text-lg font-bold">มอบตัว</h3>
-                        <p>ม.1: 4 เม.ย. 2569</p>
-                        <p>ม.4: 5 เม.ย. 2569</p>
-                        <div class="note-box bg-white/20 text-white/90 mt-2">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            ความสามารถพิเศษ
+                        <h3 class="text-xl font-bold text-purple-700 mb-2">มอบตัวนักเรียน</h3>
+                        <div class="space-y-2">
+                            <p class="text-purple-600 font-medium"><i class="fas fa-user-graduate mr-2"></i>ม.1: 4 เม.ย. 2569</p>
+                            <p class="text-purple-600 font-medium"><i class="fas fa-user-graduate mr-2"></i>ม.4: 5 เม.ย. 2569</p>
+                        </div>
+                        <div class="note-box mt-3">
+                            <i class="fas fa-info-circle mr-2 text-purple-500"></i>
+                            ความสามารถพิเศษ: มอบตัวตามกำหนดการของโรงเรียน
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Footer Section -->
@@ -342,5 +461,26 @@
             <p class="text-xs mt-2">ข้อมูล ณ วันที่ 1 มกราคม 2567</p>
         </footer>
     </div>
+
+    <script>
+        // Tab switching functionality
+        document.getElementById('special-tab-btn').addEventListener('click', function() {
+            switchTab('special');
+        });
+        
+        document.getElementById('normal-tab-btn').addEventListener('click', function() {
+            switchTab('normal');
+        });
+        
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.getElementById('special-tab-btn').classList.toggle('active', tabName === 'special');
+            document.getElementById('normal-tab-btn').classList.toggle('active', tabName === 'normal');
+            
+            // Update tab content
+            document.getElementById('special-content').classList.toggle('active', tabName === 'special');
+            document.getElementById('normal-content').classList.toggle('active', tabName === 'normal');
+        }
+    </script>
 </body>
 </html>
